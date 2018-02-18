@@ -74,4 +74,13 @@
 
 - name: add to known hosts
   shell: ssh-keyscan -H "{{ new_droplet.droplet.ip_address }}" >> ~/.ssh/known_hosts
+
+- name: Add the droplet host
+  become: yes
+  add_host:
+    hostname: "{{ new_droplet.droplet.ip_address }}"
+    group: "nodes"
+
+# - name: run installJenkins playbook
+#   shell: "ansible-playbook /home/vagrant/sync_folder/roles/installJenkins/tasks/main.yml -i /home/vagrant/sync_folder/inventory.ini"
 ...
