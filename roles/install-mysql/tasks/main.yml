@@ -1,0 +1,28 @@
+---
+- name: set root password for MySQL
+  debconf: name='mysql-server' question='mysql-server/root_password' value='{{mysql_password | quote}}' vtype='password'
+
+- name: confirm password
+  debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{mysql_password | quote}}' vtype='password'
+
+- name: installing mysql
+  apt: package={{item}} state=installed force=yes update_cache=yes cache_valid_time=3600
+  when: ansible_os_family == 'Debian'
+  with_items:
+    - mysql-server
+    - mysql-client
+    - python-mysqldb
+
+- name: delete anonymous mysql server user
+  mysql_user: user="" state="absent" login_password="{{ mysql_password }}" login_user=root
+
+- name: secure root user
+  mysql_user: user="root" password="{{ mysql_password }}" host="{{ item }}" login_password="{{mysql_password}}" login_user=root
+  with_items:
+    - 127.0.0.1
+    - localhost
+    - ::1
+    - "{{ ansible_fqdn }}"
+
+- name: remove test database from mysql
+  mysql_db: db=test state=absent login_password="{{ mysql_password }}" login_user=root

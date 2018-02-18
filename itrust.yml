@@ -1,0 +1,24 @@
+---
+- hosts: 192.168.33.20
+  become_user: root
+  become: yes
+  become_method: sudo
+  vars_prompt:
+    - name: mysql_password
+      prompt: "enter password for the mysql server"
+  roles:
+    - ./roles/install-mysql
+    - ./roles/install-java8
+    - ./roles/install-maven3
+  # tasks:
+    # - name: copy the hibernate file
+    #   copy:
+    #     #src: /home/vagrant/hibernate-template.cfg.xml
+    #     src: /vagrant_data/env/templates/hibernate-template.cfg.xml
+    #     dest: /vagrant_data/CoffeeMaker/src/main/resources/hibernate.cfg.xml
+    #     remote_src: True
+    # - name: set the password for mysql server
+    #   lineinfile:
+    #     path: /vagrant_data/CoffeeMaker/src/main/resources/hibernate.cfg.xml
+    #     regexp: 'mysql_password'
+    #     line: '<property name="hibernate.connection.password">{{mysql_password}}</property>'

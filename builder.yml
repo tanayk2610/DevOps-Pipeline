@@ -1,0 +1,47 @@
+---
+- hosts: all
+  become_user: root
+  become: yes
+  become_method: sudo
+  tasks:
+    -name: install python pip
+     apt:
+       name: python-pip
+       force: yes
+       state: latest
+       cache_valid_time: 3600
+    - name: install jenkins job builder using pip
+      pip:
+        name: jenkins-job-builder
+
+    - name: create job builder
+      file:
+        path: /etc/some_directory
+        state: directory
+        #mode: 0755
+    - name: copy the jenkins_jobs.ini
+      copy:
+        src: /the-ansible-machine
+        dest: /etc/jenkins_jobs/jenkins_jobs.ini
+        remote_src: no
+        mode: u+rw
+
+    - name: make jobs directory
+      file:
+        path: jobs
+        state: directory
+
+    # - name: write to the test.yml file
+    #   copy:
+    #     src: /the-ansible-machine
+    #     dest: jobs/test.yaml
+    - name: update jenkins jobs
+      shell: jenkins-jobs update --delete-old jobs
+    - name: write to the test.yml file
+      copy:
+        src: /the-ansible-machine
+        dest: jobs/defaults.yml
+    - name: write to the test.yaml file
+      copy:
+        src: /the-ansible-machine
+        dest: jobs/projects.yaml
