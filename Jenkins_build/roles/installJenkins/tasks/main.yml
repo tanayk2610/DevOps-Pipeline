@@ -1,37 +1,3 @@
-# ---
-# - name: Install Prerequisites
-#   become: yes
-#   apt:
-#     name: "{{ item }}"
-#     state: latest
-#     update_cache: yes
-#   with_items:
-#     - git
-#     - maven
-#     - build-essential
-#     - default-jre
-#     - default-jdk
-#     - curl
-
-# - name: Add Jenkins Repo Key
-#   become: yes
-#   apt_key:
-#     url: "https://jenkins-ci.org/debian/jenkins-ci.org.key"
-#     state: present
-#     validate_certs: no
-
-# - name: Add Jenkins Source List
-#   become: yes
-#   copy: content="deb http://pkg.jenkins.io/debian-stable binary/" dest="/etc/apt/sources.list.d/jenkins.list"
-        
-# - name: Install Jenkins
-#   become: yes
-#   apt:
-#     name: jenkins    
-#     state: present
-#     update_cache: yes
-#   register: install_jenkins
-# ...
 ---
 - name: Install Prerequisites
   become: yes
@@ -46,6 +12,7 @@
     - default-jre
     - default-jdk
     - curl
+
 - name: Add Jenkins key
   become: yes
   apt_key:
@@ -64,4 +31,5 @@
     state: installed 
     update_cache: yes
     force: yes
+  register: jenkins_install
 ...

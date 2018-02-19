@@ -80,7 +80,4 @@
   add_host:
     hostname: "{{ new_droplet.droplet.ip_address }}"
     group: "nodes"
-
-# - name: run installJenkins playbook
-#   shell: "ansible-playbook /home/vagrant/sync_folder/roles/installJenkins/tasks/main.yml -i /home/vagrant/sync_folder/inventory.ini"
 ...

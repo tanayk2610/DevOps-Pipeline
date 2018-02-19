@@ -1,0 +1,26 @@
+---
+- name: Copy config.xml file
+  become: yes
+  template:
+    src: config.xml.j2
+    dest: /var/lib/jenkins/config.xml
+
+- name: Enable firewall
+  become: yes
+  ufw:
+    policy: allow
+    state: enabled
+
+- name: Open port 8080
+  become: yes
+  ufw:
+     port: 8080
+     rule: allow
+
+- name: Restart Jenkins
+  become: yes
+  service:
+    name: jenkins
+    state: restarted
+  when: jenkins_install.changed
+...
