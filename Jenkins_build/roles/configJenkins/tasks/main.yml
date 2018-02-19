@@ -23,4 +23,54 @@
     name: jenkins
     state: restarted
   when: jenkins_install.changed
+
+- name: Wait for restart
+  become: yes
+  uri:
+    url: "http://{{jenkins_ip}}:{{jenkins_port}}/cli/"
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 5
+  when: jenkins_install.changed
+
+- name: install python pip
+  become: yes
+  apt:
+    name: python-pip
+    force: yes
+    state: latest
+    cache_valid_time: 3600
+    
+- name: install jenkins job builder using pip
+  become: yes
+  pip:
+    name: jenkins-job-builder
+
+- name: Install Jenkin Plugins
+  become: yes
+  jenkins_plugin:
+    name: "{{ item }}"
+    params: "{{ jenkins }}"
+  with_items:
+    - github
+    - postbuildscript
+    - postbuild-task
+    - ws-cleanup
+ 
+- name: Restart Jenkins (for plugins)
+  become: yes
+  service:
+    name: jenkins
+    state: restarted
+ 
+- name: Wait for restart
+  uri:
+    url: "http://{{jenkins_ip}}:{{jenkins_port}}/cli/"
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 5
 ...
