@@ -35,6 +35,36 @@
   delay: 5
   when: jenkins_install.changed
 
+- name: Create a directory for Groovy
+  become: yes
+  file:
+    path: "/var/lib/jenkins/init.groovy.d"
+    state: directory
+    mode: 0777
+
+- name: Create a template xml file for Jenkins checkbox build job
+  become: yes
+  template: 
+    src: jenkins_script.groovy.j2 
+    dest: /var/lib/jenkins/init.groovy.d/basic-security.groovy 
+    mode: 0777
+
+- name: Restart Jenkins (creates user through startup script)
+  become: yes
+  service:
+    name: jenkins
+    state: restarted
+
+- name: Wait for restart
+  become: yes
+  uri:
+    url: "http://{{jenkins_ip}}:{{jenkins_port}}/cli/"
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 5
+
 - name: install python pip
   become: yes
   apt:
@@ -48,25 +78,25 @@
   pip:
     name: jenkins-job-builder
 
-- name: switch TCP port to random
-  lineinfile: dest={{ home }}/config.xml regexp='<slaveAgentPort>' line='  <slaveAgentPort>0</slaveAgentPort>'
+# - name: switch TCP port to random
+#   lineinfile: dest={{ home }}/config.xml regexp='<slaveAgentPort>' line='  <slaveAgentPort>0</slaveAgentPort>'
 
-- name: Bypass - jenkins.install.InstallUtil.lastExecVersion
-  copy:
-    src: "{{ jenkins_home }}/jenkins.install.UpgradeWizard.state"
-    dest: "{{ jenkins_home }}/jenkins.install.InstallUtil.lastExecVersion"
-    owner: "{{ jenkins_user }}"
-    group: "{{ jenkins_user }}"
-    remote_src: True
+# - name: Bypass - jenkins.install.InstallUtil.lastExecVersion
+#   copy:
+#     src: "{{ jenkins_home }}/jenkins.install.UpgradeWizard.state"
+#     dest: "{{ jenkins_home }}/jenkins.install.InstallUtil.lastExecVersion"
+#     owner: "{{ jenkins_user }}"
+#     group: "{{ jenkins_user }}"
+#     remote_src: True
 
-- stat: path="{{ jenkins_home }}/secrets/initialAdminPassword"
-  register: adminpassword
+# - stat: path="{{ jenkins_home }}/secrets/initialAdminPassword"
+#   register: adminpassword
 
-- name: Bypass - initialAdminPassword
-  shell: mv {{ jenkins_home }}/secrets/initialAdminPassword /root
-  notify:
-    - restart jenkins
-  when: adminpassword.stat.exists == True
+# - name: Bypass - initialAdminPassword
+#   shell: mv {{ jenkins_home }}/secrets/initialAdminPassword /root
+#   notify:
+#     - restart jenkins
+#   when: adminpassword.stat.exists == True
 
 - name: Install Jenkin Plugins
   become: yes
@@ -79,13 +109,14 @@
     - postbuild-task
     - ws-cleanup
  
-- name: Restart Jenkins (for plugins)
-  become: yes
-  service:
-    name: jenkins
-    state: restarted
+# - name: Restart Jenkins (for plugins)
+#   become: yes
+#   service:
+#     name: jenkins
+#     state: restarted
  
 - name: Wait for restart
+  become: yes
   uri:
     url: "http://{{jenkins_ip}}:{{jenkins_port}}/cli/"
     status_code: 200

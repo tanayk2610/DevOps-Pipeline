@@ -55,18 +55,18 @@
 
 - name: delete inventory file if currently present
   file:
-    path: "/home/vagrant/sync_folder/inventory.ini"
+    path: "/home/vagrant/inventory.ini"
     state: absent
 
 - name: make inventory file present
   file:
-    path: "/home/vagrant/sync_folder/inventory.ini"
+    path: "/home/vagrant/inventory.ini"
     state: touch
     mode: 0777
 
 - name: set inventory file
   lineinfile:
-    path: "/home/vagrant/sync_folder/inventory.ini"
+    path: "/home/vagrant/inventory.ini"
     line: "[nodes]\n{{ new_droplet.droplet.ip_address }} ansible_ssh_user=root"
 
 - pause:
