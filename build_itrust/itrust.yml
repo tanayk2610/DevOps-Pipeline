@@ -1,0 +1,71 @@
+---
+- hosts: 192.168.33.20
+  become_user: root
+  become: yes
+  become_method: sudo
+  gather_facts: False
+  pre_tasks:
+    - name: 'install python2'
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+  vars_prompt:
+    - name: mysql_password
+      prompt: "enter password for the mysql server"
+    - name: gmail_password
+      prompt: "enter password for gmail account"
+  roles:
+    - ./roles/install-mysql
+    - ./roles/install-java8
+    - ./roles/install-maven3
+#    - ./roles/install-tomcat
+  tasks:
+    - name: copy db.properties file
+      copy:
+        src: /vagrant_data/iTrust2/src/main/java/db.properties.template
+        dest: /vagrant_data/iTrust2/src/main/java/db.properties
+        remote_src: True
+    - name: set the password in db file
+      lineinfile:
+        path: /vagrant_data/iTrust2/src/main/java/db.properties
+        regexp: 'password'
+        line: 'password {{mysql_password}}'
+
+    - name: copy hibernate file
+      copy:
+        src: /vagrant_data/iTrust2/src/main/resources/hibernate.properties.template
+        dest: /vagrant_data/iTrust2/src/main/resources/hibernate.properties
+        remote_src: True
+    - name: set the password in hibernate file
+      lineinfile:
+        path: /vagrant_data/iTrust2/src/main/resources/hibernate.properties
+        regexp: 'hibernate.connection.password'
+        line: 'hibernate.connection.password = {{mysql_password}}'
+
+    - name: set password for email.properties
+      copy:
+        src: /vagrant_data/iTrust2/src/main/java/email.properties.template
+        dest: /vagrant_data/iTrust2/src/main/java/email.properties
+        remote_src: True
+    - name: set the username to root in email.properties
+      lineinfile:
+        path: /vagrant_data/iTrust2/src/main/java/email.properties
+        regexp: 'username'
+        line: 'username root'
+    - name: set password in email.properties
+      lineinfile:
+        path: /vagrant_data/iTrust2/src/main/java/email.properties
+        regexp: 'from'
+        line: 'from devopsknights@gmail.com'
+
+    - lineinfile:
+        path: /vagrant_data/iTrust2/src/main/java/email.properties
+        regexp: 'username'
+        line: 'username devopsknights@gmail.com'
+    - lineinfile:
+        path: /vagrant_data/iTrust2/src/main/java/email.properties
+        regexp: 'password'
+        line: 'password {{gmail_password}}'
+
+    - name:  build itrust2
+      shell: cd /vagrant_data/iTrust2/ && mvn process-test-classes
+    - name: run iTrust2
+      shell: cd /vagrant_data/iTrust2/ && nohup mvn jetty:run
