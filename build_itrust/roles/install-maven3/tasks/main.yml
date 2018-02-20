@@ -5,4 +5,4 @@
 - name: install maven3
   apt: name={{item}} state=latest
   with_items:
-    - maven3
+    - maven
