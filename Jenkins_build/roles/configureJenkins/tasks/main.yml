@@ -48,6 +48,26 @@
   pip:
     name: jenkins-job-builder
 
+- name: switch TCP port to random
+  lineinfile: dest={{ home }}/config.xml regexp='<slaveAgentPort>' line='  <slaveAgentPort>0</slaveAgentPort>'
+
+- name: Bypass - jenkins.install.InstallUtil.lastExecVersion
+  copy:
+    src: "{{ jenkins_home }}/jenkins.install.UpgradeWizard.state"
+    dest: "{{ jenkins_home }}/jenkins.install.InstallUtil.lastExecVersion"
+    owner: "{{ jenkins_user }}"
+    group: "{{ jenkins_user }}"
+    remote_src: True
+
+- stat: path="{{ jenkins_home }}/secrets/initialAdminPassword"
+  register: adminpassword
+
+- name: Bypass - initialAdminPassword
+  shell: mv {{ jenkins_home }}/secrets/initialAdminPassword /root
+  notify:
+    - restart jenkins
+  when: adminpassword.stat.exists == True
+
 - name: Install Jenkin Plugins
   become: yes
   jenkins_plugin:
