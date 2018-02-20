@@ -20,4 +20,5 @@ ansible-playbook Jenkins_build/main.yml -u root
 ## Building iTrust   
 ### Issues faced:    
 1. Setting the admin password for mysql databases in the db and hibernate files.   
-2. Logging into itrust.  
+2. Running itrust on ubuntu/trusty64.
+
