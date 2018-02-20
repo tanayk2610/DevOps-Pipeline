@@ -10,15 +10,26 @@
     - ./roles/install-mysql
     - ./roles/install-java8
     - ./roles/install-maven3
-  # tasks:
-    # - name: copy the hibernate file
-    #   copy:
-    #     #src: /home/vagrant/hibernate-template.cfg.xml
-    #     src: /vagrant_data/env/templates/hibernate-template.cfg.xml
-    #     dest: /vagrant_data/CoffeeMaker/src/main/resources/hibernate.cfg.xml
-    #     remote_src: True
-    # - name: set the password for mysql server
-    #   lineinfile:
-    #     path: /vagrant_data/CoffeeMaker/src/main/resources/hibernate.cfg.xml
-    #     regexp: 'mysql_password'
-    #     line: '<property name="hibernate.connection.password">{{mysql_password}}</property>'
+  tasks:
+    - name: copy db.properties file
+      copy:
+        src: /vagrant_data/iTrust2/src/main/java/db.properties.template
+        dest: /vagrant_data/iTrust2/src/main/java/db.properties
+        remote_src: True
+    - name: set the password in db file
+      lineinfile:
+        path: /vagrant_data/iTrust2/src/main/java/db.properties
+        regexp: 'password'
+        line: 'password {{mysql_password}}'
+    - name: copy hibernate file
+      copy:
+        src: /vagrant_data/iTrust2/src/main/resources/hibernate.properties.template
+        dest: /vagrant_data/iTrust2/src/main/resources/hibernate.properties
+        remote_src: True
+    - name: set the password in hibernate file
+      lineinfile:
+        path: /vagrant_data/iTrust2/src/main/resources/hibernate.properties
+        regexp: 'hibernate.connection.password'
+        line: 'hibernate.connection.password = {{mysql_password}}'
+    - name: run build commands
+      shell: cd /vagrant_data/iTrust2/ && mvn process-test-classes && mvn jetty:run && mvn clean test verify checkstyle:checkstyle
