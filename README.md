@@ -14,3 +14,10 @@ Prerquisites:
 How to run:
 
 ansible-playbook Jenkins_build/main.yml -u root
+## Jenkins Configuration  
+### Issues faced:  
+1. Bypassing the jenkins server to install plugins.  
+## Building iTrust   
+### Issues faced:    
+1. Setting the admin password for mysql databases in the db and hibernate files.   
+2. Logging into itrust.  
