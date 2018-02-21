@@ -3,7 +3,9 @@ jenkins_user: "jenkins"
 jenkins_home: "/var/lib/jenkins"
 jenkins_username: devopsknights
 jenkins_password: devops123
-
+ansible_home_dir: "{{ansible_env.HOME}}"
+jenkins_jar_loc: "{{ansible_home_dir}}"
+job_extract_loc: /tmp/jenkins_ansible
 jenkins_ip: localhost
 jenkins_port: 8080
 
