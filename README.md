@@ -22,3 +22,10 @@ ansible-playbook Jenkins_build/main.yml -u root
 1. Setting the admin password for mysql databases in the db and hibernate files.   
 2. Running itrust on ubuntu/trusty64.
 
+## Jenkins Job Builder   
+### Issues faced:    
+1. Finding the most appropriate way to implement the job builder tasks.
+2. Writing yaml script for job builder.  
+3. Creating a post build action for the job builder.   
+4. Configuring the access of job builder to the jenkins server.   
+
