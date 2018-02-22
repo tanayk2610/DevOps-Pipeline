@@ -1,0 +1,6 @@
+- job:
+    name: itrust2
+    description: "automatically build itrust"
+    # project-type: maven
+    builders:
+      - shell: 'cd /vagrant_data/iTrust2 && mvn clean test verify checkstyle:checkstyle'
