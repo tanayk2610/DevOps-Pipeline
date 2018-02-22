@@ -17,12 +17,58 @@
      port: 8080
      rule: allow
 
+- name: Ensure Jenkins is started
+  service:
+    name: jenkins
+    state: started
+    enabled: yes
+
 - name: Restart Jenkins
   become: yes
   service:
     name: jenkins
     state: restarted
   when: jenkins_install.changed
+
+- name: Wait for restart
+  uri:
+    url: "http://{{jenkins_ip}}:{{jenkins_port}}/cli/"
+    status_code: 403
+  register: result
+  until: result.status == 403
+  retries: 60
+  delay: 10
+  when: jenkins_install.changed
+
+- name: Get the jenkins-cli jarfile from the Jenkins server.
+  get_url:
+    url: "http://{{ jenkins_hostname }}:{{ jenkins_http_port }}/jnlpJars/jenkins-cli.jar"
+    dest: "{{ jenkins_jar_loc }}"
+  register: jarfile_get
+  until: "'OK' in jarfile_get.msg or 'file already exists' in jarfile_get.msg"
+  retries: 5
+  delay: 10
+  check_mode: no
+
+- name: Create a directory for Groovy
+  become: yes
+  file:
+    path: "/var/lib/jenkins/init.groovy.d"
+    state: directory
+    mode: 0777
+
+- name: Create a template xml file for Jenkins checkbox build job
+  become: yes
+  template: 
+    src: jenkins_script.groovy.j2 
+    dest: /var/lib/jenkins/init.groovy.d/basic-security.groovy 
+    mode: 0777
+
+- name: Restart Jenkins (creates user through startup script)
+  become: yes
+  service:
+    name: jenkins
+    state: restarted
 
 - name: Wait for restart
   become: yes
@@ -33,7 +79,12 @@
   until: result.status == 200
   retries: 60
   delay: 5
-  when: jenkins_install.changed
+
+- name: Remove User-Creation Script
+  file:
+    path: "/var/lib/jenkins/init.groovy.d/basic-security.groovy"
+    state: absent
+  become: yes
 
 - name: install python pip
   become: yes
@@ -86,6 +137,7 @@
     state: restarted
  
 - name: Wait for restart
+  become: yes
   uri:
     url: "http://{{jenkins_ip}}:{{jenkins_port}}/cli/"
     status_code: 200

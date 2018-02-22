@@ -4,8 +4,10 @@
   <version>1.0</version>
   <numExecutors>2</numExecutors>
   <mode>NORMAL</mode>
-  <useSecurity>true</useSecurity>
-  <authorizationStrategy class="hudson.security.FullControlOnceLoggedInAuthorizationStrategy"/>
+  <useSecurity>false</useSecurity>
+ <authorizationStrategy class="hudson.security.FullControlOnceLoggedInAuthorizationStrategy">
+    <denyAnonymousReadAccess>false</denyAnonymousReadAccess>
+  </authorizationStrategy>
   <securityRealm class="hudson.security.HudsonPrivateSecurityRealm">
     <disableSignup>true</disableSignup>
     <enableCaptcha>false</enableCaptcha>
@@ -14,14 +16,10 @@
   <projectNamingStrategy class="jenkins.model.ProjectNamingStrategy$DefaultProjectNamingStrategy"/>
   <workspaceDir>${ITEM_ROOTDIR}/workspace</workspaceDir>
   <buildsDir>${ITEM_ROOTDIR}/builds</buildsDir>
-  <markupFormatter class="hudson.markup.RawHtmlMarkupFormatter">
-    <disableSyntaxHighlighting>false</disableSyntaxHighlighting>
-  </markupFormatter>
   <jdks/>
   <viewsTabBar class="hudson.views.DefaultViewsTabBar"/>
   <myViewsTabBar class="hudson.views.DefaultMyViewsTabBar"/>
   <clouds/>
-  <slaves/>
   <scmCheckoutRetryCount>0</scmCheckoutRetryCount>
   <views>
     <hudson.model.AllView>
@@ -33,7 +31,7 @@
     </hudson.model.AllView>
   </views>
   <primaryView>all</primaryView>
-  <slaveAgentPort>0</slaveAgentPort>
+  <slaveAgentPort>-1</slaveAgentPort>
   <label></label>
   <crumbIssuer class="hudson.security.csrf.DefaultCrumbIssuer">
     <excludeClientIPFromCrumb>false</excludeClientIPFromCrumb>
