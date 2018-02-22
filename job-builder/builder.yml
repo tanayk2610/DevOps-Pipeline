@@ -6,14 +6,7 @@
   # gather_facts: False
   # pre_tasks:
   #   - name: 'install python2'
-  #     raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
-
-  #########ASSUMING THAT MACHINE ALREADY HAS PIP AND GIT INSTALLED
-  # vars_prompt:
-  #   - name: jenkins_user
-  #     prompt: "enter username for jenkins account"
-  #   - name: jenkins_pass
-  #     prompt: "enter password for jenkins account"
+      # raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
   vars:
     jenkins_pass: "{{ lookup('env','JENKINS_PASS') }}"
     user: "{{ lookup('env','JENKINS_USER') }}"
@@ -45,23 +38,30 @@
         path: jobs
         state: directory
         mode: 0777
-    - name: delete itrust job line
-      file:
-        name: "/home/vagrant/jobs/itrust-jjb.yaml"
-        state: absent
     - name: create a yaml to run itrust job
       template:
         src: itrust-jjb.yaml
         dest: jobs/
+    - name: create a yaml to run itrust job
+      template:
+        src: checkbox-jjb.yaml
+        dest: jobs/
+
     - name: run the jenkins-jobs
       shell: jenkins-jobs update jobs
       args:
         chdir: "/home/vagrant"
     - name: test the running of the jobs
       shell: jenkins-jobs test jobs
-      register: result
 
-    - debug: var=result.stdout_lines
+    # - name: create job
+    #   jenkins_job:
+    #     config: "{{ lookup('file', '/home/vagrant/jobs/itrust-jjb.yaml') }}"
+    #     name: itrust
+    #     password: '{{jenkins_pass}}'
+    #     url: http://localhost:8080
+    #     user: '{{user}}'
+
     - name: get jenkins crumb
       # uri:
       #   method: GET
@@ -77,8 +77,13 @@
       #   url: 'http://{{user}}:{{jenkins_pass}}@localhost:8080/job/itrust2/build'
       shell: curl -X POST http://{{user}}:{{jenkins_pass}}@localhost:8080/job/itrust2/build -H "{{crumb.stdout}}"
       register: result
-    - debug: var=jenkins_api
-    - debug: var=user
-    - debug: var=result.stdout_lines
+    # - debug: var=jenkins_api
+    # - debug: var=user
+    - debug: var=result.stdout
 
+
+    - name: run itrust2 job
+      shell: curl -X POST http://{{user}}:{{jenkins_pass}}@localhost:8080/job/checkbox/build -H "{{crumb.stdout}}"
+      register: result
+    - debug: var=result.stdout
 ...
