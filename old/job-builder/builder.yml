@@ -81,7 +81,6 @@
     # - debug: var=user
     - debug: var=result.stdout
 
-
     - name: run itrust2 job
       shell: curl -X POST http://{{user}}:{{jenkins_pass}}@localhost:8080/job/checkbox/build -H "{{crumb.stdout}}"
       register: result
