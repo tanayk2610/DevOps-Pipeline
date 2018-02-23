@@ -1,0 +1,41 @@
+---
+- name: Provision Jenkins Server on Digital Ocean
+  hosts: localhost
+  connection: localhost
+  roles:
+    - role: droplet
+      DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
+
+- name: Configure Jenkins Server
+  hosts: jenkins
+  gather_facts: no
+  pre_tasks:
+    - name: Install Python2
+      raw: apt-get -y install python-simplejson
+      become: yes
+    - name: Setting up environment variables
+      set_fact:
+        DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
+        MONGO_PORT: "{{ lookup('env', 'MONGO_PORT') }}"
+        MONGO_IP: "{{ lookup('env', 'MONGO_IP') }}"
+        MONGO_USER: "{{ lookup('env', 'MONGO_USER') }}"
+        MONGO_PASSWORD: "{{ lookup('env', 'MONGO_PASSWORD') }}"
+        MAIL_USER: "{{ lookup('env', 'MAIL_USER') }}"
+        MAIL_PASSWORD: "{{ lookup('env', 'MAIL_PASSWORD') }}"
+        MAIL_SMTP: "{{ lookup('env', 'MAIL_SMTP') }}"
+        JENKINS_USER: "{{ lookup('env', 'JENKINS_USER') }}"
+        JENKINS_PASSWORD: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
+        MYSQL_PASSWORD: "{{ lookup('env', 'MYSQL_PASSWORD') }}"
+
+  # Dependencies for Checkbox.io - nodejs, nginx, mongodb
+  # Dependencies for iTrust2 - java8, chrome, mysql  
+  roles:
+    - nodejs
+    - nginx
+    - mongodb
+    - java8
+    - role: mysql
+      mysql_pass: "{{ lookup('env', 'MYSQL_PASSWORD') }}"
+    - chrome
+    - jenkins
+...
