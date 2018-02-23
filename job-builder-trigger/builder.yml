@@ -1,8 +1,7 @@
 ---
-- hosts: 192.168.33.20
-  become_user: root
+- hosts: localhost
+  connection: localhost
   become: yes
-  become_method: sudo
   # gather_facts: False
   # pre_tasks:
   #   - name: 'install python2'
