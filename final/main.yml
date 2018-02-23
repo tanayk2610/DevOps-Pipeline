@@ -5,6 +5,7 @@
   roles:
     - role: droplet
       DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
+      NODE_NAME: jenkins
 
 - name: Configure Jenkins Server
   hosts: jenkins
