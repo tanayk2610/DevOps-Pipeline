@@ -30,19 +30,19 @@
       
   - name: create a yaml to run itrust job
     template:
-      src: itrust-jjb.yaml
+      src: templates/itrust-jjb.yaml
       dest: jobs/
   - name: create a yaml to run itrust job
     template:
-      src: checkbox-jjb.yaml
+      src: templates/checkbox-jjb.yaml
       dest: jobs/
   - name: create a yaml to run checkbox post build job
     template:
-      src: ansible-checkbox-jjb.yaml
+      src: templates/ansible-checkbox-jjb.yaml
       dest: jobs/
   - name: create a yaml to run itrust post build job
     template:
-      src: ansible-itrust-jjb.yaml
+      src: templates/ansible-itrust-jjb.yaml
       dest: jobs/
   
   

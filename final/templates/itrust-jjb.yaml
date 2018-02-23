@@ -1,0 +1,14 @@
+- job:
+    name: itrust2
+    description: "automatically build itrust"
+    # project-type: maven
+    builders:
+      - shell: 'cd /vagrant_data/iTrust2 && mvn clean test verify checkstyle:checkstyle'
+    publishers:
+      - post-tasks:
+        - matches:
+          - log-text: ''
+          escalate-status: true
+          run-if-job-successful: true
+          script: |
+            touch uddhav.txt
