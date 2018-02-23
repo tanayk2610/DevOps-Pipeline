@@ -1,0 +1,9 @@
+- job:
+    name: ansible-checkbox
+    description: "deploy server with checkbox on it"
+    builders:
+      - ansible-playbook:
+          playbook: test.yml
+          inventory-type: "path"
+          inventory:
+            path: inventory

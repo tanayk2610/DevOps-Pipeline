@@ -1,0 +1,9 @@
+- job:
+    name: ansible-itrust
+    description: "deploy server with itrust on it"
+    builders:
+      - ansible-playbook:
+          playbook: test.yml
+          inventory-type: "path"
+          inventory:
+            path: inventory

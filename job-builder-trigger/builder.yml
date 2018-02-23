@@ -1,0 +1,101 @@
+---
+- hosts: 192.168.33.20
+  become_user: root
+  become: yes
+  become_method: sudo
+  # gather_facts: False
+  # pre_tasks:
+  #   - name: 'install python2'
+      # raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+  vars:
+    jenkins_pass: "{{ lookup('env','JENKINS_PASS') }}"
+    user: "{{ lookup('env','JENKINS_USER') }}"
+  tasks:
+    - name: install PIP
+      apt:
+        cache_valid_time: 3600
+        name: python-pip
+        state: latest
+    - name: install jjb using python2
+      apt:
+        cache_valid_time: 3600
+        name: python-jenkins-job-builder
+        state: latest
+    - name: install jjb using PIP
+      pip:
+        name: jenkins-job-builder
+    - name: create jenkins jobs folder
+      file:
+        path: /etc/jenkins_jobs
+        state: directory
+        mode: 0777
+    - name: copy ini file to the directory
+      template:
+        src: jenkins_jobs.ini
+        dest: /etc/jenkins_jobs/
+    - name: make jobs directory
+      file:
+        path: jobs
+        state: directory
+        mode: 0777
+
+        
+    - name: create a yaml to run itrust job
+      template:
+        src: itrust-jjb.yaml
+        dest: jobs/
+    - name: create a yaml to run itrust job
+      template:
+        src: checkbox-jjb.yaml
+        dest: jobs/
+    - name: create a yaml to run checkbox post build job
+      template:
+        src: ansible-checkbox-jjb.yaml
+        dest: jobs/
+    - name: create a yaml to run itrust post build job
+      template:
+        src: ansible-itrust-jjb.yaml
+        dest: jobs/
+
+
+    - name: run the jenkins-jobs
+      shell: jenkins-jobs update jobs
+      args:
+        chdir: "/home/vagrant"
+    - name: test the running of the jobs
+      shell: jenkins-jobs test jobs
+
+    # - name: create job
+    #   jenkins_job:
+    #     config: "{{ lookup('file', '/home/vagrant/jobs/itrust-jjb.yaml') }}"
+    #     name: itrust
+    #     password: '{{jenkins_pass}}'
+    #     url: http://localhost:8080
+    #     user: '{{user}}'
+
+    - name: get jenkins crumb
+      # uri:
+      #   method: GET
+      #   url: 'http://{{user}}:{{jenkins_pass}}@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
+      shell: curl -s 'http://{{user}}:{{jenkins_pass}}@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
+      register: crumb
+
+    - debug: var=crumb
+    - name: run itrust2 job
+      # uri:
+      #   HEADER_: '{{crumb.stdout | to_json }}'
+      #   method: POST
+      #   url: 'http://{{user}}:{{jenkins_pass}}@localhost:8080/job/itrust2/build'
+      shell: curl -X POST http://{{user}}:{{jenkins_pass}}@localhost:8080/job/itrust2/build -H "{{crumb.stdout}}"
+      register: result
+    # - debug: var=jenkins_api
+    # - debug: var=user
+    - debug: var=result.stdout
+
+
+    - name: run itrust2 job
+      shell: curl -X POST http://{{user}}:{{jenkins_pass}}@localhost:8080/job/checkbox/build -H "{{crumb.stdout}}"
+      register: result
+    - debug: var=result.stdout
+
+...
