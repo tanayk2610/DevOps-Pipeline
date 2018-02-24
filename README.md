@@ -29,8 +29,9 @@ Everyone gave inputs for the report by providiing the challenges that they faced
     * `GIT_TOKEN` - Git Token to clone the private NCSU repositories
 
 #### Run instructions:
-
-`ansible-playbook main.yml -u root`   
+1. Clone this Repo 
+2. Checkout to branch `m1_cm_build`
+3. Run command - `ansible-playbook main.yml`   
 
 ## Experiences and Learning:  
 1. Learnt about the working of pipelines and their crucial role in automation.  

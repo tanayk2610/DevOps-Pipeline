@@ -1,8 +1,12 @@
 ---
+- name: Get the current user
+  shell: whoami
+  register: current_user
+
 - name: Check if SSH key exists
   become_user: current_user
   stat:
-    path: ~/.ssh/id_rsa.pub
+    path: "~/.ssh/{{ NODE_NAME }}.pub"
   register: ssh_exists
 
 # - name: debug ssh key
@@ -11,11 +15,11 @@
 
 - name: Generate SSH keys if not exists
   become_user: current_user
-  shell: ssh-keygen -N '' -f ~/.ssh/id_rsa
+  shell: "ssh-keygen -N '' -f ~/.ssh/{{ NODE_NAME }}"
   when: ssh_exists.stat.exists == False
 
 - name: Get public SSH key
-  shell: cat ~/.ssh/id_rsa.pub
+  shell: "cat ~/.ssh/{{ NODE_NAME }}.pub"
   register: ssh_key
 
 # - debug:
@@ -50,25 +54,9 @@
     api_token: "{{ DOTOKEN }}"
   register: new_droplet
 
-- name: Delete inventory file if present
-  file:
-    path: "/files/inventory.ini"
-    state: absent
-
-- name: Create new inventory file
-  file:
-    path: "/files/inventory.ini"
-    state: touch
-    mode: 0777
-
-- name: Add new droplet to inventory
-  lineinfile:
-    path: "/files/inventory.ini"
-    line: "[{{ NODE_NAME }}]\n{{ new_droplet.droplet.ip_address }} ansible_ssh_user=root"
-
 - name: Wait droplet to come online
   pause:
-    seconds: 15
+    seconds: 50
 
 - name: Add new droplet as a known host
   shell: ssh-keyscan -H "{{ new_droplet.droplet.ip_address }}" >> ~/.ssh/known_hosts
@@ -78,4 +66,6 @@
   add_host:
     hostname: "{{ new_droplet.droplet.ip_address }}"
     group: "{{ NODE_NAME }}"
+    ansible_ssh_user: "root"
+    ansible_ssh_private_key_file: "~/.ssh/{{ NODE_NAME }}"
 ...

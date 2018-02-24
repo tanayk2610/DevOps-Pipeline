@@ -1,4 +1,12 @@
 ---
+- name: Provision Checkbox Server on Digital Ocean
+  hosts: localhost
+  connection: localhost
+  roles:
+    - role: droplet
+      DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
+      NODE_NAME: checkbox
+
 - name: Setup environment variables on Checkbox server
   hosts: checkbox
   gather_facts: False

@@ -14,17 +14,21 @@
     - name: Install Python2
       raw: apt-get -y install python-simplejson
       become: yes
+
     - name: Install pip
       apt:
         name: python-pip
         force: yes
         update_cache: yes
+
     - name: Install dopy
       become: yes
       raw: pip install 'dopy>=0.3.5,<=0.3.5'
+
     - name: Add Ansible ppa
       apt_repository:
         repo: 'ppa:ansible/ansible'
+        
     - name: Install Ansible
       apt:
         name: ansible
@@ -44,9 +48,9 @@
     - lineinfile: dest=/etc/environment line="JENKINS_PASSWORD={{ lookup('env','JENKINS_PASSWORD') }}"
     - lineinfile: dest=/etc/environment line="MYSQL_PASSWORD={{ lookup('env','MYSQL_PASSWORD') }}"
     - lineinfile: dest=/etc/environment line="GIT_TOKEN={{ lookup('env','GIT_TOKEN') }}"
-#
-#       # Dependencies for Checkbox.io - nodejs, nginx, mongodb
-#       # Dependencies for iTrust2 - java8, chrome, mysql
+
+  # Dependencies for Checkbox.io - nodejs, nginx, mongodb
+  # Dependencies for iTrust2 - java8, chrome, mysql
 - name: Configure Jenkins Server
   hosts: jenkins
   roles:
@@ -64,8 +68,8 @@
     mysql_pass: "{{ lookup('env','MYSQL_PASSWORD') }}"
     mail_user: "{{ lookup('env','MAIL_USER') }}"
     mail_pass: "{{ lookup('env','MAIL_PASSWORD') }}"
-  tasks:
 
+  tasks:
     - name: remove directories if already exist
       shell: rm -rf /checkbox.io && rm -rf /iTrust2-v2
     - name: Clone Checkbox Repo
@@ -87,6 +91,8 @@
       copy:
         src: "./files"
         dest: "/"
+        mode: 0777
+        directory_mode: yes
 
     - name: copy db.properties file
       copy:
@@ -139,5 +145,6 @@
         path: /iTrust2-v2/iTrust2/src/main/java/email.properties
         regexp: 'password'
         line: 'password {{mail_pass}}'
+        
 - import_playbook: builder.yml
 ...
