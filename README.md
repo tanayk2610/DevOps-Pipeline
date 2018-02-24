@@ -30,7 +30,7 @@ Everyone gave inputs for the report by providiing the challenges that they faced
 
 #### Run instructions:
 
-`ansible-playbook Jenkins_build/main.yml -u root`   
+`ansible-playbook main.yml -u root`   
 
 ## Experiences and Learning:  
 1. Learnt about the working of pipelines and their crucial role in automation.  
@@ -121,10 +121,10 @@ Screencast for milestone 1 can be found [here](https://youtu.be/VHvCz7OaYJM).
 
 ## References:
 
-(https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-api-v2-with-ansible-2-0-on-ubuntu-16-04)
+[How to create a droplet using ansible](https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-api-v2-with-ansible-2-0-on-ubuntu-16-04)
 
-(https://www.digitalocean.com/community/tutorials/how-to-install-jenkins-on-ubuntu-16-04)
+[How to install Jenkins](https://www.digitalocean.com/community/tutorials/how-to-install-jenkins-on-ubuntu-16-04)
 
-(http://docs.ansible.com/ansible/latest/jenkins_plugin_module.html)
+[How to install Jenkins plugins](http://docs.ansible.com/ansible/latest/jenkins_plugin_module.html)
 
 NCSU StackOverflow channel and CSC519 Spring 18 Slack Channel
