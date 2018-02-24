@@ -68,7 +68,7 @@ Everyone gave inputs for the report by providiing the challenges that they faced
 	We had many options to choose from in the cloud platforms. Out of these we shortlisted AWS EC2 and Digital ocean platforms and then finalized DigitalOcean.
     
 ### Platform issues:  
-1. Software version dependencies created issues while running the project. For example, digital ocean droplet provisioning works only with `dopy` version 3.5 and not even with the latest 3.7 version.
+1. Software version dependencies created issues while running the project. For example, digital ocean droplet provisioning works only with `dopy` version 0.3.5 and not even with the latest 0.3.7 version.
  
 2. Accessing servers in the pipeline through ssh was a difficult task. However when these servers were accessed on a individual basis, it was a very task. The users for the ssh keys must be set correctly in the pipeline.
 
