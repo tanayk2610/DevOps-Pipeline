@@ -3,7 +3,8 @@
 #### Prerquisites:
 * The machine on which this project is to be run should have the following applications installed:
 	* Ansible
-	* Dopy (using Python-pip)
+	* `dopy` (using Python-pip)
+	* `pymongo` (using Python-pip)
 * Following environment variables should be set up:
 	* `DOTOKEN` - Digital Ocean token.
     * `MONGO_PORT` - MongoDB Port number.
