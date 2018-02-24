@@ -48,15 +48,15 @@
     - name: Install node modules for checkbox.io
       shell: "npm install"
       args:
-        chdir: "/home/vagrant/checkbox.io/server-side/site/"
+        chdir: "~/checkbox.io/server-side/site/"
 
     - name: Install forever
       shell: "npm install forever -g"
       args:
-        chdir: "/home/vagrant/checkbox.io/server-side/site/"
+        chdir: "~/checkbox.io/server-side/site/"
 
     - name: Run Checkbox.io
       shell: "forever start server.js"
       args:
-        chdir: "/home/vagrant/checkbox.io/server-side/site/"
+        chdir: "~/checkbox.io/server-side/site/"
 ...

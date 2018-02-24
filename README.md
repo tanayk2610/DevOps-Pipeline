@@ -1,5 +1,14 @@
 # DevOpsKnights
 
+#### Team members and contributions
+Our team **DevOpsKnights** has following members:
+1. Pushpendra Singh Patel (ppatel16) - Creating remote VM using Ansible & configuring and running iTrust.
+2. Sayali Godbole (ssgodbol) - Configuring and running checkbox.io, documentation.
+3. Tanay Kothari (tkothar) - Jenkins Authentication Bypassing and Configuration, Screencast.
+4. Uddhav Bhosle (ubhosle) - Creating and running jobs using Jenkins-job builders.
+
+Everyone gave inputs for the report by providiing the challenges that they faced and their learning experiences.
+
 #### Prerquisites:
 * The machine on which this project is to be run should have the following applications installed:
 	* Ansible
@@ -107,6 +116,9 @@ Bypassing the jenkins server to install plugins:
 3. Setting up MongoDB and its authentication	 
    When we switched to `mongodb_user` while debugging we faced some errors so we added `pymongo` package to use `mongodb_user` in our ansible scripts.
 
+## Screencast: 
+Screencast for milestone 1 can be found [here](https://youtu.be/VHvCz7OaYJM).
+
 ## References:
 
 (https://www.digitalocean.com/community/tutorials/how-to-use-the-digitalocean-api-v2-with-ansible-2-0-on-ubuntu-16-04)
@@ -115,4 +127,4 @@ Bypassing the jenkins server to install plugins:
 
 (http://docs.ansible.com/ansible/latest/jenkins_plugin_module.html)
 
-NCSU stackoverflow channel and CSC519 Spring 18 Slack Channel
+NCSU StackOverflow channel and CSC519 Spring 18 Slack Channel

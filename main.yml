@@ -14,6 +14,15 @@
     - name: Install Python2
       raw: apt-get -y install python-simplejson
       become: yes
+    - name: Add Ansible ppa
+      apt_repository:
+        repo: 'ppa:ansible/ansible'
+    - name: Install Ansible
+      apt:
+        name: ansible
+        force: yes
+        update_cache: yes
+
   tasks:
     - lineinfile: dest=/etc/environment line='DOTOKEN={{ lookup('env','DOTOKEN') }}'
     - lineinfile: dest=/etc/environment line='MONGO_PORT:{{ lookup('env', 'MONGO_PORT') }}'
