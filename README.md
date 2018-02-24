@@ -44,10 +44,15 @@
 ## Issues faced:
 ### Understanding the project
 1. Figuring out what to do and the set of steps that need to be performed.  
-	Inital thought process: 
-	[](initial.png)   
-    Final plan:
-    [](initial.png)   
+
+**Our initial concept on what the system would be:**
+	
+![Initial Concept](https://github.ncsu.edu/ppatel16/DevOpsKnights/blob/m1_cm_build/before.png)   
+	
+	
+**The final architecture:**
+	
+![Final Concept](https://github.ncsu.edu/ppatel16/DevOpsKnights/blob/m1_cm_build/after.png)   
     
     
 2. Deciding which platform provider will be best suited for our need.   
