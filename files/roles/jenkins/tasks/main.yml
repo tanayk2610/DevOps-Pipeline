@@ -1,0 +1,83 @@
+---
+- name: Add key Jenkins repository key
+  apt_key:
+    url: "https://pkg.jenkins.io/debian/jenkins-ci.org.key"
+    state: present
+
+- name: Add Jenkins repository to sources.list
+  apt_repository:
+    repo: "deb https://pkg.jenkins.io/debian-stable binary/"
+    filename: jenkins
+    state: present
+    update_cache: yes
+
+- name: Install Jenkins
+  apt:
+    name: jenkins
+    state: latest
+
+- name: Starting Jenkins service
+  systemd:
+    name: jenkins
+    state: stopped
+
+- name: Enable firewall
+  become: yes
+  ufw:
+    policy: allow
+    state: enabled
+
+- name: Open port 8080
+  become: yes
+  ufw:
+    port: 8080
+    rule: allow
+
+- name: Remove current Jenkins wizard state
+  become: yes
+  file:
+    name: "/var/lib/jenkins/jenkins.install.UpgradeWizard.state"
+    state: absent
+
+# - name: Assign new Jenkins wizard state
+#   become: yes
+#   copy:
+#     src: "jenkins.install.UpgradeWizard.state"
+#     dest: "/var/lib/jenkins/"
+#     owner: jenkins
+#     group: jenkins
+#     mode: 0644
+
+# - name: Assign new Jenkins wizard state - 2
+#   become: yes
+#   copy:
+#     src: "jenkins.install.InstallUtil.lastExecVersion"
+#     dest: "/var/lib/jenkins/"
+#     owner: jenkins
+#     group: jenkins
+#     mode: 0644
+
+- name: Create custom init scripts directory.
+  file:
+    path: "/var/lib/jenkins/init.groovy.d"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+
+- name: Configure Default Users
+  template:
+    src: "basic-security.groovy"
+    dest: "/var/lib/jenkins/init.groovy.d/"
+    owner: jenkins
+    group: jenkins
+    mode: 0775
+  vars:
+      jenkins_username: "{{ lookup('env', 'JENKINS_USER') }}"
+      jenkins_password: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
+
+- name: Restart Jenkins
+  systemd:
+    name: jenkins
+    state: restarted
+...

@@ -1,0 +1,62 @@
+---
+- name: Setup environment variables on Checkbox server
+  hosts: checkbox
+  gather_facts: False
+  pre_tasks:
+    - name: Install Python2
+      raw: apt-get -y install python-simplejson
+      become: yes
+  tasks:
+    - lineinfile: dest=/etc/environment line='DOTOKEN={{ lookup('env','DOTOKEN') }}'
+    - lineinfile: dest=/etc/environment line='MONGO_PORT:{{ lookup('env', 'MONGO_PORT') }}'
+    - lineinfile: dest=/etc/environment line="MONGO_IP={{ lookup('env','MONGO_IP') }}"
+    - lineinfile: dest=/etc/environment line="MONGO_USER={{ lookup('env','MONGO_USER') }}"
+    - lineinfile: dest=/etc/environment line="MONGO_PASSWORD={{ lookup('env','MONGO_PASSWORD') }}"
+    - lineinfile: dest=/etc/environment line="MAIL_USER={{ lookup('env','MAIL_USER') }}"
+    - lineinfile: dest=/etc/environment line="MAIL_PASSWORD={{ lookup('env','MAIL_PASSWORD') }}"
+    - lineinfile: dest=/etc/environment line="MAIL_SMTP={{ lookup('env','MAIL_SMTP') }}"
+    - lineinfile: dest=/etc/environment line="JENKINS_USER={{ lookup('env','JENKINS_USER') }}"
+    - lineinfile: dest=/etc/environment line="JENKINS_PASSWORD={{ lookup('env','JENKINS_PASSWORD') }}"
+    - lineinfile: dest=/etc/environment line="MYSQL_PASSWORD={{ lookup('env','MYSQL_PASSWORD') }}"
+    - lineinfile: dest=/etc/environment line="GIT_TOKEN={{ lookup('env','GIT_TOKEN') }}"
+
+- name: Setup environment variables on Checkbox server
+  hosts: checkbox
+  roles:
+    - nodejs
+    - nginx
+    - mongodb
+
+  tasks:
+    - name: Setting up variables
+      set_fact:
+        MONGO_PORT: "{{ lookup('env', 'MONGO_PORT') }}"
+        MONGO_IP: "{{ lookup('env', 'MONGO_IP') }}"
+        MONGO_USER: "{{ lookup('env', 'MONGO_USER') }}"
+        MONGO_PASSWORD: "{{ lookup('env', 'MONGO_PASSWORD') }}"
+        MAIL_USER: "{{ lookup('env', 'MAIL_USER') }}"
+        MAIL_PASSWORD: "{{ lookup('env', 'MAIL_PASSWORD') }}"
+        MAIL_SMTP: "{{ lookup('env', 'MAIL_SMTP') }}"
+
+    - name: Clone git repo
+      git:
+        repo: "https://github.com/chrisparnin/checkbox.io.git"
+        dest: "~/checkbox.io"
+        clone: yes
+        update: yes
+
+    - name: Install node modules for checkbox.io
+      shell: "npm install"
+      args:
+        chdir: "/home/vagrant/checkbox.io/server-side/site/"
+
+    - name: Install forever
+      shell: "npm install forever -g"
+      args:
+        chdir: "/home/vagrant/checkbox.io/server-side/site/"
+
+    - name: Run Checkbox.io
+      shell: "forever start server.js"
+      args:
+        chdir: "/home/vagrant/checkbox.io/server-side/site/"
+...
