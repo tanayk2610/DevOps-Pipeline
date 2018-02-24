@@ -14,6 +14,7 @@
     - name: Install Python2
       raw: apt-get -y install python-simplejson
       become: yes
+      
   tasks:
     - lineinfile: dest=/etc/environment line='DOTOKEN={{ lookup('env','DOTOKEN') }}'
     - lineinfile: dest=/etc/environment line='MONGO_PORT:{{ lookup('env', 'MONGO_PORT') }}'
@@ -52,6 +53,9 @@
         dest: "~/checkbox.io"
         clone: yes
         update: yes
+
+    - name: Changing Permission for Nginx
+      shell: "chmod 777 /root && chmod 777 /root/checkbox.io && chmod 777 /root/checkbox.io/public_html"
 
     - name: Install node modules for checkbox.io
       shell: "npm install"
