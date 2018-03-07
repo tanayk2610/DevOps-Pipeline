@@ -1,0 +1,97 @@
+---
+- name: Provision iTrust Server on Digital Ocean
+  hosts: localhost
+  connection: localhost
+  roles:
+    - role: droplet
+      DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
+      NODE_NAME: itrust
+
+- hosts: itrust
+  become: yes
+  gather_facts: no
+
+  pre_tasks:
+    - name: 'install python2'
+      raw: apt-get -y install python-simplejson
+
+  vars:
+    - mysql_pass: "{{ lookup('env','MYSQL_PASSWORD') }}"
+    - gmail_pass: "{{ lookup('env','MAIL_PASSWORD') }}"
+    - gmail_user: "{{ lookup('env','MAIL_USER') }}"
+    - git_token: "{{ lookup('env', 'GIT_TOKEN') }}"
+
+  roles:
+    - role: mysql
+      mysql_pass: "{{ lookup('env','MYSQL_PASSWORD') }}"
+    - java8
+
+  tasks:
+    - name: Install Maven
+      apt: name=maven state=latest update_cache=yes
+
+    - name: Clone iTrust Repository
+      git:
+        repo: "https://{{git_token}}@github.ncsu.edu/engr-csc326-staff/iTrust2-v2.git"
+        dest: "~/iTrust2-v2"
+        clone: yes
+    - name: copy db.properties file
+      copy:
+        src: ~/iTrust2-v2/iTrust2/src/main/java/db.properties.template
+        dest: ~/iTrust2-v2/iTrust2/src/main/java/db.properties
+        remote_src: True
+
+    - name: Set the password in db file
+      lineinfile:
+        path: ~/iTrust2-v2/iTrust2/src/main/java/db.properties
+        regexp: 'password'
+        line: 'password {{mysql_pass}}'
+
+    - name: Copy hibernate file
+      copy:
+        src: ~/iTrust2-v2/iTrust2/src/main/resources/hibernate.properties.template
+        dest: ~/iTrust2-v2/iTrust2/src/main/resources/hibernate.properties
+        remote_src: True
+
+    - name: Set the password in hibernate file
+      lineinfile:
+        path: ~/iTrust2-v2/iTrust2/src/main/resources/hibernate.properties
+        regexp: 'hibernate.connection.password'
+        line: 'hibernate.connection.password = {{mysql_pass}}'
+
+    - name: Set password for email.properties
+      copy:
+        src: ~/iTrust2-v2/iTrust2/src/main/java/email.properties.template
+        dest: ~/iTrust2-v2/iTrust2/src/main/java/email.properties
+        remote_src: True
+
+    - name: set the username to root in email.properties
+      lineinfile:
+        path: ~/iTrust2-v2/iTrust2/src/main/java/email.properties
+        regexp: 'username'
+        line: 'username root'
+
+    - name: Set username in email.properties
+      lineinfile:
+        path: ~/iTrust2-v2/iTrust2/src/main/java/email.properties
+        regexp: 'from'
+        line: 'from {{gmail_user}}'
+
+    - name: Set email username
+      lineinfile:
+        path: ~/iTrust2-v2/iTrust2/src/main/java/email.properties
+        regexp: 'username'
+        line: 'username {{gmail_user}}'
+
+    - name: Set email password
+      lineinfile:
+        path: ~/iTrust2-v2/iTrust2/src/main/java/email.properties
+        regexp: 'password'
+        line: 'password {{gmail_pass}}'
+
+    - name:  Build iTrust2
+      shell: cd ~/iTrust2-v2/iTrust2/ && mvn process-test-classes
+
+    - name: Run iTrust2
+      shell: cd ~/iTrust2-v2/iTrust2/ && ((nohup mvn jetty:run) &)
+...

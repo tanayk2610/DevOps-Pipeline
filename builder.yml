@@ -1,0 +1,93 @@
+---
+- name: Configure Jenkins Server
+  hosts: jenkins
+  become: yes
+
+  vars:
+    JENKINS_USER: "{{ lookup('env','JENKINS_USER') }}"
+    JENKINS_PASSWORD: "{{ lookup('env','JENKINS_PASSWORD') }}"
+
+  tasks:
+    - name: install PIP
+      apt:
+        cache_valid_time: 3600
+        name: python-pip
+        state: latest
+
+    - name: Install Jenkins Job Builder using python2
+      apt:
+        cache_valid_time: 3600
+        name: python-jenkins-job-builder
+        state: latest
+
+    - name: Install Jenkins Job Builder using PIP
+      pip:
+        name: jenkins-job-builder
+        state: latest
+
+    - name: Upgrading Jenkins Job Builder
+      shell: pip install --upgrade jenkins-job-builder
+
+    - name: Create jenkins jobs folder
+      file:
+        path: /etc/jenkins_jobs
+        state: directory
+        mode: 0777
+
+    - name: Copy ini file to the directory
+      template:
+        src: templates/jenkins_jobs.ini
+        dest: /etc/jenkins_jobs/
+
+    - name: Make jobs directory
+      file:
+        path: jobs
+        state: directory
+        mode: 0777
+
+    - name: Create iTrust job builder file
+      template:
+        src: templates/itrust-jjb.yaml
+        dest: jobs/
+
+    - name: Create Checkbox job builder file
+      template:
+        src: templates/checkbox-jjb.yaml
+        dest: jobs/
+
+    - name: Create Checkbox post build job builder file
+      template:
+        src: templates/ansible-checkbox-jjb.yaml
+        dest: jobs/
+
+    - name: Create iTrust post build job builder file
+      template:
+        src: templates/ansible-itrust-jjb.yaml
+        dest: jobs/
+
+    - name: Run the jenkins-jobs
+      shell: jenkins-jobs update jobs
+      args:
+        chdir: "/root"
+
+    - name: Test the running jobs
+      shell: jenkins-jobs test jobs
+
+    - name: Get jenkins crumb
+      shell: curl -s 'http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
+      register: crumb
+
+#    - debug: var=crumb
+
+    - name: Run iTrust2 job
+      shell: curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/job/itrust2/build -H "{{crumb.stdout}}"
+      register: result
+
+#    - debug: var=result.stdout
+
+    - name: Run Checkbox job
+      shell: curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/job/checkbox/build -H "{{crumb.stdout}}"
+      register: result
+
+#    - debug: var=result.stdout
+...
