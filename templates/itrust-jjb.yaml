@@ -1,0 +1,8 @@
+- job:
+    name: itrust2
+    description: "automatically build itrust"
+    builders:
+      - shell: 'cd /iTrust2-v2/iTrust2 && mvn clean test verify checkstyle:checkstyle'
+    publishers:
+      - trigger:
+          project: ansible-itrust
