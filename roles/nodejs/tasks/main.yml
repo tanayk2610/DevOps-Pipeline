@@ -1,0 +1,16 @@
+---
+- name: 'Add NodeJS apt-key server'
+  apt_key:
+    url:  "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+    state: present
+
+- name: Add NodeJS source list
+  apt_repository:
+    repo: "deb https://deb.nodesource.com/node_9.x xenial main"
+    filename: "nodesource"
+    state: present
+    update_cache: yes
+
+- name:
+  apt: name=nodejs state=present update_cache=yes
+...

@@ -1,0 +1,71 @@
+---
+- name: Get the current user
+  shell: whoami
+  register: current_user
+
+- name: Check if SSH key exists
+  become_user: current_user
+  stat:
+    path: "~/.ssh/{{ NODE_NAME }}.pub"
+  register: ssh_exists
+
+# - name: debug ssh key
+#   debug:
+#     msg: "{{ ssh_exists }}"
+
+- name: Generate SSH keys if not exists
+  become_user: current_user
+  shell: "ssh-keygen -N '' -f ~/.ssh/{{ NODE_NAME }}"
+  when: ssh_exists.stat.exists == False
+
+- name: Get public SSH key
+  shell: "cat ~/.ssh/{{ NODE_NAME }}.pub"
+  register: ssh_key
+
+# - debug:
+#     msg: "{{ ssh_key.stdout }}"
+
+# - name: print do token
+#   debug:
+#     msg: "{{DOTOKEN}}"
+
+- name: Get Digital Ocean SSH-ID
+  digital_ocean:
+    state: present
+    command: ssh
+    name: "{{ NODE_NAME }}"
+    ssh_pub_key: "{{ ssh_key.stdout }}"
+    api_token: "{{ DOTOKEN }}"
+  register: new_key
+
+# - debug:
+#     msg: "{{ new_key.ssh_key.id }}"
+
+- name: Create Digital Ocean droplet
+  digital_ocean:
+    state: present
+    ssh_key_ids: "{{ new_key.ssh_key.id }}"
+    command: droplet
+    name: "{{ NODE_NAME }}"
+    size_id: "s-1vcpu-1gb"
+    region_id: nyc3
+    image_id: ubuntu-16-04-x64
+    wait_timeout: 500
+    api_token: "{{ DOTOKEN }}"
+  register: new_droplet
+
+- name: Wait droplet to come online
+  pause:
+    seconds: 50
+
+- name: Add new droplet as a known host
+  shell: ssh-keyscan -H "{{ new_droplet.droplet.ip_address }}" >> ~/.ssh/known_hosts
+
+- name: Add droplet to in-memory inventory
+  become: yes
+  add_host:
+    hostname: "{{ new_droplet.droplet.ip_address }}"
+    group: "{{ NODE_NAME }}"
+    ansible_ssh_user: "root"
+    ansible_ssh_private_key_file: "~/.ssh/{{ NODE_NAME }}"
+...
