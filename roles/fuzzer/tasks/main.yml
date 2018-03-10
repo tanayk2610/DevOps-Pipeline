@@ -1,0 +1,29 @@
+---
+- name: Get jenkins crumb
+  shell: curl -s 'http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
+  register: crumb
+
+- name: Create fuzzer job
+  shell: curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/job/fuzzer/build -H "{{crumb.stdout}}"
+  register: result
+
+- name: Remove fuzz directory if already exist
+  shell: rm -rf ~/iTrust2-v2/iTrust2/fuzz
+
+- name: Create fuzz directory
+  shell: mkdir ~/iTrust2-v2/iTrust2/fuzz
+
+- name: Copying fuzzer.js to jenkins server
+  template: src=fuzzer.js dest="~/iTrust2-v2/iTrust2/fuzz/"
+
+- name: Copy package.json to jenkins server
+  template: src=package.json dest="~/iTrust2-v2/iTrust2/fuzz/"
+
+- name: Perform npm install
+  npm:
+    path: ~/iTrust2-v2/iTrust2/fuzz
+    state: latest
+
+- name: Run fuzzer.js
+  shell: node ~/iTrust2-v2/iTrust2/fuzz/fuzzer.js
+...

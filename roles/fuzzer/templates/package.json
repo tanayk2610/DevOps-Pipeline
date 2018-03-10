@@ -1,0 +1,15 @@
+{
+  "name": "fuzzer",
+  "version": "1.0.0",
+  "description": "iTrust2 fuzzer",
+  "main": "fuzzer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "\"https://github.ncsu.edu/ppatel16/DevOpsKnights/\""
+  },
+  "author": "Pushpendra Singh Patel",
+  "license": "ISC"
+}

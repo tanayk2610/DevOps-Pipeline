@@ -32,7 +32,7 @@
 
     - name: Clone iTrust Repository
       git:
-        repo: "https://{{git_token}}@github.ncsu.edu/engr-csc326-staff/iTrust2-v2.git"
+        repo: "https://{{git_token}}@github.ncsu.edu/ubhosle/iTrust2-v2.git"
         dest: "~/iTrust2-v2"
         clone: yes
     - name: copy db.properties file
