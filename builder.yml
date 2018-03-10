@@ -45,24 +45,28 @@
         state: directory
         mode: 0777
 
-    - name: Create iTrust job builder file
+    # - name: Create iTrust job builder file
+    #   template:
+    #     src: templates/itrust-jjb.yaml
+    #     dest: jobs/
+    #
+    # - name: Create Checkbox job builder file
+    #   template:
+    #     src: templates/checkbox-jjb.yaml
+    #     dest: jobs/
+    #
+    # - name: Create Checkbox post build job builder file
+    #   template:
+    #     src: templates/ansible-checkbox-jjb.yaml
+    #     dest: jobs/
+    #
+    # - name: Create iTrust post build job builder file
+    #   template:
+    #     src: templates/ansible-itrust-jjb.yaml
+    #     dest: jobs/
+    - name: Copy all jenkins job builder files to jobs/ directory
       template:
-        src: templates/itrust-jjb.yaml
-        dest: jobs/
-
-    - name: Create Checkbox job builder file
-      template:
-        src: templates/checkbox-jjb.yaml
-        dest: jobs/
-
-    - name: Create Checkbox post build job builder file
-      template:
-        src: templates/ansible-checkbox-jjb.yaml
-        dest: jobs/
-
-    - name: Create iTrust post build job builder file
-      template:
-        src: templates/ansible-itrust-jjb.yaml
+        src: templates/*.yaml
         dest: jobs/
 
     - name: Run the jenkins-jobs

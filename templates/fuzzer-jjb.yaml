@@ -1,5 +1,5 @@
 - job:
-    name: fuzzing-itrust2
+    name: fuzzer
     description: "rebuild itrust job"
     builders:
       - shell: 'cd /iTrust2-v2/iTrust2 && mvn clean test verify checkstyle:checkstyle'
