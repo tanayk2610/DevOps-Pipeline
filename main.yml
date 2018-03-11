@@ -79,7 +79,7 @@
 
     - name: Clone iTrust Repo
       git:
-        repo: "https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/ubhosle/iTrust2-v2.git"
+        repo: "https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/engr-csc326-staff/iTrust2-v2.git"
         dest: "/iTrust2-v2"
         clone: yes
 
@@ -150,14 +150,9 @@
         path: /iTrust2-v2/iTrust2/src/main/java/email.properties
         regexp: 'password'
         line: 'password {{mail_pass}}'
+    - name: give all rights to iTrust
+      shell: chmod 777 /iTrust2-v2/
 
 - import_playbook: builder.yml
 
-- name: Starting fuzzer
-  hosts: jenkins
-  become: yes
-  roles:
-    - role: fuzzer
-      JENKINS_USER: "{{ lookup('env','JENKINS_USER') }}"
-      JENKINS_PASSWORD: "{{ lookup('env','JENKINS_PASSWORD') }}"
 ...
