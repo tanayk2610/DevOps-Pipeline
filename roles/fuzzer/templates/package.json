@@ -11,5 +11,12 @@
     "url": "\"https://github.ncsu.edu/ppatel16/DevOpsKnights/\""
   },
   "author": "Pushpendra Singh Patel",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "fuzzer": "^0.2.0",
+    "random-js": "^1.0.4",
+    "fs": "^0.0.1-security",
+    "glob": "^7.1.2",
+    "child_process":"^1.0.2"
+  }
 }

@@ -8,22 +8,22 @@
   register: result
 
 - name: Remove fuzz directory if already exist
-  shell: rm -rf ~/iTrust2-v2/iTrust2/fuzz
+  shell: rm -rf /fuzz
 
 - name: Create fuzz directory
-  shell: mkdir ~/iTrust2-v2/iTrust2/fuzz
+  shell: mkdir /fuzz
 
 - name: Copying fuzzer.js to jenkins server
-  template: src=fuzzer.js dest="~/iTrust2-v2/iTrust2/fuzz/"
+  template: src=fuzzer.js dest="/fuzz/"
 
 - name: Copy package.json to jenkins server
-  template: src=package.json dest="~/iTrust2-v2/iTrust2/fuzz/"
+  template: src=package.json dest="/fuzz/"
 
 - name: Perform npm install
   npm:
-    path: ~/iTrust2-v2/iTrust2/fuzz
+    path: /fuzz
     state: latest
 
 - name: Run fuzzer.js
-  shell: node ~/iTrust2-v2/iTrust2/fuzz/fuzzer.js
+  shell: node /fuzz/fuzzer.js
 ...

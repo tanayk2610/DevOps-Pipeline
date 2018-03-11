@@ -35,6 +35,7 @@
         repo: "https://{{git_token}}@github.ncsu.edu/ubhosle/iTrust2-v2.git"
         dest: "~/iTrust2-v2"
         clone: yes
+        
     - name: copy db.properties file
       copy:
         src: ~/iTrust2-v2/iTrust2/src/main/java/db.properties.template

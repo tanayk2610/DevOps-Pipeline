@@ -7,11 +7,12 @@ const execSync = require('child_process').execSync;
 var getJavaFiles = function (path) {
     var javaFiles = [];
     var files =  glob.sync(path + "/**/*.java");
+    console.log(files.toString());
+    console.log(path);
     files.forEach(function(file){
-        if(!file.match("/models/") && !file.match("/sql/") && !file.match("AddApptRequestAction")) {
             javaFiles.push(file);
-        }
     })
+    console.log(javaFiles.toString());
     return javaFiles;
 }
 
@@ -66,56 +67,52 @@ var fuzzer = {
     }
 }
 
-function commitChanges(masterSHA, number)
+function commitChanges(number)
 {
-    execSync("git stash");
-    execSync("git checkout fuzzer");
-    execSync("git checkout stash -- .");
-    execSync('git commit -m "Fuzzer commit: '+ masterSHA + 'Build number: ' + number + '"');
-    execSync("git push origin fuzzer");
-    execSync("git stash drop");
+    execSync("cd ~/iTrust2-v2 && git stash");
+    execSync("cd ~/iTrust2-v2 && git checkout stash -- .");
+    execSync('cd ~/iTrust2-v2 && git commit -m "Fuzzer commit on ' + 'Build number: ' + number + '"');
+    execSync("cd ~/iTrust2-v2 && git stash drop");
 }
 
-function revertBack(masterSHA)
-{
-    var fuzzerSHA = getSHA('fuzzer');
-    if(masterSHA != fuzzerSHA)
-        execSync( "git checkout " + masterSHA);
-}
 
-function getSHA(params)
+function triggerJenkinsJobBuilder(number)
 {
-    return execSync("git rev-parse "+ param).toString().trim();
-}
-
-function triggerJenkinsJobBuilder(commitSHA)
-{
-    console.log("Triggering Jenkins Job Builder for " + commitSHA);
+    console.log("Triggering Jenkins Job Builder for :" + number);
     // Command
-    execSync("curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/job/fuzzer/build -H "+ crumb);
+    execSync("cd ~/iTrust2-v2/iTrust2 && mvn process-test-classes")
+    // execSync("curl -X POST http://devopsknights:devops123@localhost:8080/job/fuzzer/build -H "+ crumb);
 }
 
 var fuzz = function (iterations)
 {
-    var javaFiles = getJavaFiles("~/iTrust2-v2/iTrust/src/main/java/edu/ncsu/itrust2");
-    var masterSHA = getSHA('master');
-    var crumb = execSync("curl -s 'http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)'");
-    execSync("git checkout fuzzer");
+    var javaFiles = getJavaFiles("~/iTrust2-v2/iTrust2/src/main/java/edu/ncsu/csc/itrust2");
+    execSync("cd ~/iTrust2-v2 && git checkout master && git branch -D fuzzer");
+    execSync("cd ~/iTrust2-v2 && git branch fuzzer");
+    // var masterSHA = getSHA('master');
+    var JENKINS_USER = "devopsknights", JENKINS_PASSWORD = "devops123";
+    var github_user = execSync("echo $GITHUB_USER");
+    var github_email = execSync("echo $GITHUB_EMAIL");
+    execSync(`git config --global user.name "${github_user}"`);
+    execSync(`git config --global user.email "${github_email}"`);
+    // var crumb = execSync("curl -s 'http://devopsknights:devops123@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)'");
+    execSync("cd ~/iTrust2-v2 && git checkout fuzzer");
     while(iterations-- > 0)
     {
         //Revert back to the Original
-        revertBack(masterSHA);
-        
+        // revertBack(masterSHA);
+        // execSync("cd ~/iTrust2-v2 && git revert HEAD");
         // For each file call mutate to perform random changes
+        execSync("cd ~/iTrust2-v2 && git reset HEAD");
         javaFiles.forEach(function (file){
             fuzzer.mutate(file);
         });
         
         // Commit the changes
-        commitChanges(masterSHA, iterations);
+        commitChanges(iterations);
 
         // Trigger Jenkins Job Builder for this commit on 'fuzzer' branch
-        triggerJenkinsJobBuilder('fuzzer');
+        triggerJenkinsJobBuilder(iterations);
     }
 }
 
