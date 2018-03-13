@@ -48,6 +48,8 @@
     - lineinfile: dest=/etc/environment line="JENKINS_PASSWORD={{ lookup('env','JENKINS_PASSWORD') }}"
     - lineinfile: dest=/etc/environment line="MYSQL_PASSWORD={{ lookup('env','MYSQL_PASSWORD') }}"
     - lineinfile: dest=/etc/environment line="GIT_TOKEN={{ lookup('env','GIT_TOKEN') }}"
+    - lineinfile: dest=/etc/environment line="GIT_EMAIL={{ lookup('env','GIT_EMAIL') }}"
+    - lineinfile: dest=/etc/environment line="GIT_NAME={{ lookup('env','GIT_NAME') }}"
 
   # Dependencies for Checkbox.io - nodejs, nginx, mongodb
   # Dependencies for iTrust2 - java8, chrome, mysql
@@ -79,7 +81,7 @@
 
     - name: Clone iTrust Repo
       git:
-        repo: "https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/engr-csc326-staff/iTrust2-v2.git"
+        repo: "https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/ubhosle/iTrust2-v2.git"
         dest: "/iTrust2-v2"
         clone: yes
 
@@ -155,4 +157,13 @@
 
 - import_playbook: builder.yml
 
+- name: Starting Fuzzer
+  hosts: jenkins
+  become: yes
+  roles:
+    - role: fuzzer
+      JENKINS_USER: "devopsknights"
+      JENKINS_PASSWORD: "devops123"
+      GIT_NAME: "{{ lookup ('env','GIT_NAME') }}"
+      GIT_EMAIL: "{{ lookup ('env','GIT_EMAIL') }}"
 ...
