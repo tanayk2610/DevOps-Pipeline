@@ -1,14 +1,6 @@
 ---
-- name: Get jenkins crumb
-  shell: curl -s 'http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
-  register: crumb
-
-- name: Create fuzzer job
-  shell: curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/job/fuzzer/build -H "{{crumb.stdout}}"
-  register: result
-
-- name: Remove fuzz directory if already exist
-  shell: rm -rf /fuzz
+- name: Set github name and email
+  shell: git config --global user.email '{{GIT_EMAIL}}' && git config --global user.name '{{GIT_NAME}}'
 
 - name: Create fuzz directory
   shell: mkdir /fuzz
@@ -26,7 +18,6 @@
     path: /fuzz
     state: latest
 
-<<<<<<< HEAD
 - name: git checkout fuzzer
   shell: cd /iTrust2-v2 && git branch fuzzer && git checkout fuzzer
 
@@ -44,8 +35,6 @@
 - name: git commit update pom.xml
   shell: cd /iTrust2-v2 && git add . && git commit -m "Updated pom.xml"
 
-=======
->>>>>>> 8026426ba9189f3031e33369f561622f017d0719
 - name: Run fuzzer.js
   shell: node /fuzz/fuzzer.js
 ...
