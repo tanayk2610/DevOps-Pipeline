@@ -157,13 +157,19 @@
 
 - import_playbook: builder.yml
 
+# Fuzzer Code  
 - name: Starting Fuzzer
   hosts: jenkins
   become: yes
+  gather_facts: no
+  pre_tasks:
+    - name: Wait for iTrust to complete build
+      pause:
+        minutes: 5
   roles:
     - role: fuzzer
-      JENKINS_USER: "devopsknights"
-      JENKINS_PASSWORD: "devops123"
+      JENKINS_USER: "{{lookup ('env','JENKINS_USER') }}"
+      JENKINS_PASSWORD: "{{lookup ('env','JENKINS_PASSWORD') }}"
       GIT_NAME: "{{ lookup ('env','GIT_NAME') }}"
       GIT_EMAIL: "{{ lookup ('env','GIT_EMAIL') }}"
 ...
