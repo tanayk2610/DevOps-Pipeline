@@ -1,7 +1,14 @@
 ---
+- name: Get jenkins crumb
+  shell: curl -s 'http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
+  register: crumb
 
-- name: Set github name and email
-  shell: git config --global user.email '{{GIT_EMAIL}}' && git config --global user.name '{{GIT_NAME}}'
+- name: Create fuzzer job
+  shell: curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/job/fuzzer/build -H "{{crumb.stdout}}"
+  register: result
+
+- name: Remove fuzz directory if already exist
+  shell: rm -rf /fuzz
 
 - name: Create fuzz directory
   shell: mkdir /fuzz

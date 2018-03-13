@@ -26,3 +26,6 @@ else {
     instance.setAuthorizationStrategy(strategy)
     instance.save()
 }
+def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
+instance.setAuthorizationStrategy(strategy)
+instance.save()
