@@ -3,9 +3,13 @@ var fs = require('fs');
 
 const execSync = require('child_process').execSync;
 
+const JENKINS_USER = process.env.JENKINS_USER,
+      JENKINS_PASSWORD = process.env.JENKINS_PASSWORD;
+
 var getJavaFiles = function () {
     var javaFiles = [];
-    var files = execSync("ls /iTrust2-v2/iTrust2/src/main/java/edu/ncsu/csc/itrust2/**/*.java");
+    
+    var files = execSync("ls /iTrust2-v2/iTrust2/src/main/java/edu/ncsu/csc/itrust2/**/**/*.java")
 
     // console.log("files are: "+ files.toString());
 
@@ -74,14 +78,14 @@ var fuzzer = {
 
 function commitChanges(number)
 {
-    console.log("#######################3commit changes started#################################")
+    console.log("#######################commit changes started#################################")
+
     execSync("cd /iTrust2-v2 && git stash");
-    // execSync("cd ~/iTrust2-v2 && git checkout fuzzer")
     execSync("cd /iTrust2-v2 && git checkout stash -- .");
     execSync('cd /iTrust2-v2 && git commit -m "Fuzzer commit on ' + 'Build number: ' + number + '"');
     execSync("cd /iTrust2-v2 && git stash drop");
 
-    console.log("#######################3commit changes ended#################################")
+    console.log("#######################commit changes ended#################################")
 }
 
 function getSHA(param)
@@ -92,37 +96,23 @@ function triggerJenkinsJobBuilder(JENKINS_USER,JENKINS_PASSWORD,crumb,number)
 {
     console.log("Triggering Jenkins Job Builder for :" + number);
     // Command
-    // execSync("cd ~/iTrust2-v2/iTrust2 && mvn clean test verify checkstyle:checkstyle")
-    execSync("cd /root && jenkins-jobs update jobs");
-    execSync(`curl -X POST http://${JENKINS_USER}:${JENKINS_PASSWORD}@localhost:8080/job/fuzzer/build -H ${crumb}`);
+    execSync("cd /iTrust2-v2/iTrust2 && mvn clean test verify checkstyle:checkstyle")
+    // execSync("cd /root && jenkins-jobs update jobs");
+    // execSync(`curl -X POST http://${JENKINS_USER}:${JENKINS_PASSWORD}@localhost:8080/job/fuzzer/build -H ${crumb}`);
 }
 
 var fuzz = function (iterations)
 {
     var javaFiles = getJavaFiles();
-    // execSync("cd ~/iTrust2-v2 && git checkout master && git branch -D fuzzer");
-
-    execSync("cd /iTrust2-v2 && git branch fuzzer");
-    console.log("branch fuzzer created")
     var fuzzSHA = getSHA('fuzzer');
-    var JENKINS_USER = "devopsknights", JENKINS_PASSWORD = "devops123";
-
-    // var github_user = execSync("echo $GITHUB_USER");
-    // var github_email = execSync("echo $GITHUB_EMAIL");
-
-    // execSync(`git config --global user.name "${github_user}"`);
-    // execSync(`git config --global user.email "${github_email}"`);
-
     var crumb = execSync(`curl -s 'http://${JENKINS_USER}:${JENKINS_PASSWORD}@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'`);
+    
     execSync("cd /iTrust2-v2 && git checkout fuzzer");
     console.log("branched checkout");
+    
     while(iterations-- > 0)
     {
         console.log("iterationsssssssssssssssssssss"+iterations);
-        //Revert back to the Original
-        // revertBack(masterSHA);
-        // execSync("cd ~/iTrust2-v2 && git revert HEAD");
-        // For each file call mutate to perform random changes
 
         execSync(`cd /iTrust2-v2 && git checkout ${fuzzSHA}`);
         console.log("revertinggggggggg");
@@ -131,13 +121,14 @@ var fuzz = function (iterations)
         });
 
         console.log("calling fuzzer");
-        // fuzzer.mutate("/root/iTrust2-v2/iTrust2/src/main/java/edu/ncsu/csc/itrust2/config/ContextListener.java");
+        
         // Commit the changes
         commitChanges(iterations);
 
         // Trigger Jenkins Job Builder for this commit on 'fuzzer' branch
         triggerJenkinsJobBuilder(JENKINS_USER,JENKINS_PASSWORD,crumb,iterations);
     }
+    execSync(`cd /iTrust2-v2 && git checkout ${fuzzSHA}`);
 }
 
 fuzz(3)

@@ -1,18 +1,4 @@
 ---
-# - name: Install dependencies
-#   become: yes
-#   apt: name={{item}} update_cache=yes state=latest
-#   with_items:
-#     - nodejs-legacy
-#     - npm
-
-# - name: Get jenkins crumb
-#   shell: curl -s 'http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
-#   register: crumb
-
-# - name: Create fuzzer job
-#   shell: curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/job/fuzzer/build -H "{{crumb.stdout}}"
-#   register: result
 
 - name: Set github name and email
   shell: git config --global user.email '{{GIT_EMAIL}}' && git config --global user.name '{{GIT_NAME}}'
@@ -40,10 +26,7 @@
     dest: /iTrust2-v2/iTrust2/
 
 - name: git commit update pom.xml
-  shell: cd /iTrust2-v2 && git add . && git commit -m "Updated pom.xml" && git rev-parse HEAD
-
-- name: updated pom.xml
-  shell: cat /iTrust2-v2/iTrust2/pom.xml
+  shell: cd /iTrust2-v2 && git add . && git commit -m "Updated pom.xml"
 
 - name: Run fuzzer.js
   shell: node /fuzz/fuzzer.js
