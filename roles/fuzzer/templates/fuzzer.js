@@ -34,7 +34,7 @@ var fuzzer = {
 
     mutate: function (filePath)
     {
-        console.log("Mutating file: " + filePath);
+        // console.log("Mutating file: " + filePath);
         var file = fs.readFileSync(filePath,'utf-8');
         var lines = file.split('\n');
         var tempFilePath = filePath + 'test';
@@ -78,27 +78,19 @@ var fuzzer = {
 
 function commitChanges(number)
 {
-    console.log("#######################commit changes started#################################")
+    // console.log("#######################commit changes started#################################")
 
     execSync("cd /iTrust2-v2 && git stash");
     execSync("cd /iTrust2-v2 && git checkout stash -- .");
     execSync('cd /iTrust2-v2 && git commit -m "Fuzzer commit on ' + 'Build number: ' + number + '"');
     execSync("cd /iTrust2-v2 && git stash drop");
 
-    console.log("#######################commit changes ended#################################")
+    // console.log("#######################commit changes ended#################################")
 }
 
 function getSHA(param)
 {
     return execSync("cd /iTrust2-v2 && git rev-parse "+param).toString().trim();
-}
-function triggerJenkinsJobBuilder(JENKINS_USER,JENKINS_PASSWORD,crumb,number)
-{
-    console.log("Triggering Jenkins Job Builder for :" + number);
-    // Command
-    execSync("cd /iTrust2-v2/iTrust2 && mvn clean test verify checkstyle:checkstyle")
-    // execSync("cd /root && jenkins-jobs update jobs");
-    // execSync(`curl -X POST http://${JENKINS_USER}:${JENKINS_PASSWORD}@localhost:8080/job/fuzzer/build -H ${crumb}`);
 }
 
 var fuzz = function (iterations)
@@ -108,27 +100,25 @@ var fuzz = function (iterations)
     var crumb = execSync(`curl -s 'http://${JENKINS_USER}:${JENKINS_PASSWORD}@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'`);
     
     execSync("cd /iTrust2-v2 && git checkout fuzzer");
-    console.log("branched checkout");
+    // console.log("branched checkout");
     
     while(iterations-- > 0)
     {
-        console.log("iterationsssssssssssssssssssss"+iterations);
+        console.log("Build Number: "+iterations);
 
         execSync(`cd /iTrust2-v2 && git checkout ${fuzzSHA}`);
-        console.log("revertinggggggggg");
+        // console.log("revertinggggggggg");
         javaFiles.forEach(function (file){
             fuzzer.mutate(file);
         });
 
-        console.log("calling fuzzer");
+        // console.log("calling fuzzer");
         
         // Commit the changes
         commitChanges(iterations);
 
-        // Trigger Jenkins Job Builder for this commit on 'fuzzer' branch
-        triggerJenkinsJobBuilder(JENKINS_USER,JENKINS_PASSWORD,crumb,iterations);
     }
     execSync(`cd /iTrust2-v2 && git checkout ${fuzzSHA}`);
 }
 
-fuzz(3)
+fuzz(10)
