@@ -1,69 +1,69 @@
 ---
-- name: Provision Jenkins Server on Digital Ocean
-  hosts: localhost
-  connection: localhost
-  roles:
-    - role: droplet
-      DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
-      NODE_NAME: jenkins
+# - name: Provision Jenkins Server on Digital Ocean
+#   hosts: localhost
+#   connection: localhost
+#   roles:
+#     - role: droplet
+#       DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
+#       NODE_NAME: jenkins
 
 - name: Setting up environment variables on Jenkins Server
   hosts: jenkins
   gather_facts: no
-  pre_tasks:
-    - name: Install Python2
-      raw: apt-get -y install python-simplejson
-      become: yes
+  # pre_tasks:
+  #   - name: Install Python2
+  #     raw: apt-get -y install python-simplejson
+  #     become: yes
+  #
+  #   - name: Install pip
+  #     apt:
+  #       name: python-pip
+  #       force: yes
+  #       update_cache: yes
+  #
+  #   - name: Install dopy
+  #     become: yes
+  #     raw: pip install 'dopy>=0.3.5,<=0.3.5'
+  #
+  #   - name: Add Ansible ppa
+  #     apt_repository:
+  #       repo: 'ppa:ansible/ansible'
+  #
+  #   - name: Install Ansible
+  #     apt:
+  #       name: ansible
+  #       force: yes
+  #       update_cache: yes
 
-    - name: Install pip
-      apt:
-        name: python-pip
-        force: yes
-        update_cache: yes
-
-    - name: Install dopy
-      become: yes
-      raw: pip install 'dopy>=0.3.5,<=0.3.5'
-
-    - name: Add Ansible ppa
-      apt_repository:
-        repo: 'ppa:ansible/ansible'
-
-    - name: Install Ansible
-      apt:
-        name: ansible
-        force: yes
-        update_cache: yes
-
-  tasks:
-    - lineinfile: dest=/etc/environment line='DOTOKEN={{ lookup('env','DOTOKEN') }}'
-    - lineinfile: dest=/etc/environment line='MONGO_PORT:{{ lookup('env', 'MONGO_PORT') }}'
-    - lineinfile: dest=/etc/environment line="MONGO_IP={{ lookup('env','MONGO_IP') }}"
-    - lineinfile: dest=/etc/environment line="MONGO_USER={{ lookup('env','MONGO_USER') }}"
-    - lineinfile: dest=/etc/environment line="MONGO_PASSWORD={{ lookup('env','MONGO_PASSWORD') }}"
-    - lineinfile: dest=/etc/environment line="MAIL_USER={{ lookup('env','MAIL_USER') }}"
-    - lineinfile: dest=/etc/environment line="MAIL_PASSWORD={{ lookup('env','MAIL_PASSWORD') }}"
-    - lineinfile: dest=/etc/environment line="MAIL_SMTP={{ lookup('env','MAIL_SMTP') }}"
-    - lineinfile: dest=/etc/environment line="JENKINS_USER={{ lookup('env','JENKINS_USER') }}"
-    - lineinfile: dest=/etc/environment line="JENKINS_PASSWORD={{ lookup('env','JENKINS_PASSWORD') }}"
-    - lineinfile: dest=/etc/environment line="MYSQL_PASSWORD={{ lookup('env','MYSQL_PASSWORD') }}"
-    - lineinfile: dest=/etc/environment line="GIT_TOKEN={{ lookup('env','GIT_TOKEN') }}"
-    - lineinfile: dest=/etc/environment line="GIT_EMAIL={{ lookup('env','GIT_EMAIL') }}"
-    - lineinfile: dest=/etc/environment line="GIT_NAME={{ lookup('env','GIT_NAME') }}"
+  # tasks:
+  #   - lineinfile: dest=/etc/environment line='DOTOKEN={{ lookup('env','DOTOKEN') }}'
+  #   - lineinfile: dest=/etc/environment line='MONGO_PORT:{{ lookup('env', 'MONGO_PORT') }}'
+  #   - lineinfile: dest=/etc/environment line="MONGO_IP={{ lookup('env','MONGO_IP') }}"
+  #   - lineinfile: dest=/etc/environment line="MONGO_USER={{ lookup('env','MONGO_USER') }}"
+  #   - lineinfile: dest=/etc/environment line="MONGO_PASSWORD={{ lookup('env','MONGO_PASSWORD') }}"
+  #   - lineinfile: dest=/etc/environment line="MAIL_USER={{ lookup('env','MAIL_USER') }}"
+  #   - lineinfile: dest=/etc/environment line="MAIL_PASSWORD={{ lookup('env','MAIL_PASSWORD') }}"
+  #   - lineinfile: dest=/etc/environment line="MAIL_SMTP={{ lookup('env','MAIL_SMTP') }}"
+  #   - lineinfile: dest=/etc/environment line="JENKINS_USER={{ lookup('env','JENKINS_USER') }}"
+  #   - lineinfile: dest=/etc/environment line="JENKINS_PASSWORD={{ lookup('env','JENKINS_PASSWORD') }}"
+  #   - lineinfile: dest=/etc/environment line="MYSQL_PASSWORD={{ lookup('env','MYSQL_PASSWORD') }}"
+  #   - lineinfile: dest=/etc/environment line="GIT_TOKEN={{ lookup('env','GIT_TOKEN') }}"
+  #   - lineinfile: dest=/etc/environment line="GIT_EMAIL={{ lookup('env','GIT_EMAIL') }}"
+  #   - lineinfile: dest=/etc/environment line="GIT_NAME={{ lookup('env','GIT_NAME') }}"
 
   # Dependencies for Checkbox.io - nodejs, nginx, mongodb
   # Dependencies for iTrust2 - java8, chrome, mysql
 - name: Configure Jenkins Server
   hosts: jenkins
   roles:
-    - nodejs
-    - nginx
-    - mongodb
-    - java8
-    - role: mysql
-      mysql_pass: "{{ lookup('env', 'MYSQL_PASSWORD') }}"
+    # - nodejs
+    # - nginx
+    # - mongodb
+    # - java8
+    # - role: mysql
+    #   mysql_pass: "{{ lookup('env', 'MYSQL_PASSWORD') }}"
     - jenkins
-    - maven
+    # - maven
 
   vars:
     mysql_pass: "{{ lookup('env','MYSQL_PASSWORD') }}"
@@ -81,15 +81,16 @@
 
     - name: Clone iTrust Repo
       git:
-        repo: "https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/ubhosle/iTrust2-v2.git"
+        repo: "https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/engr-csc326-staff/iTrust2-v1.git"
+        #repo: "https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/ubhosle/iTrust2-v2.git"
         dest: "/iTrust2-v2"
         clone: yes
 
-##############################################
-    - name: Copy pom file to itrust repo
-      template:
-        src: templates/pom.xml
-        dest: /iTrust2-v2/iTrust2/
+# ##############################################
+    # - name: Copy pom file to itrust repo
+    #   template:
+    #     src: templates/pom.xml
+    #     dest: /iTrust2-v2/iTrust2/
 ##############################################
     - name: chmod
       shell: chmod -R 777 /iTrust2-v2 && chmod -R 777 /checkbox.io
@@ -157,19 +158,19 @@
 
 - import_playbook: builder.yml
 
-# Fuzzer Code  
-- name: Starting Fuzzer
-  hosts: jenkins
-  become: yes
-  gather_facts: no
-  pre_tasks:
-    - name: Wait for iTrust to complete build
-      pause:
-        minutes: 5
-  roles:
-    - role: fuzzer
-      JENKINS_USER: "{{lookup ('env','JENKINS_USER') }}"
-      JENKINS_PASSWORD: "{{lookup ('env','JENKINS_PASSWORD') }}"
-      GIT_NAME: "{{ lookup ('env','GIT_NAME') }}"
-      GIT_EMAIL: "{{ lookup ('env','GIT_EMAIL') }}"
+# # Fuzzer Code
+# - name: Starting Fuzzer
+#   hosts: jenkins
+#   become: yes
+#   gather_facts: no
+#   pre_tasks:
+#     - name: Wait for iTrust to complete build
+#       pause:
+#         minutes: 5
+#   roles:
+#     - role: fuzzer
+#       JENKINS_USER: "{{lookup ('env','JENKINS_USER') }}"
+#       JENKINS_PASSWORD: "{{lookup ('env','JENKINS_PASSWORD') }}"
+#       GIT_NAME: "{{ lookup ('env','GIT_NAME') }}"
+#       GIT_EMAIL: "{{ lookup ('env','GIT_EMAIL') }}"
 ...
