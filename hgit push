@@ -1,0 +1,153 @@
+[33mcommit 1983d0aa7869ab7a1e74a18ed26c9a0a7228da23[m[33m ([m[1;36mHEAD -> [m[1;32mm2_test_analysis[m[33m)[m
+Author: Uddhav Bhosle <ubhosle@ncsu.edu>
+Date:   Tue Mar 13 23:26:04 2018 -0400
+
+    Revert "jacoco update"
+    
+    This reverts commit 33d99875562ea0b6cf95e895a3bafc8965b505ed.
+
+[33mcommit 33d99875562ea0b6cf95e895a3bafc8965b505ed[m[33m ([m[1;31morigin/m2_test_analysis[m[33m)[m
+Author: Uddhav Bhosle <ubhosle@ncsu.edu>
+Date:   Tue Mar 13 23:10:58 2018 -0400
+
+    jacoco update
+
+[33mcommit 005e3d19bdfb91afdcb3b46310f1416b2256932f[m
+Author: Pushpendra Singh Patel <ppatel16@ncsu.edu>
+Date:   Tue Mar 13 22:30:01 2018 +0000
+
+    fuzzer roles inserted inside files
+
+[33mcommit 1681289e2bebca6aa9105c4f3b52d8af98ea788e[m
+Author: Pushpendra Singh Patel <ppatel16@ncsu.edu>
+Date:   Tue Mar 13 22:28:38 2018 +0000
+
+    merge fixed
+
+[33mcommit f8f56bc68098bf387107a226183093d140087bf9[m
+Merge: 65f7bb6 8026426
+Author: Pushpendra Singh Patel <ppatel16@ncsu.edu>
+Date:   Tue Mar 13 21:28:05 2018 +0000
+
+    Merge conflict
+
+[33mcommit 65f7bb6f6229ba2a649118da13527a1fa724c2bf[m
+Author: Pushpendra Singh Patel <ppatel16@ncsu.edu>
+Date:   Tue Mar 13 21:24:45 2018 +0000
+
+    fuzzer working
+
+[33mcommit 8026426ba9189f3031e33369f561622f017d0719[m
+Merge: e5f24a9 a56062e
+Author: Uddhav Bhosle <ubhosle@ncsu.edu>
+Date:   Tue Mar 13 17:03:52 2018 -0400
+
+    jacoco plugin
+
+[33mcommit e5f24a9177cde3ec9793bd3cc63dba00ada66c7a[m
+Author: Uddhav Bhosle <ubhosle@ncsu.edu>
+Date:   Tue Mar 13 17:01:38 2018 -0400
+
+    jacoco plugin
+
+[33mcommit a56062edd8fcb56cab890b66ffaec90baf85173d[m
+Author: Pushpendra Singh Patel <ppatel16@ncsu.edu>
+Date:   Tue Mar 13 11:31:16 2018 -0400
+
+    droplet resize and pause fuzzer
+
+[33mcommit c1fb32788d7091a6b54ab6109030f2241aeaa2ae[m
+Author: Pushpendra Singh Patel <ppatel16@ncsu.edu>
+Date:   Tue Mar 13 01:10:15 2018 +0000
+
+    fuzzer.js updated to edit more java files
+
+[33mcommit 7729620b61d97104f57a3b6bad051c6b8d2bb8a0[m
+Author: Pushpendra Singh Patel <ppatel16@ncsu.edu>
+Date:   Tue Mar 13 00:05:47 2018 +0000
+
+    fuzzer playbook created
+
+[33mcommit 4597af74c3b396c0a255cc7b2026f82188783780[m
+Author: Uddhav Bhosle <ubhosle@ncsu.edu>
+Date:   Sun Mar 11 00:42:45 2018 -0500
+
+    itrust issue fix
+
+[33mcommit 85c311652b3107a2be8ab5bbfcb45cb9433876a3[m
+Author: Pushpendra Singh Patel <ppatel16@ncsu.edu>
+Date:   Sun Mar 11 04:09:26 2018 +0000
+
+    fuzzer code using stash
+
+[33mcommit 02816b41178f6be5d2573e633d3122c6d81c1f18[m
+Author: Pushpendra Singh Patel <ppatel16@ncsu.edu>
+Date:   Sat Mar 10 22:35:02 2018 +0000
+
+    fuzzer created
+
+[33mcommit 9ff1f3cbaf0721246c28293c20a4f7c99dbb9006[m
+Author: Uddhav Bhosle <ubhosle@ncsu.edu>
+Date:   Sat Mar 10 12:48:19 2018 -0500
+
+    fuzzer jjb changes
+
+[33mcommit bee96648cf356465ec42bcfdb81fa0b0e171cde8[m
+Author: Uddhav Bhosle <ubhosle@ncsu.edu>
+Date:   Sat Mar 10 12:27:32 2018 -0500
+
+    fuzzer job
+
+[33mcommit 4a98bf10cb45cbf006a667420cf8547caeeb922c[m
+Author: Uddhav Bhosle <ubhosle@ncsu.edu>
+Date:   Sat Mar 10 11:47:17 2018 -0500
+
+    roles
+
+[33mcommit 53b0a8bd5c79da23d82a74e7559d45c52b6263ff[m
+Author: Uddhav Bhosle <ubhosle@ncsu.edu>
+Date:   Wed Mar 7 00:33:31 2018 -0500
+
+    changes to handle DO flaws and new itrust commit
+
+[33mcommit bf7fd0ae96283fce93ba8b3ffaca05c25561c32a[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Author: ssgodbol <ssgodbol@ncsu.edu>
+Date:   Thu Feb 22 18:30:56 2018 -0500
+
+    Formatting
+
+[33mcommit ce4cda1b4278c5cadac36b1eac3c5fe4ba0ab39c[m
+Author: ssgodbol <ssgodbol@ncsu.edu>
+Date:   Thu Feb 22 18:30:33 2018 -0500
+
+    Adding link to m1
+
+[33mcommit 7599258ada38164623dd3213dc2869c5d032e5a8[m
+Author: ssgodbol <ssgodbol@ncsu.edu>
+Date:   Sun Feb 18 03:50:38 2018 -0500
+
+    Moving to branch
+
+[33mcommit 23f1ac3d6f053b039ccbba3d5ccec65842a4412e[m
+Author: ssgodbol <ssgodbol@ncsu.edu>
+Date:   Sun Feb 18 03:45:23 2018 -0500
+
+    Instructions to run the code
+
+[33mcommit a276b72a2e500712a8c181b5be59871493ad4560[m
+Author: Pushpendra Singh Patel <ppatel16@ncsu.edu>
+Date:   Sun Feb 18 00:10:19 2018 -0500
+
+    Delete createDroplet.yml
+
+[33mcommit 5376b803bfc18c272111e558cd253f050917e6ed[m
+Author: Pushpendra Singh Patel <ppatel16@ncsu.edu>
+Date:   Sun Feb 18 00:03:09 2018 -0500
+
+    Add files via upload
+
+[33mcommit 7e3a865c22c08c7866f2507577debd6bb3a780c3[m
+Author: Pushpendra Singh Patel <ppatel16@ncsu.edu>
+Date:   Thu Feb 8 20:44:10 2018 -0500
+
+    Initial commit
