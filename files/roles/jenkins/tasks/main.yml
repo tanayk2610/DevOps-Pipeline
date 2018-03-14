@@ -75,7 +75,7 @@
   vars:
       jenkins_username: "{{ lookup('env', 'JENKINS_USER') }}"
       jenkins_password: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
-
+    
 - name: Restart Jenkins
   systemd:
     name: jenkins

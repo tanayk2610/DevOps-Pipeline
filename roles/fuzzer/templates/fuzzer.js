@@ -1,5 +1,6 @@
 var Random = require('random-js');
 var fs = require('fs');
+var sleep = require('sleep');
 
 const execSync = require('child_process').execSync;
 
@@ -15,10 +16,11 @@ var getJavaFiles = function () {
 
     var javafiles = files.toString().trim().split("\n");
     // console.log("number of files found"+files.length);
-
-    javafiles.forEach(function(file){
-        javaFiles.push(file);
-    })
+    // if(!files.match("/models/") && !files.match("/sql/")){
+        javafiles.forEach(function(file){
+            javaFiles.push(file);
+        });
+    // }
 
     // console.log(javaFiles.toString());
     return javaFiles;
@@ -113,7 +115,7 @@ var fuzz = function (iterations)
         });
 
         // console.log("calling fuzzer");
-        
+        sleep.sleep(60);
         // Commit the changes
         commitChanges(iterations);
 
@@ -121,4 +123,4 @@ var fuzz = function (iterations)
     execSync(`cd /iTrust2-v2 && git checkout ${fuzzSHA}`);
 }
 
-fuzz(10)
+fuzz(5)

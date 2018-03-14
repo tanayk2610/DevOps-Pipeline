@@ -76,7 +76,6 @@
       jenkins_username: "{{ lookup('env', 'JENKINS_USER') }}"
       jenkins_password: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
 
-
 - name: Restart Jenkins
   systemd:
     name: jenkins
@@ -94,6 +93,7 @@
 #   until: >
 #      'status' in jenkins_service_status and
 #      jenkins_service_status['status'] == 200
+
 - name: Wait for restart
   uri:
     url: "http://localhost:8080/cli/"
@@ -117,7 +117,6 @@
     url: "http://localhost:8080"
     validate_certs: no
   become: yes
-
 
 - name: Restart Jenkins
   systemd:

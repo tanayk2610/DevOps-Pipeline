@@ -26,14 +26,14 @@
     src: templates/pom.xml
     dest: /iTrust2-v2/iTrust2/
 
+- name: git commit update pom.xml
+  shell: cd /iTrust2-v2 && git add . && git commit -m "Updated pom.xml"
+
 - name: Copy post-commit file from template to hooks
   template:
     src: post-commit
     dest: /iTrust2-v2/.git/hooks/
     mode: 0777
-    
-- name: git commit update pom.xml
-  shell: cd /iTrust2-v2 && git add . && git commit -m "Updated pom.xml"
 
 - name: Run fuzzer.js
   shell: node /fuzz/fuzzer.js

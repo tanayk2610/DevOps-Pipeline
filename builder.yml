@@ -65,7 +65,7 @@
         src: templates/ansible-itrust-jjb.yaml
         dest: jobs/
 
-    - name: Copy all jenkins job builder files to jobs/ directory
+    - name: Create Fuzzer post build job builder file
       template:
         src: templates/fuzzer-jjb.yaml
         dest: jobs/
