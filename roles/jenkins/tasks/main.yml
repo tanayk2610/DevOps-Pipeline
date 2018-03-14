@@ -15,6 +15,11 @@
   apt:
     name: jenkins
     state: latest
+- name: change the port number to 9090
+  lineinfile:
+    path: /etc/default/jenkins
+    regexp: 'HTTP_PORT='
+    line: 'HTTP_PORT=9090'
 
 - name: Starting Jenkins service
   systemd:
@@ -27,10 +32,10 @@
     policy: allow
     state: enabled
 
-- name: Open port 8080
+- name: Open port 9090
   become: yes
   ufw:
-    port: 8080
+    port: 9090
     rule: allow
 
 - name: Remove current Jenkins wizard state
@@ -83,7 +88,7 @@
 
 # - name: Wait for Jenkins to start up
 #   uri:
-#     url: http://localhost:8080
+#     url: http://localhost:9090
 #     status_code: 200
 #     timeout: 5
 #   register: jenkins_service_status
@@ -96,7 +101,7 @@
 
 - name: Wait for restart
   uri:
-    url: "http://localhost:8080/cli/"
+    url: "http://localhost:9090/cli/"
     status_code: 200
   register: result
   until: result.status == 200
@@ -114,7 +119,7 @@
     name: 'jacoco'
     url_username: "{{ lookup('env', 'JENKINS_USER') }}"
     url_password: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
-    url: "http://localhost:8080"
+    url: "http://localhost:9090"
     validate_certs: no
   become: yes
 
