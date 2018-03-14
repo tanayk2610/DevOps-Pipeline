@@ -79,19 +79,19 @@
       shell: jenkins-jobs test jobs
 
     - name: Get jenkins crumb
-      shell: curl -s 'http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:9090/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
+      shell: curl -s 'http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
       register: crumb
 
 #    - debug: var=crumb
 
     - name: Run iTrust2 job
-      shell: curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:9090/job/itrust2/build -H "{{crumb.stdout}}"
+      shell: curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/job/itrust2/build -H "{{crumb.stdout}}"
       register: result
 
 #    - debug: var=result.stdout
 
     - name: Run Checkbox job
-      shell: curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:9090/job/checkbox/build -H "{{crumb.stdout}}"
+      shell: curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:8080/job/checkbox/build -H "{{crumb.stdout}}"
       register: result
 
 #    - debug: var=result.stdout
