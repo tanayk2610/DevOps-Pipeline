@@ -27,10 +27,10 @@
     policy: allow
     state: enabled
 
-- name: Open port 8080
+- name: Open port 9090
   become: yes
   ufw:
-    port: 8080
+    port: 9090
     rule: allow
 
 - name: Remove current Jenkins wizard state

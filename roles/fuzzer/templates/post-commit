@@ -1,5 +1,5 @@
 #!/bin/sh
 echo "POST-COMMIT HOOK GOT CALLED"
-crumb123=`curl -s http://${JENKINS_USER}:${JENKINS_PASSWORD}@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)`
+crumb123=`curl -s http://${JENKINS_USER}:${JENKINS_PASSWORD}@localhost:9090/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)`
 echo $crumb123
-`curl -X POST http://${JENKINS_USER}:${JENKINS_PASSWORD}@localhost:8080/job/fuzzer/build -H $crumb123`
+`curl -X POST http://${JENKINS_USER}:${JENKINS_PASSWORD}@localhost:9090/job/fuzzer/build -H $crumb123`

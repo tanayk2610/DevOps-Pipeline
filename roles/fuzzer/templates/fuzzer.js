@@ -64,12 +64,12 @@ var fuzzer = {
             }
 
             //Replace 0 with 1
-            if(fuzzer.random.bool(0.3) && line.match('"((\\"|[^"])+0(\\"|[^"])*|(\\"|[^"])*0(\\"|[^"])+)"'))
-            line = line.replace('0','1');
+            // if(fuzzer.random.bool(0.3) && line.match('"((\\"|[^"])+0(\\"|[^"])*|(\\"|[^"])*0(\\"|[^"])+)"'))
+            // line = line.replace('0','1');
 
             // Replace 1 with 0
-            if(fuzzer.random.bool(0.3) && line.match('"((\\"|[^"])+1(\\"|[^"])*|(\\"|[^"])*1(\\"|[^"])+)"'))
-            line = line.replace('1','0');
+            // if(fuzzer.random.bool(0.3) && line.match('"((\\"|[^"])+1(\\"|[^"])*|(\\"|[^"])*1(\\"|[^"])+)"'))
+            // line = line.replace('1','0');
 
             fs.appendFileSync(tempFilePath, line + '\n');
         });
@@ -99,7 +99,7 @@ var fuzz = function (iterations)
 {
     var javaFiles = getJavaFiles();
     var fuzzSHA = getSHA('fuzzer');
-    var crumb = execSync(`curl -s 'http://${JENKINS_USER}:${JENKINS_PASSWORD}@localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'`);
+    var crumb = execSync(`curl -s 'http://${JENKINS_USER}:${JENKINS_PASSWORD}@localhost:9090/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'`);
     
     execSync("cd /iTrust2-v2 && git checkout fuzzer");
     // console.log("branched checkout");
