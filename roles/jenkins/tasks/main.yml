@@ -129,6 +129,15 @@
     validate_certs: no
   become: yes
 
+- name: Wait for restart
+  uri:
+    url: "http://localhost:9090/cli/"
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 10
+
 - name: Install timeout Plugins
   jenkins_plugin:
     name:
@@ -138,6 +147,15 @@
     url: "http://localhost:9090"
     validate_certs: no
   become: yes
+
+- name: Wait for restart
+  uri:
+    url: "http://localhost:9090/cli/"
+    status_code: 200
+  register: result
+  until: result.status == 200
+  retries: 60
+  delay: 10
 
 - name: Installcleanup Plugins
   jenkins_plugin:
@@ -153,5 +171,6 @@
   systemd:
     name: jenkins
     state: restarted
+
 
 ...
