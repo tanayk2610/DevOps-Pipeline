@@ -9,8 +9,8 @@ const JENKINS_USER = process.env.JENKINS_USER,
 
 var getJavaFiles = function () {
     var javaFiles = [];
-    
-    var files = execSync("ls /iTrust2-v2/iTrust2/src/main/java/edu/ncsu/csc/itrust2/**/**/*.java")
+
+    var files = execSync("ls iTrust2-v2/iTrust2/src/main/java/edu/ncsu/csc/itrust2/**/**/*.java")
 
     // console.log("files are: "+ files.toString());
 
@@ -82,17 +82,17 @@ function commitChanges(number)
 {
     // console.log("#######################commit changes started#################################")
 
-    execSync("cd /iTrust2-v2 && git stash");
-    execSync("cd /iTrust2-v2 && git checkout stash -- .");
-    execSync('cd /iTrust2-v2 && git commit -m "Fuzzer commit on ' + 'Build number: ' + number + '"');
-    execSync("cd /iTrust2-v2 && git stash drop");
+    execSync("cd iTrust2-v2 && git stash");
+    execSync("cd iTrust2-v2 && git checkout stash -- .");
+    execSync('cd iTrust2-v2 && git commit -m "Fuzzer commit on ' + 'Build number: ' + number + '"');
+    execSync("cd iTrust2-v2 && git stash drop");
 
     // console.log("#######################commit changes ended#################################")
 }
 
 function getSHA(param)
 {
-    return execSync("cd /iTrust2-v2 && git rev-parse "+param).toString().trim();
+    return execSync("cd iTrust2-v2 && git rev-parse "+param).toString().trim();
 }
 
 var fuzz = function (iterations)
@@ -100,15 +100,15 @@ var fuzz = function (iterations)
     var javaFiles = getJavaFiles();
     var fuzzSHA = getSHA('fuzzer');
     var crumb = execSync(`curl -s 'http://${JENKINS_USER}:${JENKINS_PASSWORD}@localhost:9090/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'`);
-    
-    execSync("cd /iTrust2-v2 && git checkout fuzzer");
+
+    execSync("cd iTrust2-v2 && git checkout fuzzer");
     // console.log("branched checkout");
-    
+
     while(iterations-- > 0)
     {
         console.log("Build Number: "+iterations);
 
-        execSync(`cd /iTrust2-v2 && git checkout ${fuzzSHA}`);
+        execSync(`cd iTrust2-v2 && git checkout ${fuzzSHA}`);
         // console.log("revertinggggggggg");
         javaFiles.forEach(function (file){
             fuzzer.mutate(file);
@@ -120,7 +120,7 @@ var fuzz = function (iterations)
         commitChanges(iterations);
 
     }
-    execSync(`cd /iTrust2-v2 && git checkout ${fuzzSHA}`);
+    execSync(`cd iTrust2-v2 && git checkout ${fuzzSHA}`);
 }
 
 fuzz(5)

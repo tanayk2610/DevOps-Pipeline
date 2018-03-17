@@ -1,2 +1,2 @@
 [jenkins]
-167.99.58.156 ansible_ssh_user=root ansible_ssh_private_key_file=~/.ssh/jenkins
+165.227.102.161 ansible_ssh_user=root ansible_ssh_private_key_file=~/.ssh/jenkins

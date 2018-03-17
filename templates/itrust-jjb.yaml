@@ -2,8 +2,21 @@
     name: itrust2
     description: "automatically build itrust"
     builders:
-      - shell: 'cd /iTrust2-v2/iTrust2 && mvn clean test verify checkstyle:checkstyle'
+      - shell: |
+          git clone https://github.ncsu.edu/ubhosle/iTrust2-v2.git
+          cp /iTrust2-v2/iTrust2/src/main/java/db.properties iTrust2-v2/iTrust2/src/main/java/db.properties
+          cp /iTrust2-v2/iTrust2/src/main/resources/hibernate.properties iTrust2-v2/iTrust2/src/main/resources/hibernate.properties
+          cp /iTrust2-v2/iTrust2/src/main/java/email.properties iTrust2-v2/iTrust2/src/main/java/email.properties
+          cp /files/pom-data.xml iTrust2-v2/iTrust2/pom-data.xml
+          cd iTrust2-v2/iTrust2
+          sudo mvn process-test-classes -f pom-data.xml
+          sudo mvn clean test verify checkstyle:checkstyle
     publishers:
-      # - jacoco
-      - trigger:
-          project: ansible-itrust
+      - jacoco
+      # - trigger:
+      #     project: ansible-itrust
+    wrappers:
+      - workspace-cleanup
+    # - timeout:
+    #     timeout: 1
+    #     fail: true

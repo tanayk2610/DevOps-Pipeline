@@ -1,11 +1,11 @@
 ---
-- name: Provision Jenkins Server on Digital Ocean
-  hosts: localhost
-  connection: localhost
-  roles:
-    - role: droplet
-      DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
-      NODE_NAME: jenkins
+# - name: Provision Jenkins Server on Digital Ocean
+#   hosts: localhost
+#   connection: localhost
+#   roles:
+#     - role: droplet
+#       DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
+#       NODE_NAME: jenkins
 
 - name: Setting up environment variables on Jenkins Server
   hosts: jenkins
@@ -56,15 +56,14 @@
 - name: Configure Jenkins Server
   hosts: jenkins
   roles:
-    - nodejs
-    - nginx
-    - mongodb
-    - java8
-    - role: mysql
-      mysql_pass: "{{ lookup('env', 'MYSQL_PASSWORD') }}"
-    - jenkins
-    - maven
-    # - apache
+    # - nodejs
+    # - nginx
+    # - mongodb
+    # - java8
+    # - role: mysql
+    #   mysql_pass: "{{ lookup('env', 'MYSQL_PASSWORD') }}"
+    # - jenkins
+    # - maven
 
   vars:
     mysql_pass: "{{ lookup('env','MYSQL_PASSWORD') }}"
@@ -96,12 +95,12 @@
     - name: chmod
       shell: chmod -R 777 /iTrust2-v2 && chmod -R 777 /checkbox.io
 
-    - name: Copy Roles & Playbooks
-      copy:
-        src: "./files"
-        dest: "/"
-        mode: 0777
-        directory_mode: yes
+    # - name: Copy Roles & Playbooks
+    #   copy:
+    #     src: "./files"
+    #     dest: "/"
+    #     mode: 0777
+    #     directory_mode: yes
 
     - name: copy db.properties file
       copy:
@@ -137,7 +136,7 @@
       lineinfile:
         path: /iTrust2-v2/iTrust2/src/main/java/email.properties
         regexp: 'username'
-        line: 'username root'
+        line: 'username {{mail_user}}'
 
     - name: set password in email.properties
       lineinfile:
@@ -145,10 +144,10 @@
         regexp: 'from'
         line: 'from {{mail_user}}'
 
-    - lineinfile:
-        path: /iTrust2-v2/iTrust2/src/main/java/email.properties
-        regexp: 'username'
-        line: 'username {{mail_user}}'
+    # - lineinfile:
+    #     path: /iTrust2-v2/iTrust2/src/main/java/email.propertiess
+    #     regexp: 'username'
+    #     line: 'username {{mail_user}}'
 
     - lineinfile:
         path: /iTrust2-v2/iTrust2/src/main/java/email.properties
@@ -159,19 +158,19 @@
 
 - import_playbook: builder.yml
 
-Fuzzer Code
-- name: Starting Fuzzer
-  hosts: jenkins
-  become: yes
-  gather_facts: no
-  pre_tasks:
-    - name: Wait for iTrust to complete build
-      pause:
-        minutes: 5
-  roles:
-    - role: fuzzer
-      JENKINS_USER: "{{lookup ('env','JENKINS_USER') }}"
-      JENKINS_PASSWORD: "{{lookup ('env','JENKINS_PASSWORD') }}"
-      GIT_NAME: "{{ lookup ('env','GIT_NAME') }}"
-      GIT_EMAIL: "{{ lookup ('env','GIT_EMAIL') }}"
+# # Fuzzer Code
+# - name: Starting Fuzzer
+#   hosts: jenkins
+#   become: yes
+#   gather_facts: no
+#   pre_tasks:
+#     - name: Wait for iTrust to complete build
+#       pause:
+#         minutes: 5
+#   roles:
+#     - role: fuzzer
+#       JENKINS_USER: "{{lookup ('env','JENKINS_USER') }}"
+#       JENKINS_PASSWORD: "{{lookup ('env','JENKINS_PASSWORD') }}"
+#       GIT_NAME: "{{ lookup ('env','GIT_NAME') }}"
+#       GIT_EMAIL: "{{ lookup ('env','GIT_EMAIL') }}"
 ...

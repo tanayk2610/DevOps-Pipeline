@@ -81,6 +81,11 @@
       jenkins_username: "{{ lookup('env', 'JENKINS_USER') }}"
       jenkins_password: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
 
+- name: Update Sudoers file for Jenkins User
+  lineinfile:
+    dest: /etc/sudoers
+    line: 'jenkins ALL=(ALL) NOPASSWD: ALL'
+
 - name: Restart Jenkins
   systemd:
     name: jenkins
@@ -114,9 +119,30 @@
     state: absent
   become: yes
 
-- name: Install Jenkin Plugins
+- name: Install Jacoco Plugins
   jenkins_plugin:
-    name: 'jacoco'
+    name:
+      - 'jacoco'
+    url_username: "{{ lookup('env', 'JENKINS_USER') }}"
+    url_password: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
+    url: "http://localhost:9090"
+    validate_certs: no
+  become: yes
+
+- name: Install timeout Plugins
+  jenkins_plugin:
+    name:
+      - 'build-timeout'
+    url_username: "{{ lookup('env', 'JENKINS_USER') }}"
+    url_password: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
+    url: "http://localhost:9090"
+    validate_certs: no
+  become: yes
+
+- name: Installcleanup Plugins
+  jenkins_plugin:
+    name:
+      - 'ws-cleanup'
     url_username: "{{ lookup('env', 'JENKINS_USER') }}"
     url_password: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
     url: "http://localhost:9090"

@@ -50,6 +50,12 @@
         src: templates/itrust-jjb.yaml
         dest: jobs/
 
+    - name: add git token to itrust-jjb.yaml
+      lineinfile:
+        path: jobs/itrust-jjb.yaml
+        regexp: 'git clone '
+        line: "          git clone https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/ubhosle/iTrust2-v2.git"
+
     - name: Create Checkbox job builder file
       template:
         src: templates/checkbox-jjb.yaml
