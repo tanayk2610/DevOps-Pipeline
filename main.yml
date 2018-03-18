@@ -81,17 +81,11 @@
 
     - name: Clone iTrust Repo
       git:
-        repo: "https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/engr-csc326-staff/iTrust2-v1.git"
-        #repo: "https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/ubhosle/iTrust2-v2.git"
+        # repo: "https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/engr-csc326-staff/iTrust2-v2.git"
+        repo: "https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/ubhosle/iTrust2-v2.git"
         dest: "/iTrust2-v2"
         clone: yes
 
-# ##############################################
-    # - name: Copy pom file to itrust repo
-    #   template:
-    #     src: templates/pom.xml
-    #     dest: /iTrust2-v2/iTrust2/
-##############################################
     - name: chmod
       shell: chmod -R 777 /iTrust2-v2 && chmod -R 777 /checkbox.io
 

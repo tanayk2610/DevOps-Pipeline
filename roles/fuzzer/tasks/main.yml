@@ -2,7 +2,7 @@
 - name: Set github name and email
   shell: git config --global user.email '{{GIT_EMAIL}}' && git config --global user.name '{{GIT_NAME}}'
 
-- name: Make jobs directory
+- name: Make fuzz directory
   file:
     path: /fuzz
     state: directory
@@ -14,6 +14,7 @@
   template:
     src: fuzzer.js
     dest: "/fuzz/"
+    mode: 0777
 
 - name: Copy package.json to jenkins server
   template: src=package.json dest="/fuzz/"
@@ -22,24 +23,25 @@
   npm:
     path: /fuzz
     state: latest
+
 - name: chmod for iTrust
-  shell: chmod 777 iTrust2-v2
+  shell: chmod 777 /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2
 
 - name: git checkout fuzzer
-  shell: cd iTrust2-v2 && git branch fuzzer && git checkout fuzzer
+  shell: cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git branch fuzzer && git checkout fuzzer
 
 # - name: Copy pom file to itrust repo
 #   template:
 #     src: templates/pom.xml
-#     dest: /iTrust2-v2/iTrust2/
+#     dest: iTrust2-v2/iTrust2/
 
-- name: git commit update pom.xml
-  shell: cd iTrust2-v2 && git add . && git commit -m "Updated pom.xml"
+# - name: git commit update pom.xml
+#   shell: cd /var/lib/jenkins/workspace/itrust2/iTrust2-v2 && git add . && git commit -m "Updated pom.xml"
 
 - name: Copy post-commit file from template to hooks
   template:
     src: post-commit
-    dest: iTrust2-v2/.git/hooks/
+    dest: /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/.git/hooks/
     mode: 0777
 
 - name: Run fuzzer.js

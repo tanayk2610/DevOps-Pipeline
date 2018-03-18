@@ -88,6 +88,12 @@
       shell: curl -s 'http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:9090/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
       register: crumb
 
+    - name: Get crumb into Environment
+      lineinfile:
+        path: /etc/environment
+        regexp: "CRUMB="
+        line: "CRUMB={{crumb.stdout}}"
+
 #    - debug: var=crumb
 
     - name: Run iTrust2 job
