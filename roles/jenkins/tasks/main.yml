@@ -25,7 +25,7 @@
   systemd:
     name: jenkins
     state: stopped
-
+    
 - name: Enable firewall
   become: yes
   ufw:

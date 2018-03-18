@@ -3,16 +3,15 @@
     description: "rebuild itrust job"
     builders:
       - shell: |
-          cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2
+          sudo cp -a /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/ /var/lib/jenkins/jobs/fuzzer/workspace/
+          cd iTrust2-v2/iTrust2
           sudo mvn process-test-classes -f pom-data.xml
+          sudo mvn compile
           sudo mvn clean test verify checkstyle:checkstyle
     concurrent: true
     publishers:
       - jacoco
-      # - trigger:
-      #     project: ansible-itrust
     wrappers:
-      # - workspace-cleanup
       - timeout:
-          timeout: 3
+          timeout: 10
           fail: true
