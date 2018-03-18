@@ -121,6 +121,7 @@ var fuzz = function (iterations)
         // Commit the changes
         commitChanges(iterations);
 
+        //test prori
     }
     execSync(`cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2 && git checkout ${fuzzSHA}`);
 }
