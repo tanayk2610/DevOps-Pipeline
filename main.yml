@@ -155,7 +155,7 @@
   pre_tasks:
     - name: Wait for iTrust to complete build
       pause:
-        minutes: 5
+        minutes: 10
   roles:
     - role: fuzzer
       JENKINS_USER: "{{lookup ('env','JENKINS_USER') }}"
