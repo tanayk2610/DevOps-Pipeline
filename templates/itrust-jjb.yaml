@@ -15,8 +15,8 @@
       - jacoco
       # - trigger:
       #     project: ansible-itrust
-    wrappers:
-      - workspace-cleanup
+    # wrappers:
+    #   - workspace-cleanup
     # - timeout:
     #     timeout: 1
     #     fail: true

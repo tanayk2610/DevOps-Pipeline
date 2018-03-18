@@ -121,51 +121,54 @@
 
 - name: Install Jacoco Plugins
   jenkins_plugin:
-    name:
-      - 'jacoco'
+    name: "{{item}}"
     url_username: "{{ lookup('env', 'JENKINS_USER') }}"
     url_password: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
     url: "http://localhost:9090"
     validate_certs: no
+  with_items:
+    - jacoco
+    - build-timeout
+    - ws-cleanup
   become: yes
 
-- name: Wait for restart
-  uri:
-    url: "http://localhost:9090/cli/"
-    status_code: 200
-  register: result
-  until: result.status == 200
-  retries: 60
-  delay: 10
-
-- name: Install timeout Plugins
-  jenkins_plugin:
-    name:
-      - 'build-timeout'
-    url_username: "{{ lookup('env', 'JENKINS_USER') }}"
-    url_password: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
-    url: "http://localhost:9090"
-    validate_certs: no
-  become: yes
-
-- name: Wait for restart
-  uri:
-    url: "http://localhost:9090/cli/"
-    status_code: 200
-  register: result
-  until: result.status == 200
-  retries: 60
-  delay: 10
-
-- name: Installcleanup Plugins
-  jenkins_plugin:
-    name:
-      - 'ws-cleanup'
-    url_username: "{{ lookup('env', 'JENKINS_USER') }}"
-    url_password: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
-    url: "http://localhost:9090"
-    validate_certs: no
-  become: yes
+# - name: Wait for restart
+#   uri:
+#     url: "http://localhost:9090/cli/"
+#     status_code: 200
+#   register: result
+#   until: result.status == 200
+#   retries: 60
+#   delay: 10
+# #
+# - name: Install timeout Plugins
+#   jenkins_plugin:
+#     name:
+#       - 'build-timeout'
+#     url_username: "{{ lookup('env', 'JENKINS_USER') }}"
+#     url_password: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
+#     url: "http://localhost:9090"
+#     validate_certs: no
+#   become: yes
+#
+# - name: Wait for restart
+#   uri:
+#     url: "http://localhost:9090/cli/"
+#     status_code: 200
+#   register: result
+#   until: result.status == 200
+#   retries: 60
+#   delay: 10
+#
+# - name: Installcleanup Plugins
+#   jenkins_plugin:
+#     name:
+#       - 'ws-cleanup'
+#     url_username: "{{ lookup('env', 'JENKINS_USER') }}"
+#     url_password: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
+#     url: "http://localhost:9090"
+#     validate_certs: no
+#   become: yes
 
 - name: Restart Jenkins
   systemd:
