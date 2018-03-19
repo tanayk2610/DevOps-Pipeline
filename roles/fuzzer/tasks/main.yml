@@ -7,8 +7,6 @@
     path: /fuzz
     state: directory
     mode: 0777
-# - name: Create fuzz directory
-#   shell: mkdir /fuzz
 
 - name: Copying fuzzer.js to jenkins server
   template:
@@ -17,7 +15,16 @@
     mode: 0777
 
 - name: Copy package.json to jenkins server
-  template: src=package.json dest="/fuzz/"
+  template:
+    src: package.json
+    dest: "/fuzz/"
+    mode: 0777
+
+- name: Copy testAnalysis.js to jenkins server
+  template:
+    src: testAnalysis.js
+    dest: /fuzz/"
+    mode: 0777
 
 - name: Perform npm install
   npm:
@@ -29,14 +36,6 @@
 
 - name: git checkout fuzzer
   shell: cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git branch fuzzer && git checkout fuzzer
-
-# - name: Copy pom file to itrust repo
-#   template:
-#     src: templates/pom.xml
-#     dest: iTrust2-v2/iTrust2/
-
-# - name: git commit update pom.xml
-#   shell: cd /var/lib/jenkins/workspace/itrust2/iTrust2-v2 && git add . && git commit -m "Updated pom.xml"
 
 - name: Copy post-commit file from template to hooks
   template:
