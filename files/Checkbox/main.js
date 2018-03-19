@@ -8,7 +8,7 @@ const path    = require('path');
 
 
 // Local Modules
-const constraints       = require('./analyze');
+const constraints       = require('./analyzer');
 const generateTestCases = require('./testgenerator');
 
 
@@ -25,14 +25,13 @@ require('./format-polyfill');
     // Parse file input, defaulting to subject.js if not provided
     let args = process.argv.slice(2);
     if( args.length === 0 ) {
-        args = ["study.js"];
+        args = ["server.js"];
     }
     let filePath = path.resolve(args[0]);
 
     // Initialize constraints based on input file
     let functionConstraints = constraints(filePath);
-  //  console.log("Inside main");
-    //console.log(functionConstraints);
+
     // Generate test cases
     generateTestCases(filePath, functionConstraints);
 

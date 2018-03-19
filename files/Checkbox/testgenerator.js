@@ -31,14 +31,12 @@ const mockFileLibrary = {
  * @param {Object} functionConstraints Constraints object as returned by `constraints`.
  */
 function generateTestCases(filepath, functionConstraints) {
-  //  console.log("Inside generator");
+
     // Content string. This will be built up to generate the full text of the test string.
     let content = `let subject = require('${filepath}')\nlet mock = require('mock-fs');\n`;
 
-//    console.log(functionConstraints);
     // Iterate over each function in functionConstraints
     for ( let funcName in functionConstraints ) {
-   //     console.log("inside func");
 
         // Reference all constraints for funcName.
         let params = functionConstraints[funcName].params;
