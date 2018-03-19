@@ -3,6 +3,11 @@ var fs = require('fs');
 var sleep = require('sleep');
 var shell = require('shelljs');
 
+////////////////////////////////////////////////////////
+var testpriori = require('./test-priori');
+var resultee = testpriori.resultee;
+///////////////////////////////////////////////////////////
+
 const execSync = require('child_process').execSync;
 
 var getJavaFiles = function () {
@@ -109,12 +114,12 @@ var fuzz = function (iterations)
             fuzzer.mutate(file);
 
         });
-        
+
         sleep.sleep(50);
         // Commit the changes
         commitChanges(iterations);
 
-        //test prori
+
     }
     execSync(`cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2 && git checkout ${fuzzSHA}`);
 }
