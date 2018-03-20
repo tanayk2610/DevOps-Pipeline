@@ -11,5 +11,5 @@
       - jacoco
     wrappers:
       - timeout:
-          timeout: 10
+          timeout: 3
           fail: true

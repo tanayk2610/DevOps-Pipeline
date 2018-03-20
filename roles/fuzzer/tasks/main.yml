@@ -23,16 +23,13 @@
 - name: Copy testAnalysis.js to jenkins server
   template:
     src: testAnalysis.js
-    dest: /fuzz/"
+    dest: "/fuzz/"
     mode: 0777
 
 - name: Perform npm install
   npm:
     path: /fuzz
     state: latest
-
-- name: chmod for iTrust
-  shell: chmod 777 /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2
 
 - name: git checkout fuzzer
   shell: cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git branch fuzzer && git checkout fuzzer

@@ -2,15 +2,15 @@ var Random = require('random-js');
 var fs = require('fs');
 var sleep = require('sleep');
 var shell = require('shelljs');
-var testAnalysis = require('./testAnalysis.js');
+// var testAnalysis = require('./testAnalysis.js');
 const execSync = require('child_process').execSync;
 var iterations = 2;
-var tests = [];
+// var tests = [];
 
 var getJavaFiles = function () {
     var javaFiles = [];
     var path = "/var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2/src/main/java/edu/ncsu/csc/itrust2";
-    var temp = [`ls ${path}/**/*.java`,`ls ${path}/controllers/**/*.java`,`ls ${path}/forms/**/*.java`,`ls ${path}/utils/*.java`,`ls ${path}/mvc/**/**.java`,`ls ${path}/controllers/api/**/**.java`,`ls ${path}/models/enums/*.java`,`ls ${path}/models/persistent/*.java`]
+    var temp = [`ls ${path}/**/*.java`,`ls ${path}/controllers/**/*.java`,`ls ${path}/forms/**/*.java`,`ls ${path}/utils/*.java`,`ls ${path}/mvc/**/**.java`,`ls ${path}/controllers/api/**/**.java`,`ls ${path}/models/enums/*.java`];
     var files = execSync(`${temp[fuzzer.random.integer(0,6)]}`);
     console.log("files are: "+ files.toString());
     // console.log(typeof file);
@@ -78,31 +78,31 @@ var fuzzer = {
 
 function commitChanges(number)
 {
-    // console.log("#######################commit changes started#################################")
+    console.log("#######################commit changes started#################################")
 
-    execSync("cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2 && git add .");
-    execSync('cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2 && git commit -m "Fuzzer commit on ' + 'Build number: ' + number + '"');
-    execSync("cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2 && git reset --hard origin/master");
+    execSync("cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git add .");
+    execSync('cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git commit -m "Fuzzer commit on ' + 'Build number: ' + number + '"');
+    execSync("cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git reset --hard HEAD~");
 
-    // console.log("#######################commit changes ended#################################")
+    console.log("#######################commit changes ended#################################")
 }
 
 function getSHA(param)
 {
-    return execSync("cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2 && git rev-parse "+param).toString().trim();
+    return execSync("cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git rev-parse "+param).toString().trim();
 }
 
-var fuzz = function (iteration)
+var fuzz = function (num)
 {
     var javaFiles = getJavaFiles();
     var fuzzSHA = getSHA('fuzzer');
 
-    execSync("cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2 && git checkout fuzzer");
+    execSync("cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git checkout fuzzer");
     // console.log("branched checkout");
-var i = 0;
-    while( i < iterations)
+var i = 1;
+    while( i <= num)
     {
-        console.log("Build Number: "+iteration);
+        console.log("Build Number: "+i);
 
         execSync(`cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2 && git checkout ${fuzzSHA}`);
         // console.log("reverting");
@@ -111,17 +111,17 @@ var i = 0;
 
         });
 
-        sleep.sleep(50);
+        // sleep.sleep(200);
         // Commit the changes
-        commitChanges(iterations);
+        commitChanges(i);
         sleep.sleep(200);
         //test prori
-        testAnalysis.priority(tests,i)
+        // testAnalysis.priority(tests,i)
         i++;
     }
     execSync(`cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2 && git checkout ${fuzzSHA}`);
-    console.log("TEST REPORT \n "+ tests);
+    // console.log("TEST REPORT \n "+ tests);
 }
 
 fuzz(iterations)
-exports.tests = tests;
+// exports.tests = tests;
