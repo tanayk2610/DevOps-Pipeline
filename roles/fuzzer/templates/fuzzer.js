@@ -2,7 +2,16 @@ var Random = require('random-js');
 var fs = require('fs');
 var sleep = require('sleep');
 var shell = require('shelljs');
+<<<<<<< HEAD
 // var testAnalysis = require('./testAnalysis.js');
+=======
+
+////////////////////////////////////////////////////////
+var testpriori = require('./test-priori');
+var resultee = testpriori.resultee;
+///////////////////////////////////////////////////////////
+
+>>>>>>> a26158679e61dee8f4813a625df2d7bf2b14af10
 const execSync = require('child_process').execSync;
 var iterations = 2;
 // var tests = [];
@@ -110,6 +119,7 @@ var i = 1;
             fuzzer.mutate(file);
 
         });
+<<<<<<< HEAD
 
         // sleep.sleep(200);
         // Commit the changes
@@ -118,10 +128,22 @@ var i = 1;
         //test prori
         // testAnalysis.priority(tests,i)
         i++;
+=======
+
+        sleep.sleep(50);
+        // Commit the changes
+        commitChanges(iterations);
+
+
+>>>>>>> a26158679e61dee8f4813a625df2d7bf2b14af10
     }
     execSync(`cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2 && git checkout ${fuzzSHA}`);
     // console.log("TEST REPORT \n "+ tests);
 }
 
+<<<<<<< HEAD
 fuzz(iterations)
 // exports.tests = tests;
+=======
+fuzz(5)
+>>>>>>> a26158679e61dee8f4813a625df2d7bf2b14af10

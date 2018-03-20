@@ -9,6 +9,8 @@
           sudo mvn clean test verify checkstyle:checkstyle
     publishers:
       - jacoco
+      - junit:
+          results: fuzzer/workspace//iTrust2-v2//iTrust2/target/surefire-reports/*.xml
     wrappers:
       - timeout:
           timeout: 3

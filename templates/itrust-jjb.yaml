@@ -7,7 +7,10 @@
           cp /iTrust2-v2/iTrust2/src/main/java/db.properties iTrust2-v2/iTrust2/src/main/java/db.properties &&
           cp /iTrust2-v2/iTrust2/src/main/resources/hibernate.properties iTrust2-v2/iTrust2/src/main/resources/hibernate.properties &&
           cp /iTrust2-v2/iTrust2/src/main/java/email.properties iTrust2-v2/iTrust2/src/main/java/email.properties &&
+<<<<<<< HEAD
           cp -a /files/pom-data.xml iTrust2-v2/iTrust2/pom-data.xml &&
+=======
+>>>>>>> a26158679e61dee8f4813a625df2d7bf2b14af10
           cd iTrust2-v2/iTrust2 &&
           sudo mvn process-test-classes -f pom-data.xml &&
           sudo mvn clean test verify checkstyle:checkstyle'

@@ -25,7 +25,7 @@
   systemd:
     name: jenkins
     state: stopped
-    
+
 - name: Enable firewall
   become: yes
   ufw:
@@ -130,6 +130,7 @@
     - jacoco
     - build-timeout
     - ws-cleanup
+    - junit
   become: yes
 
 # - name: Wait for restart
