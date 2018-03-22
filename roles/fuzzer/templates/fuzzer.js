@@ -1,8 +1,9 @@
 var Random = require('random-js');
 var fs = require('fs');
 var sleep = require('sleep');
-
 const execSync = require('child_process').execSync;
+var iterations = 2;
+// var tests = [];
 
 
 var getJavaFiles = function () {
@@ -93,7 +94,7 @@ function getSHA(param)
     return execSync("cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git rev-parse "+param).toString().trim();
 }
 
-var fuzz = function (iterations)
+var fuzz = function (num)
 {
     var javaFiles = getJavaFiles();
     var fuzzSHA = getSHA('fuzzer');
@@ -117,6 +118,7 @@ var fuzz = function (iterations)
         i++;
     }
     execSync(`cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2 && git checkout ${fuzzSHA}`);
+    // console.log("TEST REPORT \n "+ tests);
 }
 
-fuzz(1)
+fuzz(2)

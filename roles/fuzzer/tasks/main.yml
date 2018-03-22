@@ -20,9 +20,15 @@
     dest: "/fuzz/"
     mode: 0777
 
+<<<<<<< HEAD
 - name: Copy prioritization.js to jenkins server
   template:
     src: prioritization.js
+=======
+- name: Copy testAnalysis.js to jenkins server
+  template:
+    src: testAnalysis.js
+>>>>>>> 16e97b7670b53a744227e2adbcccf5207f4d426d
     dest: "/fuzz/"
     mode: 0777
 

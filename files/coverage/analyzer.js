@@ -21,16 +21,14 @@ const options = { tokens: true, tolerant: true, loc: true, range: true };
 /**
  * Constraint class. Represents constraints on function call parameters.
  *
- * @property {String}                                                          ident      Identity of the parameter mapped to the constraint.
- * @property {String}                                                          expression Full expression string for a constraint.
- * @property {String}                                                          operator   Operator used in constraint.
- * @property {String|Number}                                                   value      Main constraint value.
- * @property {String|Number}                                                   altvalue   Constraint alternative value.
- * @property {String}                                                          funcName   Name of the function being constrained.
- * @property {'fileWithContent'|'fileExists'|'integer'|'string'|'phoneNumber'} kind       Type of the constraint.
+ * @property {String}       type      
+ * @property {String}       api
+ * @property {String}       funcName   Name of the function being constrained.
+ * @property {String}       paramName
  */
 class Constraint {
     constructor(properties) {
+        this.type = properties.type;
         this.api = properties.api;
         this.funcName = properties.funcName;
         this.paramName = properties.paramName;
@@ -46,7 +44,7 @@ class Constraint {
  * @returns {Object}          Function constraints object.
  */
 function constraints(filePath) {
-
+    //console.log("----------------------------------------------------")
     // Initialize function constraints directory
     //let functionConstraints = {};
 
@@ -61,31 +59,53 @@ function constraints(filePath) {
         if (node.type === 'ExpressionStatement') {
             // Traverse function node.
             traverse(node, function (child) {
-//                console.log(child);
+                //                console.log(child);
                 // Handle equivalence expression
                 if (_.get(child, 'type') === 'CallExpression' && _.get(child, 'callee.property.name') === 'get') {
                     var api = _.get(child, 'arguments[0].value')
-//                    console.log(api);
-                    var paramNameVar;
-                    if(api.indexOf(":") === -1)
-                    {
+                    //                    console.log(api);
+                    var paramNameVar, apiVar;
+                    if (api.indexOf(":") === -1) {
                         paramNameVar = null;
+                        apiVar = api;
                     }
-                    else{
-                        paramNameVar = api.substring(api.indexOf(":")+1,api.length);
+                    else {
+                        paramNameVar = api.substring(api.indexOf(":") + 1, api.length);
+                        apiVar = api.substring(0, api.indexOf(":") - 1);
                     }
-                    
-                        constraints.push(new Constraint({
-                            api: api,
-                            funcName: `${_.get(child, 'arguments[1].object.name')}`+'.'+`${_.get(child, 'arguments[1].property.name')}`,
-                            paramName: paramNameVar 
-                        }));
-                    }
-                
+
+                    constraints.push(new Constraint({
+                        type: 'get',
+                        api: apiVar,
+                        funcName: `${_.get(child, 'arguments[1].object.name')}` + '.' + `${_.get(child, 'arguments[1].property.name')}`,
+                        paramName: paramNameVar
+                    }));
+                }
+                else if (_.get(child, 'type') === 'CallExpression' && _.get(child, 'callee.property.name') === 'post') {
+                    var api = _.get(child, 'arguments[0].value')
+                    //                    console.log(api);
+                    var paramNameVar = null;
+                    // if (api.indexOf(":") === -1) {
+                    //     paramNameVar = null;
+                    // }
+                    // else {
+                    //     paramNameVar = api.substring(api.indexOf(":") + 1, api.length);
+                    // }
+
+                    constraints.push(new Constraint({
+                        type: 'post',
+                        api: api,
+                        funcName: `${_.get(child, 'arguments[1].object.name')}` + '.' + `${_.get(child, 'arguments[1].property.name')}`,
+                        paramName: paramNameVar
+                    }));
+                }
+
             });
         }
     });
-    console.log(constraints);
+    //    console.log(constraints);
+    //console.log("----------------------------------------------------")
+
     return constraints;
 }
 

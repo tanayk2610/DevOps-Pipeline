@@ -4,11 +4,11 @@
 
 
 // Core/NPM Modules
-const path    = require('path');
+const path = require('path');
 
 
 // Local Modules
-const constraints       = require('./analyzer');
+const constraints = require('./analyzer');
 const generateTestCases = require('./testgenerator');
 
 
@@ -20,11 +20,11 @@ require('./format-polyfill');
 /**
  * Parse an input file and generate test cases for it.
  */
-(module.exports.main = function() {
+(module.exports.main = function () {
 
     // Parse file input, defaulting to subject.js if not provided
     let args = process.argv.slice(2);
-    if( args.length === 0 ) {
+    if (args.length === 0) {
         args = ["server.js"];
     }
     let filePath = path.resolve(args[0]);

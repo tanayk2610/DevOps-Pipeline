@@ -33,7 +33,7 @@ async function priority()
     try{
         for(var i =1; i <= 2;i++)
         {
-            junitResults =  execSync(`cd /var/lib/jenkins/jobs/itrust2/build/${i} && ls *.xml`);
+            junitResults =  execSync(`cd /var/lib/jenkins/jobs/itrust2/build/${i}/ && ls *.xml`);
         }
         var result = junitResults.toString().trim().split('\n');
         result.forEach(function(junitResult){

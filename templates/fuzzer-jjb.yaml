@@ -9,7 +9,6 @@
           sudo mvn clean test verify checkstyle:checkstyle
     publishers:
       - jacoco
-      - 
     wrappers:
       - timeout:
           timeout: 3
