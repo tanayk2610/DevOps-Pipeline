@@ -12,8 +12,8 @@
           sudo mvn clean test verify checkstyle:checkstyle'
     publishers:
       - jacoco
-      # - trigger:
-      #     project: ansible-itrust
+      - trigger:
+          project: fuzzer
     # wrappers:
     #   - workspace-cleanup
     # - timeout:
