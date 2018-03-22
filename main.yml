@@ -150,10 +150,11 @@
 # checkbox coverage report generation files are in '/files/coverage'
 
     - name: copy checkbox test generation files to checkbox repo
-      copy:
-        src: /files/coverage/*
-        dest: /checkbox.io/
-        remote_src: True
+      shell: cp -R /files/coverage/* /checkbox.io/server-side/site/
+      # copy:
+      #   src: /files/coverage/*
+      #   dest: /checkbox.io/server-side/site/
+      #   remote_src: True
 
     - name: install npm packages
       npm:
