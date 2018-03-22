@@ -1,34 +1,27 @@
 var Random = require('random-js');
 var fs = require('fs');
 var sleep = require('sleep');
-var shell = require('shelljs');
-<<<<<<< HEAD
-// var testAnalysis = require('./testAnalysis.js');
-=======
-
-////////////////////////////////////////////////////////
-var testpriori = require('./test-priori');
-var resultee = testpriori.resultee;
-///////////////////////////////////////////////////////////
-
->>>>>>> a26158679e61dee8f4813a625df2d7bf2b14af10
 const execSync = require('child_process').execSync;
 var iterations = 2;
 // var tests = [];
 
+
 var getJavaFiles = function () {
     var javaFiles = [];
     var path = "/var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2/src/main/java/edu/ncsu/csc/itrust2";
-    var temp = [`ls ${path}/**/*.java`,`ls ${path}/controllers/**/*.java`,`ls ${path}/forms/**/*.java`,`ls ${path}/utils/*.java`,`ls ${path}/mvc/**/**.java`,`ls ${path}/controllers/api/**/**.java`,`ls ${path}/models/enums/*.java`];
-    var files = execSync(`${temp[fuzzer.random.integer(0,6)]}`);
-    console.log("files are: "+ files.toString());
-    // console.log(typeof file);
-    var javafiles = files.toString().trim().split("\n");
-        javafiles.forEach(function(file){
-            javaFiles.push(file);
-        });
+    var temp = execSync(`ls ${path}/**/**/*.java && ls ${path}/**/*.java && ls ${path}/controllers/api/comm/**.java`);
+    
+    var javafiles = temp.toString().trim().split("\n");
+    var num = fuzzer.random.integer(1,88);
+    var files = [];
 
-    return javaFiles;
+    for(var i=0; i < num ; i++ )
+    {
+        files[i] = javafiles[fuzzer.random.integer(0,i)];
+    }
+    
+    console.log("files are: "+ files.toString());
+    return files;
 }
 
 var fuzzer = {
@@ -52,30 +45,30 @@ var fuzzer = {
         lines.forEach( function (line) {
 
             // Change the content of the string
-            if(fuzzer.random.bool(0.2) && line.match('\"(\\"|[^\"])*\"') && !line.match("//") && !line.match("@") && !line.match("final") && !line.match("jdbc"))
-                line = line.replace(/\"(\\"|[^\"])*\"/g, '"' + fuzzer.random.string(10) + '"')
+            if(fuzzer.random.bool(0.8) && line.match('\"(\\"|[^\"])*\"') && !line.match("//") && !line.match("@") && !line.match("final") && !line.match("jdbc"))
+                line = line.replace(/\"(\\"|[^\"])*\"/g, '"' + fuzzer.random.string(10) + '"')  
 
             //Replace '<' with '>' and '==' with '!=' and vice versa
-            if( line.match("if") || line.match("while"))
+            if( line.match("if"))
             {
                 if( !line.match("null") ){
-                    if(fuzzer.random.bool(0.2) && line.match("=="))
+                    if(fuzzer.random.bool(0.8) && line.match("=="))
                         line = line.replace('==','!=');
-                    if(fuzzer.random.bool(0.2) && line.match("!="))
+                    if(fuzzer.random.bool(0.8) && line.match("!="))
                         line = line.replace('!=','==');
                 }
-                if(fuzzer.random.bool(0.2) && line.match("<"))
+                if(fuzzer.random.bool(0.8) && line.match("<"))
                     line = line.replace('<','>');
-                if(fuzzer.random.bool(0.2) && line.match(">"))
+                if(fuzzer.random.bool(0.8) && line.match(">"))
                     line = line.replace('>','<');
             }
             if( !line.match("case") ) {
                 // Replace 0 with 1
-                if(fuzzer.random.bool(0.2) && line.match('"((\\"|[^"])+0(\\"|[^"])*|(\\"|[^"])*0(\\"|[^"])+)"'))
+                if(fuzzer.random.bool(0.8) && line.match('"((\\"|[^"])+0(\\"|[^"])*|(\\"|[^"])*0(\\"|[^"])+)"'))
                     line = line.replace('0','1');
 
                 // Replace 1 with 0
-                if(fuzzer.random.bool(0.2) && line.match('"((\\"|[^"])+1(\\"|[^"])*|(\\"|[^"])*1(\\"|[^"])+)"'))
+                if(fuzzer.random.bool(0.8) && line.match('"((\\"|[^"])+1(\\"|[^"])*|(\\"|[^"])*1(\\"|[^"])+)"'))
                     line = line.replace('1','0');
             }
             fs.appendFileSync(tempFilePath, line + '\n');
@@ -91,7 +84,7 @@ function commitChanges(number)
 
     execSync("cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git add .");
     execSync('cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git commit -m "Fuzzer commit on ' + 'Build number: ' + number + '"');
-    execSync("cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git reset --hard HEAD~");
+    execSync("cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git reset --hard origin/master");
 
     console.log("#######################commit changes ended#################################")
 }
@@ -108,8 +101,8 @@ var fuzz = function (num)
 
     execSync("cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git checkout fuzzer");
     // console.log("branched checkout");
-var i = 1;
-    while( i <= num)
+    var i = 1;
+    while( i <= iterations)
     {
         console.log("Build Number: "+i);
 
@@ -119,31 +112,13 @@ var i = 1;
             fuzzer.mutate(file);
 
         });
-<<<<<<< HEAD
-
-        // sleep.sleep(200);
+	sleep.sleep(200);
         // Commit the changes
         commitChanges(i);
-        sleep.sleep(200);
-        //test prori
-        // testAnalysis.priority(tests,i)
         i++;
-=======
-
-        sleep.sleep(50);
-        // Commit the changes
-        commitChanges(iterations);
-
-
->>>>>>> a26158679e61dee8f4813a625df2d7bf2b14af10
     }
     execSync(`cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2 && git checkout ${fuzzSHA}`);
     // console.log("TEST REPORT \n "+ tests);
 }
 
-<<<<<<< HEAD
-fuzz(iterations)
-// exports.tests = tests;
-=======
-fuzz(5)
->>>>>>> a26158679e61dee8f4813a625df2d7bf2b14af10
+fuzz(2)

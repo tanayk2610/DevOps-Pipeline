@@ -2,15 +2,17 @@
     name: fuzzer
     description: "rebuild itrust job"
     builders:
+      # - copyartifact:
+      #     project: /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/
       - shell: |
-          sudo cp -a /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/ /var/lib/jenkins/jobs/fuzzer/workspace/
+          sudo cp -R /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/ /var/lib/jenkins/jobs/fuzzer/workspace/
           cd iTrust2-v2/iTrust2
           sudo mvn process-test-classes -f pom-data.xml
           sudo mvn clean test verify checkstyle:checkstyle
     publishers:
       - jacoco
       - junit:
-          results: fuzzer/workspace//iTrust2-v2//iTrust2/target/surefire-reports/*.xml
+          results: iTrust2-v2/iTrust2/target/surefire-reports/*.xml
     wrappers:
       - timeout:
           timeout: 3

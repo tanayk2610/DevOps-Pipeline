@@ -56,20 +56,20 @@
         regexp: 'git clone '
         line: "          git clone https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/ubhosle/iTrust2-v2.git &&"
 
-    - name: Create Checkbox job builder file
-      template:
-        src: templates/checkbox-jjb.yaml
-        dest: jobs/
+    # - name: Create Checkbox job builder file
+    #   template:
+    #     src: templates/checkbox-jjb.yaml
+    #     dest: jobs/
+    #
+    # - name: Create Checkbox post build job builder file
+    #   template:
+    #     src: templates/ansible-checkbox-jjb.yaml
+    #     dest: jobs/
 
-    - name: Create Checkbox post build job builder file
-      template:
-        src: templates/ansible-checkbox-jjb.yaml
-        dest: jobs/
-
-    - name: Create iTrust post build job builder file
-      template:
-        src: templates/ansible-itrust-jjb.yaml
-        dest: jobs/
+    # - name: Create iTrust post build job builder file
+    #   template:
+    #     src: templates/ansible-itrust-jjb.yaml
+    #     dest: jobs/
 
     - name: Create Fuzzer post build job builder file
       template:
@@ -101,10 +101,10 @@
       register: result
 
 #    - debug: var=result.stdout
-
-    - name: Run Checkbox job
-      shell: curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:9090/job/checkbox/build -H "{{crumb.stdout}}"
-      register: result
+    #
+    # - name: Run Checkbox job
+    #   shell: curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:9090/job/checkbox/build -H "{{crumb.stdout}}"
+    #   register: result
 
 #    - debug: var=result.stdout
 ...

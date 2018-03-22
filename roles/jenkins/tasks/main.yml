@@ -131,6 +131,7 @@
     - build-timeout
     - ws-cleanup
     - junit
+    - copyartifact
   become: yes
 
 # - name: Wait for restart

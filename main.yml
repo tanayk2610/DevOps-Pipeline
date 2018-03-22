@@ -145,7 +145,43 @@
     - name: give all rights to iTrust
       shell: chmod 777 /iTrust2-v2/
 
+##############################################################
+
+# checkbox coverage report generation files are in '/files/coverage'
+
+    - name: copy checkbox test generation files to checkbox repo
+      copy:
+        src: /files/coverage/*
+        dest: /checkbox.io/
+        remote_src: True
+
+    - name: install npm packages
+      npm:
+        path: /checkbox.io/
+
+    - name: run coverage.js with forever
+      shell: forever start coverage.js
+
+    - name: run testgenration script
+      shell: node testgenerator.js
+
+    - name: Waiting fortests to be generated
+      pause:
+        minutes: 1
+
+    - name: run test.js created by testgenerator.js
+      shell: node test.js
+
+
+
+
+
+##################################################################
+
 - import_playbook: builder.yml
+
+
+
 
 # Fuzzer Code
 - name: Starting Fuzzer

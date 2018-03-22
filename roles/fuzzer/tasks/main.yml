@@ -20,9 +20,9 @@
     dest: "/fuzz/"
     mode: 0777
 
-- name: Copy testAnalysis.js to jenkins server
+- name: Copy prioritization.js to jenkins server
   template:
-    src: testAnalysis.js
+    src: prioritization.js
     dest: "/fuzz/"
     mode: 0777
 
@@ -42,4 +42,11 @@
 
 - name: Run fuzzer.js
   shell: node /fuzz/fuzzer.js
+
+# - name: Waiting for last fuzzer job to be created
+#   pause:
+#     minutes: 4
+
+# - name: Run prioritization.js
+#   shell: node /fuzz/prioritization.js
 ...

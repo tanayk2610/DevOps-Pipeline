@@ -1,0 +1,61 @@
+---
+- name: Set github name and email
+  shell: git config --global user.email '{{GIT_EMAIL}}' && git config --global user.name '{{GIT_NAME}}'
+
+- name: Make fuzz directory
+  file:
+    path: /fuzz
+    state: directory
+    mode: 0777
+
+- name: Copying fuzzer.js to jenkins server
+  template:
+    src: fuzzer.js
+    dest: "/fuzz/"
+    mode: 0777
+
+- name: Copy package.json to jenkins server
+  template:
+    src: package.json
+    dest: "/fuzz/"
+    mode: 0777
+
+<<<<<<< HEAD
+- name: Copy prioritization.js to jenkins server
+  template:
+    src: prioritization.js
+=======
+- name: Copy testAnalysis.js to jenkins server
+  template:
+    src: testAnalysis.js
+>>>>>>> 16e97b7670b53a744227e2adbcccf5207f4d426d
+    dest: "/fuzz/"
+    mode: 0777
+
+- name: Perform npm install
+  npm:
+    path: /fuzz
+    state: latest
+
+- name: git checkout fuzzer
+  shell: cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2 && git branch fuzzer && git checkout fuzzer
+
+- name: Copy post-commit file from template to hooks
+  template:
+    src: post-commit
+    dest: /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/.git/hooks/
+    mode: 0777
+
+- name: Run fuzzer.js
+  shell: node /fuzz/fuzzer.js
+
+# - name: Waiting for last fuzzer job to be created
+#   pause:
+#     minutes: 4
+
+- name: Copy all junit.xml files to one folder
+  shell: mv /var**/*.zip /path/to/single/target/directory
+
+# - name: Run prioritization.js
+#   shell: node /fuzz/prioritization.js
+...
