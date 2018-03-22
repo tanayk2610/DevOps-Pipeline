@@ -6,17 +6,12 @@ const fs = require('fs');
 const _ = require('lodash');
 //const randexp = require('randexp');
 
-
-
 // Set options
 //faker.locale = "en";
 const options = { tokens: true, tolerant: true, loc: true, range: true };
 
-
-
 // Create random generator engine
 //const engine = Random.engines.mt19937().autoSeed();
-
 
 /**
  * Constraint class. Represents constraints on function call parameters.
@@ -35,7 +30,6 @@ class Constraint {
     }
 }
 
-
 /**
  * Generate function parameter constraints for an input file
  * and save them to the global functionConstraints object.
@@ -45,7 +39,7 @@ class Constraint {
  */
 function constraints(filePath) {
     //console.log("----------------------------------------------------")
-    // Initialize function constraints directory
+    //Initialize function constraints directory
     //let functionConstraints = {};
 
     // Read input file and parse it with esprima.

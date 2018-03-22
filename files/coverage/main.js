@@ -6,16 +6,13 @@
 // Core/NPM Modules
 const path = require('path');
 
-
 // Local Modules
 const constraints = require('./analyzer');
-const generateTestCases = require('./testgenerator');
-
+const tester = require('./testgenerator');
+//const routeParser = require('./routeParser');
 
 // Polyfills
 require('./format-polyfill');
-
-
 
 /**
  * Parse an input file and generate test cases for it.
@@ -31,8 +28,16 @@ require('./format-polyfill');
 
     // Initialize constraints based on input file
     let functionConstraints = constraints(filePath);
+    // tester.insertInDB(tester.generateTestCases,filePath, functionConstraints)
+
+    // let routeConstraints = routeParser();
 
     // Generate test cases
-    generateTestCases(filePath, functionConstraints);
-
+    tester.generateTestCases(filePath, functionConstraints);
+    // var cb = tester.generateTestCases;
+    //  console.log(typeof )
+    // setTimeout(function () {
+    // console.log(routeConstraints)
+    // tester.generateTestCases(filePath, functionConstraints, routeConstraints);
+    // }, 3000);
 })();
