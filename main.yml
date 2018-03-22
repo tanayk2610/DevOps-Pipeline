@@ -37,7 +37,7 @@
 
   tasks:
     - lineinfile: dest=/etc/environment line='DOTOKEN={{ lookup('env','DOTOKEN') }}'
-    - lineinfile: dest=/etc/environment line='MONGO_PORT:{{ lookup('env', 'MONGO_PORT') }}'
+    - lineinfile: dest=/etc/environment line='MONGO_PORT={{ lookup('env', 'MONGO_PORT') }}'
     - lineinfile: dest=/etc/environment line="MONGO_IP={{ lookup('env','MONGO_IP') }}"
     - lineinfile: dest=/etc/environment line="MONGO_USER={{ lookup('env','MONGO_USER') }}"
     - lineinfile: dest=/etc/environment line="MONGO_PASSWORD={{ lookup('env','MONGO_PASSWORD') }}"
