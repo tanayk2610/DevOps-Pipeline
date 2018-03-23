@@ -3,14 +3,21 @@
 ### Automated Commit Generation - Commit Fuzzer and Test Prioritization Analysis
 
 ##### Approach  
-As per the Milestone 1, we cloned the iTrust2-v2 repository in the iTrust2 workspace of the Jenkins and after the build is successful. We are creating a new fuzzer branch on oour forked iTrust2-v2 repo and checking out that branch and run the `fuzzer.js` using ansible playbook, now in this `fuzzer.js` file, we are listing all the *java* files which resides in the `/iTrust2/src/main/java/edu/ncsu/csc/itrust2` directory and store them in an array and then we are randomly generating a number between 1 and 88, which gives us how many files are we going to fuzz and the fuzzer randomly selects that number of files randomly from the list and start mutation on those files.  
-After the fuzzer mutates the java files, it commits to the fuzzer branch and a `post-commit` hook gets called which copies the fuzzed repo into the fuzzer workspace and also triggers the fuzzer jenkins job and after the job is triggered we revert back to the original version. We have a sleep time of about 3 minutes between each commit because the when we were running the build jobs concurrently we were facing memory issue when running the 100 commits but it works well for few commits. The job, builds and tests the repo.    
-In the post build action the ***JaCoCo*** reports are being generated for studying the code coverage. The jacoco reports generate the test cases in *xml* files in surefire-reports directory in the target directory.    
+Similar to Milestone 1, we setup a Jenkins server to run jobs to evaluate test coverage and peroforming builds for iTrust and Checkbox. We cloned the iTrust2-v2 repository in our Jenkins job's workspace and build it. After a successful build, we are creating a new fuzzer branch in the cloned repo and checking out that branch to run the `fuzzer.js` script using an ansible play. In this script, we are listing all the *java* files which reside at this path - `/iTrust2/src/main/java/edu/ncsu/csc/itrust2`. Then we store this list and randomly generate a number between 1 and 88, on the basis of which we select a random number of files from the list and start mutation on them.
+
+
+After the fuzzer mutates the java files, it commits to the fuzzer branch and a `post-commit` hook gets called which copies the fuzzed repo into the fuzzer workspace and also triggers the fuzzer jenkins job. After the job is triggered we revert back to the original version. We have a sleep time of about 3 minutes between each commit because the when we were running the build jobs concurrently we were facing memory issues upon running 100 commits but it works well for few commits. The job builds and tests the repo.
+In the post build action ***JaCoCo*** reports are being generated for studying the code coverage. The jacoco reports generate the test cases in *xml* files inside `target/surefire-reports`.
 
 ##### Analysis  
-We have used the ***JUnit*** plugin in jenkins post build action to generate a single xml file which combines the results of all the 46 test cases. This helped us to simplify the test prioritization task. As we just have to read through a single xml file for each build and then perform analysis on them all together once all the 100 commits have been made. In analysis, we read each file and look for all the `<testname>` to know which test is the data for, `<duration>` for each test and we look for `<errorStackTrace>` to check if the test has passed or failed. For every failed test there will be a `<errorStackTrace>` and we assign -1 for each fail test and +1 for each passed test. So for all the 100 xml files we keep updating the duration and the status and in the end, we take the average of all the duration and we get an integer for a status ranging between a minimum value of `-100` if it fails all the time and `100` if that test passed all the time.     
+We have used the ***JUnit*** plugin in jenkins post build action of the job to generate a single xml file which combines results of all the 46 test cases that are run. This helped us to simplify the test prioritization task. Instead of reading all the 24 files that are created per build, we just have to read through a single xml file because of this plugin. We then perform analysis on all of them after 100 commits have been made. In analysis, we read each file and look for
+1. `<testname>` tag - to find all test cases
+2. `<duration>` tag - to find the time taken to execute a specific test; and
+3. `<errorStackTrace>` tag - to check if the test has passed or failed.
 
-##### Problems discovered:    
+For every failed test there will be a `<errorStackTrace>` and we assign `-1` for each failed test and `+1` for each passed test. So for all the 100 xml files we keep updating the duration and the status of the tests. In the end, we evaluate the average of all the durations to calculate average time to run a test and we get an integer for a status ranging between a minimum value of `-100` if it fails all the time and `100` if that test passed all the time.     
+
+##### Problems discovered: 
 - The test cases were not written so as to cover every possible condition and are hence flaky.  
 - Certain changes to the logical conditions could lead to failures.   
 - On changing certain strings, there are failures.
