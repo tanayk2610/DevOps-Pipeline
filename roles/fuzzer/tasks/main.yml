@@ -43,10 +43,19 @@
 - name: Run fuzzer.js
   shell: node /fuzz/fuzzer.js
 
-# - name: Waiting for last fuzzer job to be created
-#   pause:
-#     minutes: 4
+- name: Waiting for last fuzzer job to be created
+  pause:
+    minutes: 4
 
-# - name: Run prioritization.js
-#   shell: node /fuzz/prioritization.js
+- name: Make a container directory inside fuzz
+  file:
+    path: /fuzz/container
+    state: directory
+    mode: 0777
+
+- name: Run copy.js
+  shell: cd /fuzz && node copy.js
+
+- name: Run prioritization.js
+  shell: cd /fuzz/containers && node /fuzz/prioritization.js
 ...

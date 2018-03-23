@@ -2,4 +2,4 @@
     name: ansible-checkbox
     description: "deploy server with checkbox on it"
     builders:
-      - shell: "ansible-playbook /files/checkbox.yml -u root"
+      - shell: "ansible-playbook /files/checkbox.yml"

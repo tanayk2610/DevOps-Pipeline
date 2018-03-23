@@ -3,6 +3,6 @@
     description: "automatically build checkbox"
     builders:
       - shell: 'cd /checkbox.io/server-side/site/ && npm install'
-    publishers:
-      - trigger:
-          project: ansible-checkbox
+    # publishers:
+    #   - trigger:
+    #       project: ansible-checkbox

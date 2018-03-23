@@ -1,0 +1,232 @@
+[
+ {
+  "name": "testPrescriptionAPI",
+  "time": 0.23516000000000012,
+  "status": -4
+ },
+ {
+  "name": "testPatientAPI",
+  "time": 0.13169000000000003,
+  "status": 0
+ },
+ {
+  "name": "testPatientAsPatient",
+  "time": 0.018399999999999986,
+  "status": 8
+ },
+ {
+  "name": "testDiagnoses",
+  "time": 0.6478000000000002,
+  "status": 16
+ },
+ {
+  "name": "testOfficeVisitAPI",
+  "time": 0.4894900000000002,
+  "status": 16
+ },
+ {
+  "name": "testValidPasswordChanges",
+  "time": 0.7492800000000003,
+  "status": 18
+ },
+ {
+  "name": "testPreScheduledOfficeVisit",
+  "time": 0.24765,
+  "status": 18
+ },
+ {
+  "name": "testRequestReset",
+  "time": 1.4361299999999992,
+  "status": 20
+ },
+ {
+  "name": "testPersonnelAPI",
+  "time": 0.15293,
+  "status": 20
+ },
+ {
+  "name": "testLogByDateLarge",
+  "time": 1.9442200000000003,
+  "status": 22
+ },
+ {
+  "name": "testAppointmentRequestAPI",
+  "time": 0.23020000000000007,
+  "status": 22
+ },
+ {
+  "name": "testDrugAPI",
+  "time": 0.060260000000000036,
+  "status": 22
+ },
+ {
+  "name": "testHospitalAPI",
+  "time": 0.03154,
+  "status": 22
+ },
+ {
+  "name": "testInvalidPasswordChanges",
+  "time": 0.021649999999999996,
+  "status": 22
+ },
+ {
+  "name": "testLogByDate",
+  "time": 0.01544,
+  "status": 22
+ },
+ {
+  "name": "testCodeAPI",
+  "time": 2.5311399999999997,
+  "status": 24
+ },
+ {
+  "name": "testUserAPI",
+  "time": 0.3951200000000001,
+  "status": 24
+ },
+ {
+  "name": "testCreateBadAppointmentRequest",
+  "time": 0.18495,
+  "status": 24
+ },
+ {
+  "name": "testEnumAPI",
+  "time": 0.0111,
+  "status": 24
+ },
+ {
+  "name": "testPatientUnauthenticated",
+  "time": 0.0031000000000000016,
+  "status": 24
+ },
+ {
+  "name": "testPasswordReset",
+  "time": 2.508439999999999,
+  "status": 76
+ },
+ {
+  "name": "testPasswordChangeForm",
+  "time": 0.9032799999999997,
+  "status": 78
+ },
+ {
+  "name": "testUserLockouts",
+  "time": 0.047149999999999984,
+  "status": 90
+ },
+ {
+  "name": "testOfficeVisit",
+  "time": 0.20047999999999994,
+  "status": 92
+ },
+ {
+  "name": "testIPLockouts",
+  "time": 0.03824999999999997,
+  "status": 92
+ },
+ {
+  "name": "testInvalidCodes",
+  "time": 0.00006,
+  "status": 94
+ },
+ {
+  "name": "testCodes",
+  "time": 0,
+  "status": 94
+ },
+ {
+  "name": "testCreateDomainObject",
+  "time": 0.005000000000000004,
+  "status": 96
+ },
+ {
+  "name": "testLogging",
+  "time": 0.02931999999999998,
+  "status": 98
+ },
+ {
+  "name": "testSendEmail",
+  "time": 1.1916900000000006,
+  "status": 100
+ },
+ {
+  "name": "testRetrieveDomainObject",
+  "time": 0.09412,
+  "status": 100
+ },
+ {
+  "name": "testPatientDateOfDeath",
+  "time": 0.017199999999999983,
+  "status": 100
+ },
+ {
+  "name": "testGetNonExistentUser",
+  "time": 0.011120000000000001,
+  "status": 100
+ },
+ {
+  "name": "testFieldValidation",
+  "time": 0.011000000000000001,
+  "status": 100
+ },
+ {
+  "name": "testDelete",
+  "time": 0.009420000000000006,
+  "status": 100
+ },
+ {
+  "name": "testGetNonExistentPersonnel",
+  "time": 0.008560000000000005,
+  "status": 100
+ },
+ {
+  "name": "testDeleteNonExistentOfficeVisit",
+  "time": 0.008200000000000006,
+  "status": 100
+ },
+ {
+  "name": "testGetNonExistentOfficeVisit",
+  "time": 0.007910000000000006,
+  "status": 100
+ },
+ {
+  "name": "testGetNonExistentPatient",
+  "time": 0.0054300000000000025,
+  "status": 100
+ },
+ {
+  "name": "testGetNonExistentHospital",
+  "time": 0.005180000000000003,
+  "status": 100
+ },
+ {
+  "name": "testGetNonExistentAppointment",
+  "time": 0.005090000000000003,
+  "status": 100
+ },
+ {
+  "name": "testDeleteNonExistentAppointment",
+  "time": 0.005010000000000003,
+  "status": 100
+ },
+ {
+  "name": "testEmail",
+  "time": 0.0018300000000000011,
+  "status": 100
+ },
+ {
+  "name": "testEqualsAndProperties",
+  "time": 0.00007000000000000001,
+  "status": 100
+ },
+ {
+  "name": "testPersonnelForm",
+  "time": 0.00006,
+  "status": 100
+ },
+ {
+  "name": "testHospitalForm",
+  "time": 0.00005,
+  "status": 100
+ }
+]

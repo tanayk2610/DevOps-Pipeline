@@ -174,11 +174,6 @@
       shell: node test.js
 
 
-
-
-
-##################################################################
-
 - import_playbook: builder.yml
 
 
@@ -192,7 +187,7 @@
   pre_tasks:
     - name: Wait for iTrust to complete build
       pause:
-        minutes: 10
+        minutes: 6
   roles:
     - role: fuzzer
       JENKINS_USER: "{{lookup ('env','JENKINS_USER') }}"

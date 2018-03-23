@@ -2,10 +2,7 @@
     name: fuzzer
     description: "rebuild itrust job"
     builders:
-      # - copyartifact:
-      #     project: /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/
       - shell: |
-          sudo cp -R /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/ /var/lib/jenkins/jobs/fuzzer/workspace/
           cd iTrust2-v2/iTrust2
           sudo mvn process-test-classes -f pom-data.xml
           sudo mvn clean test verify checkstyle:checkstyle
