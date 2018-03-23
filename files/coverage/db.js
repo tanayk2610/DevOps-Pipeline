@@ -93,19 +93,69 @@ exports.insertStudy = function (db) {
       "token": "3",
       "adminLink": "/studies/admin/?token=1",
       "publicLink": "/studies/?id=" + `${faker.random.number()}`
+    },
+    study4 = {
+      "_id": new mongo.ObjectId("1aa111a11111111111111a11"),
+      "name": faker.name.findName(),
+      "description": "Record 4",
+      "studyKind": "dataStudy",
+      "researcherName": faker.name.findName(),
+      "contact": faker.internet.email(),
+      "awards": null,
+      "awardOptions": [
+        "Amazon Gift Card",
+        "Github Swag",
+        "BrowserStack",
+        "Windows Surface RT",
+        "iPad Mini",
+        "Other",
+        "None"
+      ],
+      "status": "open",
+      "goal": "100",
+      "invitecode": "RESEARCH",
+      "markdown": "",
+      "token": "1",
+      "adminLink": "/studies/admin/?token=1",
+      "publicLink": "/studies/?id=" + `${faker.random.number()}`
+    },
+    study5 = {
+      "_id": new mongo.ObjectId("2aa222a22222222222222a22"),
+      "name": faker.name.findName(),
+      "description": "Record 5",
+      "studyKind": "analysis",
+      "researcherName": faker.name.findName(),
+      "contact": faker.internet.email(),
+      "awards": null,
+      "awardOptions": [
+        "Amazon Gift Card",
+        "Github Swag",
+        "BrowserStack",
+        "Windows Surface RT",
+        "iPad Mini",
+        "Other",
+        "None"
+      ],
+      "status": "open",
+      "goal": "100",
+      "invitecode": "RESEARCH",
+      "markdown": "",
+      "token": "1",
+      "adminLink": "/studies/admin/?token=1",
+      "publicLink": "/studies/?id=" + `${faker.random.number()}`
     }
   MongoClient.connect("mongodb://" + process.env.MONGO_USER + ":" + process.env.MONGO_PASSWORD + "@" + process.env.MONGO_IP + ":27017/site?authSource=admin", function (err, authdb) {
     // Now you can use the database in the db variable
     db = authdb;
     console.log(err || "connected!");
 
-    // db.collection("studies").insertOne(study1, function (err, res) {
-    //   if (err) throw err;
-    //   id1 = res["ops"][0]["_id"];
-    //   // console.log(id1);
-    //   // db.close();
-    // }
-    // );
+    db.collection("studies").insertOne(study1, function (err, res) {
+      if (err) throw err;
+      id1 = res["ops"][0]["_id"];
+      // console.log(id1);
+      // db.close();
+    }
+    );
     db.collection("studies").insertOne(study2, function (err, res) {
       if (err) throw err;
       id1 = res["ops"][0]["_id"];
@@ -114,6 +164,20 @@ exports.insertStudy = function (db) {
     }
     );
     db.collection("studies").insertOne(study3, function (err, res) {
+      if (err) throw err;
+      id1 = res["ops"][0]["_id"];
+      // console.log(id1);
+      // db.close();
+    }
+    );
+    db.collection("studies").insertOne(study4, function (err, res) {
+      if (err) throw err;
+      id1 = res["ops"][0]["_id"];
+      // console.log(id1);
+      // db.close();
+    }
+    );
+    db.collection("studies").insertOne(study5, function (err, res) {
       if (err) throw err;
       id1 = res["ops"][0]["_id"];
       // console.log(id1);
@@ -285,27 +349,27 @@ exports.insertVote = function (db) {
     // Now you can use the database in the db variable
     db = authdb;
     console.log(err || "connected!");
-    // db.collection("votes").insertOne(vote1, function (err, res) {
-    //   if (err) throw err;
-    //   id2 = res["ops"][0]["_id"];
-    //   // console.log(id2);
-    //   return id2;
-    //   // db.close();
-    // });
-    // db.collection("votes").insertOne(vote2, function (err, res) {
-    //   if (err) throw err;
-    //   id2 = res["ops"][0]["_id"];
-    //   // console.log(id2);
-    //   return id2;
-    //   // db.close();
-    // });
-    // db.collection("votes").insertOne(vote3, function (err, res) {
-    //   if (err) throw err;
-    //   id2 = res["ops"][0]["_id"];
-    //   // console.log(id2);
-    //   return id2;
-    //   // db.close();
-    // });
+    db.collection("votes").insertOne(vote1, function (err, res) {
+      if (err) throw err;
+      id2 = res["ops"][0]["_id"];
+      // console.log(id2);
+      return id2;
+      // db.close();
+    });
+    db.collection("votes").insertOne(vote2, function (err, res) {
+      if (err) throw err;
+      id2 = res["ops"][0]["_id"];
+      // console.log(id2);
+      return id2;
+      // db.close();
+    });
+    db.collection("votes").insertOne(vote3, function (err, res) {
+      if (err) throw err;
+      id2 = res["ops"][0]["_id"];
+      // console.log(id2);
+      return id2;
+      // db.close();
+    });
   });
 }
 
