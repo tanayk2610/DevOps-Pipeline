@@ -67,13 +67,19 @@ The Test generator created ***46*** test cases corresponding to various *API's*.
 
 Coverage for server.js : ***96.43 %***
 
-Coverage for all the routes used by server.js : ***79.19%***
+Coverage for all the routes used by server.js : ***85.80%***
 
 Coverage for most important route files accessed in server.js :
-* `admin.js` : ***81.19%***
+* `admin.js` : ***91.18%***
 * `create.js` : ***95.65%***
-* `study.js` : ***79.27%***
+* `study.js` : ***92.77%***
 
 ## Screencast
 
 You can view the screencast video [here](https://drive.google.com/file/d/1QvAV34-Cb5etROdau0F03tYM1S2LQHY2/view?usp=sharing).
+
+## Screenshot
+
+![fuzzer_commits](Fuzzer_Commits.png)  
+![checkbox1](checkbox1.jpeg)
+![checkbox2](checkbox2.jpeg)
