@@ -1,10 +1,5 @@
-//import { insertStudy, insertVote } from './db.js';
-
 // Core/NPM Modules
 const fs = require("fs");
-// const db = require('./db.js');
-
-// var id1 = null, id2 = null;
 
 /**
  * Generate test cases based on the global object constraints.
@@ -14,8 +9,6 @@ const fs = require("fs");
  */
 
 exports.generateTestCases = function (filepath, constraints) {
-    // db.insertStudy();
-    // db.insertVote();
     var token1 = 1, token2 = 2, token3 = 3, invteCodeStr = "RESEARCH",
         id1 = "5aa555a55555555555555a55", id2 = "1aa111a11111111111111a11", id3 = "2aa222a22222222222222a22",
         id4 = "1zz111z11111111111111z99", id5 = "2aa222a22222222222222a99",
@@ -42,6 +35,8 @@ exports.generateTestCases = function (filepath, constraints) {
         "Other",
         "None"
     ],
+    "kind":"BROWSERSTACK",
+    "email":"a@b.cl",
     "status":"open",
     "goal":"100",
     "invitecode":"RESEARCH",
@@ -68,6 +63,8 @@ var studyObj2 =
         "Other",
         "None"
     ],
+    "kind":"IPADMINI",
+    "email":"a@b.cl",
     "status":"open",
     "goal":"100",
     "invitecode":"RESEARCH",
@@ -94,6 +91,8 @@ var studyObj3 =
         "Other",
         "None"
     ],
+    "kind":"SURFACE",
+    "email":"a@b.cl",
     "status":"open",
     "goal":"100",
     "invitecode":"TEST",
@@ -103,52 +102,68 @@ var studyObj3 =
     "publicLink":"/studies/?id=5aaef796e96045070ea73042"
 }
 
+var studyObj4 = 
+{
+    "name":"fheiafhazn",
+    "description":"frejhtkjwavbsjdy298qywhsila",
+    "studyKind":"dataStudy",
+    "researcherName":"ABS",
+    "contact":"a@b.cl",
+    "awards":null,
+    "awardOptions":[
+        "Amazon Gift Card",
+        "Github Swag",
+        "BrowserStack",
+        "Windows Surface RT",
+        "iPad Mini",
+        "Other",
+        "None"
+    ],
+    "kind":"GITHUB",
+    "email":"a@b.cl",
+    "status":"open",
+    "goal":"100",
+    "invitecode":"TEST",
+    "markdown":"abc",
+    "token":"3",
+    "adminLink":"/studies/admin/?token=e5335bf1a54bf0f1a1144ff1b856e012b950a5a9bdcef21edd0f28dfa98bf2ca9b89a6f3cbd278c91439d937a11d5b41",
+    "publicLink":"/studies/?id=5aaef796e96045070ea73042"
+}
+
+var studyObj5 = 
+    {
+        "name":"fheiafhazn",
+        "description":"frejhtkjwavbsjdy298qywhsila",
+        "studyKind":"dataStudy",
+        "researcherName":"ABS",
+        "contact":"a@b.cl",
+        "awards":null,
+        "awardOptions":[
+            "Amazon Gift Card",
+            "Github Swag",
+            "BrowserStack",
+            "Windows Surface RT",
+            "iPad Mini",
+            "Other",
+            "None"
+        ],
+        "kind":"AMZN",
+        "email":"a@b.cl",
+        "status":"open",
+        "goal":"100",
+        "invitecode":"RESEARCH",
+        "markdown":"abc",
+        "token":"1",
+        "adminLink":"/studies/admin/?token=e5335bf1a54bf0f1a1144ff1b856e012b950a5a9bdcef21edd0f28dfa98bf2ca9b89a6f3cbd278c91439d937a11d5b41",
+        "publicLink":"/studies/?id=5aaef796e96045070ea73042"
+    }
+
+
 voteObj = {
     "_id": "5xx555x55555555555555x55",
     "studyId": "5aa555a55555555555555a55",
     "timestamp": "",
-    "answers": [
-    {
-        "question":1,
-        "kind":"multichoice",
-        "answer":[
-            "0"
-        ]
-    },
-        {
-            "question":2,
-            "kind":"singlechoice",
-            "answer":"0"
-        },
-        {
-            "question":3,
-            "kind":"singlechoicetable",
-            "answer":{
-                "3_0":"1",
-                "3_1":"2",
-                "3_2":"3",
-                "3_3":"2"
-            }
-        },
-        {
-            "question":4,
-            "kind":"multichoicetable",
-            "answer":{
-                "4_0":[
-                    "2"
-                ],
-                "4_1":[
-                    "2"
-                ],
-                "4_2":[
-                    "2"
-                ],
-                "4_3":[
-                    "2"
-                ]
-            }
-        }
-    ],
+    "answers": '[{ "kind": " "}]',
     "ip": faker.internet.ip(),
     "fingerprint": "2019582184",
     "email": faker.internet.email(),
@@ -255,28 +270,40 @@ voteObj = {
             if (api.indexOf("vote") === -1) {
                 //   console.log(api);
                 content1 += `try{
-                    needle.post("${api}",studyObj1,{ json: true });\n
+                    needle.post("${api}",studyObj1,{ json: true });
             } catch (e) {
                 console.log(e);
             }
             `;
                 content1 += `try{
-                    needle.post("${api}",studyObj2,{ json: true });\n
+                    needle.post("${api}",studyObj2,{ json: true });
             } catch (e) {
                 console.log(e);
             }
             `;
                 content1 += `try{
-                    needle.post("${api}",studyObj3,{ json: true });\n
+                    needle.post("${api}",studyObj3,{ json: true });
             } catch (e) {
                 console.log(e);
             }
             `;
+                content1 += `try{
+                needle.post("${api}",studyObj4,{ json: true });
+        } catch (e) {
+            console.log(e);
+        }
+        `;
+                content1 += `try{
+            needle.post("${api}",studyObj5,{ json: true });
+    } catch (e) {
+        console.log(e);
+    }
+    `;
             }
             else {
                 // console.log("vote present",api);
                 content1 += `try{
-                    needle.post("${api}",voteObj,{ json: true });\n
+                    needle.post("${api}",voteObj,{ json: true });
             } catch (e) {
                 console.log(e);
             }
@@ -284,12 +311,6 @@ voteObj = {
             }
         }
     }
-
     // Write final content string to file test.js.
     fs.writeFileSync('test.js', content1, "utf8");
-
-
 }
-
-// Export
-// module.exports = generateTestCases;

@@ -18,19 +18,18 @@ We have used the ***JUnit*** plugin in jenkins post build action of the job to g
 For every failed test there will be a `<errorStackTrace>` and we assign `-1` for each failed test and `+1` for each passed test. So for all the 100 xml files we keep updating the duration and the status of the tests. In the end, we evaluate the average of all the durations to calculate average time to run a test and we get an integer for a status ranging between a minimum value of `-100` if it fails all the time and `100` if that test passed all the time.     
 
 #### Problems discovered: 
-- Certain changes to the logical conditions could lead to failures.   
+- Certain changes to the logical conditions could lead to failures.
 - On changing certain strings, there are failures.
 - Sometimes the build may go in infinite loops on making changes to certain java files.   
-- If the code goes in *catch* part of try-catch code then we get errors.     
     
 #### Extending fuzzing operations in the future:  
-- We could extend the fuzzing jobs to cover more cases, than logical operations, strings and 0-1 mutations.   
-- We can try to make fuzze the code such that the corner cases are covered.  
+- We could extend the fuzzing jobs to cover more cases, than logical operations, strings and '0-1' mutations.   
+- We can try to fuzz the code such that the corner cases are covered.  
 - Using these fuzzing techniques we can create better test cases which can test the files in a more comprehensive way.   
-- Finally the code can be improved so as to cover various test cases and corner cases along with different logical corner   
+- Finally the code can be improved so as to cover various test cases and corner cases along with different logical errors.
   
 #### Ranking of test cases:   
-As we were analyzing our focus was more towards the failed test rather than the tests which passed because if we work through the failed tests then we can improve the code. Also we are sorting on the basis of the time it takes to run the test. So after all the 100 xml files have been analyzed and all the test cases value have been updated, we sort the test cases on the basis of the status in the order such as the test cases which have failed the most are listed on top of the list and for test cases having the same status value, we sort them on the basis of which test took more time than the other. This analysis will help the developer realizing what to improve and what not to worry about.
+As we were analyzing, our focus was more towards the failed tests rather than the tests which passed because if we work through the failed tests then we can improve the code. Also we are sorting on the basis of the time it takes to run the test. So, after all the 100 xml files have been analyzed and all the test cases value have been updated, we sort the test cases on the basis of the status in the order such as the test cases which have failed the most are listed on top of the list and for test cases having the same status value, we sort them on the basis of which test took more time than the other. We are generating the final report and write it on a file and store it for further analysis. This analysis will help the developer realizing what to improve and what not to worry about. You can also take a look at the (finalOutput)[https://github.ncsu.edu/ppatel16/DevOpsKnights/blob/m2_test_analysis/templates/finalOutput] file which we created after analyzing the 100 commits.
 
 ## Automated Test Generation, Testing and Coverage report for Checkbox.io
 
@@ -74,3 +73,7 @@ Coverage for most important route files accessed in server.js :
 * `admin.js` : ***81.19%***
 * `create.js` : ***95.65%***
 * `study.js` : ***79.27%***
+
+## Screencast
+
+You can view the screencast video [here](https://drive.google.com/file/d/1QvAV34-Cb5etROdau0F03tYM1S2LQHY2/view?usp=sharing).

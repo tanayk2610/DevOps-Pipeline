@@ -49,7 +49,7 @@
 
 - name: Make a container directory inside fuzz
   file:
-    path: /fuzz/container
+    path: /fuzz/containers
     state: directory
     mode: 0777
 

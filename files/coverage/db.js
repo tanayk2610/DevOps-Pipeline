@@ -5,19 +5,11 @@ var Server = mongo.Server,
   ObjectID = mongo.ObjectID;
 
 var MongoClient = mongo.MongoClient;
-//var db = null;
-// MongoClient.connect("mongodb://" + process.env.MONGO_USER + ":" + process.env.MONGO_PASSWORD + "@" + process.env.MONGO_IP + ":27017/site?authSource=admin", function (err, authdb) {
-//   // Now you can use the database in the db variable
-//   db = authdb;
-//   console.log(err || "connected!");
-// });
-
 exports.connectDB = function () {
   return MongoClient.connect("mongodb://" + process.env.MONGO_USER + ":" + process.env.MONGO_PASSWORD + "@" + process.env.MONGO_IP + ":27017/site?authSource=admin");
 }
 
 exports.insertStudy = function (db) {
-  // console.log("Inside insertStudy")
   var id1,
     study1 = {
       "_id": new mongo.ObjectId("5aa555a55555555555555a55"),
@@ -152,45 +144,28 @@ exports.insertStudy = function (db) {
     db.collection("studies").insertOne(study1, function (err, res) {
       if (err) throw err;
       id1 = res["ops"][0]["_id"];
-      // console.log(id1);
-      // db.close();
-    }
-    );
+    });
     db.collection("studies").insertOne(study2, function (err, res) {
       if (err) throw err;
       id1 = res["ops"][0]["_id"];
-      // console.log(id1);
-      // db.close();
-    }
-    );
+    });
     db.collection("studies").insertOne(study3, function (err, res) {
       if (err) throw err;
       id1 = res["ops"][0]["_id"];
-      // console.log(id1);
-      // db.close();
-    }
-    );
+    });
     db.collection("studies").insertOne(study4, function (err, res) {
       if (err) throw err;
       id1 = res["ops"][0]["_id"];
-      // console.log(id1);
-      // db.close();
-    }
-    );
+    });
     db.collection("studies").insertOne(study5, function (err, res) {
       if (err) throw err;
       id1 = res["ops"][0]["_id"];
-      // console.log(id1);
-      // db.close();
-    }
-    );
+    });
   });
-  // console.log("Exiting Insertstudy")
   return id1;
 }
 
 exports.insertVote = function (db) {
-  // console.log("inside insertVote")
   var id2,
     vote1 = {
       "_id": "5xx555x55555555555555x55",
@@ -202,9 +177,7 @@ exports.insertVote = function (db) {
         {
           "question": 1,
           "kind": "multichoice",
-          "answer": [
-            "0"
-          ]
+          "answer": ["0"]
         },
         {
           "question": 2,
@@ -352,23 +325,17 @@ exports.insertVote = function (db) {
     db.collection("votes").insertOne(vote1, function (err, res) {
       if (err) throw err;
       id2 = res["ops"][0]["_id"];
-      // console.log(id2);
       return id2;
-      // db.close();
     });
     db.collection("votes").insertOne(vote2, function (err, res) {
       if (err) throw err;
       id2 = res["ops"][0]["_id"];
-      // console.log(id2);
       return id2;
-      // db.close();
     });
     db.collection("votes").insertOne(vote3, function (err, res) {
       if (err) throw err;
       id2 = res["ops"][0]["_id"];
-      // console.log(id2);
       return id2;
-      // db.close();
     });
   });
 }

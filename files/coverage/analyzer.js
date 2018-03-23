@@ -1,17 +1,10 @@
 // Core/NPM Modules
 const esprima = require("esprima");
-//const faker = require("faker");
 const fs = require('fs');
-//const Random = require('random-js');
 const _ = require('lodash');
-//const randexp = require('randexp');
 
 // Set options
-//faker.locale = "en";
 const options = { tokens: true, tolerant: true, loc: true, range: true };
-
-// Create random generator engine
-//const engine = Random.engines.mt19937().autoSeed();
 
 /**
  * Constraint class. Represents constraints on function call parameters.
@@ -38,11 +31,6 @@ class Constraint {
  * @returns {Object}          Function constraints object.
  */
 function constraints(filePath) {
-    //console.log("----------------------------------------------------")
-    //Initialize function constraints directory
-    //let functionConstraints = {};
-
-    // Read input file and parse it with esprima.
     let buf = fs.readFileSync(filePath, "utf8");
     let result = esprima.parse(buf, options);
     let constraints = [];
@@ -53,11 +41,8 @@ function constraints(filePath) {
         if (node.type === 'ExpressionStatement') {
             // Traverse function node.
             traverse(node, function (child) {
-                //                console.log(child);
-                // Handle equivalence expression
                 if (_.get(child, 'type') === 'CallExpression' && _.get(child, 'callee.property.name') === 'get') {
                     var api = _.get(child, 'arguments[0].value')
-                    //                    console.log(api);
                     var paramNameVar, apiVar;
                     if (api.indexOf(":") === -1) {
                         paramNameVar = null;
@@ -77,15 +62,7 @@ function constraints(filePath) {
                 }
                 else if (_.get(child, 'type') === 'CallExpression' && _.get(child, 'callee.property.name') === 'post') {
                     var api = _.get(child, 'arguments[0].value')
-                    //                    console.log(api);
                     var paramNameVar = null;
-                    // if (api.indexOf(":") === -1) {
-                    //     paramNameVar = null;
-                    // }
-                    // else {
-                    //     paramNameVar = api.substring(api.indexOf(":") + 1, api.length);
-                    // }
-
                     constraints.push(new Constraint({
                         type: 'post',
                         api: api,
@@ -97,9 +74,6 @@ function constraints(filePath) {
             });
         }
     });
-    //    console.log(constraints);
-    //console.log("----------------------------------------------------")
-
     return constraints;
 }
 

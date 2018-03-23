@@ -51,8 +51,8 @@
     - lineinfile: dest=/etc/environment line="GIT_EMAIL={{ lookup('env','GIT_EMAIL') }}"
     - lineinfile: dest=/etc/environment line="GIT_NAME={{ lookup('env','GIT_NAME') }}"
 
-  # Dependencies for Checkbox.io - nodejs, nginx, mongodb
-  # Dependencies for iTrust2 - java8, chrome, mysql
+#   # Dependencies for Checkbox.io - nodejs, nginx, mongodb
+#   # Dependencies for iTrust2 - java8, chrome, mysql
 - name: Configure Jenkins Server
   hosts: jenkins
   roles:
@@ -151,33 +151,53 @@
 
     - name: copy checkbox test generation files to checkbox repo
       shell: cp -R /files/coverage/* /checkbox.io/server-side/site/
-      # copy:
-      #   src: /files/coverage/*
-      #   dest: /checkbox.io/server-side/site/
-      #   remote_src: True
 
     - name: install npm packages
       npm:
-        path: /checkbox.io/
+        path: /checkbox.io/server-side/site/
 
     - name: run coverage.js with forever
-      shell: forever start coverage.js
+      shell: node_modules/.bin/forever start coverage.js
+      args:
+        chdir: /checkbox.io/server-side/site/
+
+    - name: run main.js with forever
+      shell: node_modules/.bin/forever start main.js
+      args:
+        chdir: /checkbox.io/server-side/site/
+
+    - name: run forever stopall
+      shell: node_modules/.bin/forever stopall
+      args:
+        chdir: /checkbox.io/server-side/site/
+
+    - name: run coverage.js with forever
+      shell: node_modules/.bin/forever start coverage.js
+      args:
+        chdir: /checkbox.io/server-side/site/
+        
+    - name: run main.js with forever
+      shell: node_modules/.bin/forever start main.js
+      args:
+        chdir: /checkbox.io/server-side/site/
 
     - name: run testgenration script
       shell: node testgenerator.js
+      args:
+        chdir: /checkbox.io/server-side/site/
+      
 
-    - name: Waiting fortests to be generated
+    - name: Waiting for tests to be generated
       pause:
-        minutes: 1
+        minutes: 4
 
     - name: run test.js created by testgenerator.js
       shell: node test.js
+      args:
+        chdir: /checkbox.io/server-side/site/
 
 
 - import_playbook: builder.yml
-
-
-
 
 # Fuzzer Code
 - name: Starting Fuzzer
