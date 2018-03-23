@@ -68,9 +68,9 @@ The Test generator created ***46*** test cases corresponding to various *API's*.
 
 Coverage for server.js : ***96.43 %***
 
-Coverage for all the routes used by server.js : ***79.19%***
+Coverage for all the routes used by server.js : ***85.80%***
 
 Coverage for most important route files accessed in server.js :
-* `admin.js` : ***81.19%***
+* `admin.js` : ***91.18%***
 * `create.js` : ***95.65%***
-* `study.js` : ***79.27%***
+* `study.js` : ***92.77%***
