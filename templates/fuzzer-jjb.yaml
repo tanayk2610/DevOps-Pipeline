@@ -1,6 +1,7 @@
 - job:
     name: fuzzer
     description: "rebuild itrust job"
+    workspace: /var/lib/jenkins/jobs/fuzzer/workspace
     builders:
       - shell: |
           cd /var/lib/jenkins/jobs/itrust2/workspace/iTrust2-v2/iTrust2
