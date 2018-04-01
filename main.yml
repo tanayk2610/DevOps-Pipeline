@@ -1,11 +1,11 @@
 ---
-- name: Provision Jenkins Server on Digital Ocean
-  hosts: localhost
-  connection: localhost
-  roles:
-    - role: droplet
-      DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
-      NODE_NAME: jenkins
+# - name: Provision Jenkins Server on Digital Ocean
+#   hosts: localhost
+#   connection: localhost
+#   roles:
+#     - role: droplet
+#       DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
+#       NODE_NAME: jenkins
 
 - name: Setting up environment variables on Jenkins Server
   hosts: jenkins
