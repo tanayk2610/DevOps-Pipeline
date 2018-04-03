@@ -1,0 +1,9 @@
+- job:
+    name: checkbox
+    description: "automatically build checkbox"
+    workspace: /var/lib/jenkins/jobs/checkbox/workspace
+    builders:
+      - shell: 'cd /checkbox.io/server-side/site/ && npm install'
+    # publishers:
+    #   - trigger:
+    #       project: ansible-checkbox

@@ -1,0 +1,5 @@
+- job:
+    name: itrust2
+    description: "automatically build itrust"
+    builders:
+      - shell: "ansible-playbook /files/itrust.yml"

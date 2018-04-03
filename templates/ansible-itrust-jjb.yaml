@@ -1,0 +1,5 @@
+- job:
+    name: ansible-itrust
+    description: "deploy server with itrust on it"
+    builders:
+      - shell: "ansible-playbook /files/itrust.yml"
