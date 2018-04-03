@@ -54,21 +54,6 @@
       template:
         src: templates/checkbox-jjb.yaml
         dest: jobs/
-    
-    # - name: Create Checkbox post build job builder file
-    #   template:
-    #     src: templates/ansible-checkbox-jjb.yaml
-    #     dest: jobs/
-
-    # - name: Create iTrust post build job builder file
-    #   template:
-    #     src: templates/ansible-itrust-jjb.yaml
-    #     dest: jobs/
-
-    # - name: Create Fuzzer post build job builder file
-    #   template:
-    #     src: templates/fuzzer-jjb.yaml
-    #     dest: jobs/
 
     - name: Run the jenkins-jobs
       shell: jenkins-jobs update jobs
@@ -88,17 +73,4 @@
         regexp: "CRUMB="
         line: "CRUMB={{crumb.stdout}}"
 
-#    - debug: var=crumb
-
-    # - name: Run iTrust2 job
-    #   shell: curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:9090/job/itrust2/build -H "{{crumb.stdout}}"
-    #   register: result
-
-#    - debug: var=result.stdout
-
-    # - name: Run Checkbox job
-    #   shell: curl -X POST http://{{JENKINS_USER}}:{{JENKINS_PASSWORD}}@localhost:9090/job/checkbox/build -H "{{crumb.stdout}}"
-    #   register: result
-
-#    - debug: var=result.stdout
 ...
