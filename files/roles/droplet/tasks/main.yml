@@ -68,4 +68,11 @@
     group: "{{ NODE_GROUP }}"
     ansible_ssh_user: "root"
     ansible_ssh_private_key_file: "~/.ssh/{{ NODE_NAME }}"
+
+- name: add ip to itrust_inventory
+  lineinfile:
+    path: /files/itrust_inventory
+    regexp: '{{ NODE_NAME }}'
+    line: '{{ new_droplet.droplet.ip_address }} ansible_ssh_user=root ansible_ssh_private_key_file=~/.ssh/{{ NODE_NAME }}'
+  delegate_to: 127.0.0.1
 ...

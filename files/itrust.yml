@@ -16,7 +16,7 @@
       NODE_GROUP: "itrust"
       NODE_NAME: "{{ item }}"
       DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
-        
+
 - hosts: itrust
   become: yes
   gather_facts: no
@@ -45,7 +45,7 @@
         repo: "https://{{git_token}}@github.ncsu.edu/ubhosle/iTrust2-v2.git"
         dest: "~/iTrust2-v2"
         clone: yes
-        
+
     - name: copy db.properties file
       copy:
         src: ~/iTrust2-v2/iTrust2/src/main/java/db.properties.template
@@ -105,4 +105,5 @@
 
     - name: Run iTrust2
       shell: cd ~/iTrust2-v2/iTrust2/ && ((nohup mvn jetty:run) &)
+
 ...
