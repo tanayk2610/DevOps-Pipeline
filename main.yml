@@ -91,6 +91,16 @@
         dest: "/"
         mode: 0777
         directory_mode: yes
+        
+    - name: chmod
+      shell: chmod -R 777 /files
+
+    - name:
+      apt: name=dos2unix state=present update_cache=yes
+      become: yes
+    - name:
+      shell: dos2unix /files/itrustbash.sh
+      become: yes
 
 - import_playbook: builder.yml
 
@@ -124,6 +134,4 @@
       args:
         chdir: /iTrust2-v2
       ignore_errors: yes
-
-
 ...

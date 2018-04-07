@@ -20,6 +20,9 @@
     - java8
 
   tasks:
+    - name: Stop Service
+      shell: sudo kill `sudo lsof -t -i:8080`
+
     - name: Install Maven
       apt: name=maven state=latest update_cache=yes
 
