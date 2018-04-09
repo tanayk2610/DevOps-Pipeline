@@ -36,6 +36,21 @@
         force: yes
         update_cache: yes
 
+    - name: ip
+      shell: curl ipinfo.io/ip
+      register: ip_add
+
+    - name: ip_address
+      debug:
+        msg: "{{ip_add.stdout}}"
+
+    - name: Save Droplet IP into environment variable 
+      become: yes
+      lineinfile:
+        path: /etc/environment
+        regexp: "JENKINS_IP="
+        line: "JENKINS_IP={{ip_add.stdout}}"
+
   tasks:
     - lineinfile: dest=/etc/environment line='DOTOKEN={{ lookup('env','DOTOKEN') }}'
     - lineinfile: dest=/etc/environment line='MONGO_PORT={{ lookup('env', 'MONGO_PORT') }}'
@@ -124,6 +139,4 @@
       args:
         chdir: /iTrust2-v2
       ignore_errors: yes
-
-
 ...

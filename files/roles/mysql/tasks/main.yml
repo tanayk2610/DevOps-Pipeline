@@ -28,4 +28,9 @@
     name: mysql 
     state: started
     enabled: true
+
+- name: Restarting mysql service
+  service:
+    name: mysql
+    state: restarted
 ...

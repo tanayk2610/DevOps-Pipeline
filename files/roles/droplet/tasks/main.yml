@@ -6,7 +6,7 @@
 - name: Check if SSH key exists
   become_user: current_user
   stat:
-    path: "~/.ssh/{{ NODE_NAME }}.pub"
+    path: "/root/.ssh/{{ NODE_NAME }}.pub"
   register: ssh_exists
 
 # - name: debug ssh key
@@ -15,11 +15,11 @@
 
 - name: Generate SSH keys if not exists
   become_user: current_user
-  shell: "ssh-keygen -N '' -f ~/.ssh/{{ NODE_NAME }}"
+  shell: "ssh-keygen -N '' -f /root/.ssh/{{ NODE_NAME }}"
   when: ssh_exists.stat.exists == False
 
 - name: Get public SSH key
-  shell: "cat ~/.ssh/{{ NODE_NAME }}.pub"
+  shell: "cat /root/.ssh/{{ NODE_NAME }}.pub"
   register: ssh_key
 
 # - debug:
@@ -59,7 +59,7 @@
     seconds: 50
 
 - name: Add new droplet as a known host
-  shell: ssh-keyscan -H "{{ new_droplet.droplet.ip_address }}" >> ~/.ssh/known_hosts
+  shell: ssh-keyscan -H "{{ new_droplet.droplet.ip_address }}" >> /root/.ssh/known_hosts
 
 - name: Add droplet to in-memory inventory
   become: yes
@@ -67,12 +67,12 @@
     hostname: "{{ new_droplet.droplet.ip_address }}"
     group: "{{ NODE_GROUP }}"
     ansible_ssh_user: "root"
-    ansible_ssh_private_key_file: "~/.ssh/{{ NODE_NAME }}"
+    ansible_ssh_private_key_file: "/root/.ssh/{{ NODE_NAME }}"
 
 - name: add ip to itrust_inventory
   lineinfile:
     path: /files/itrust_inventory
     regexp: '{{ NODE_NAME }}'
-    line: '{{ new_droplet.droplet.ip_address }} ansible_ssh_user=root ansible_ssh_private_key_file=~/.ssh/{{ NODE_NAME }}'
+    line: '{{ new_droplet.droplet.ip_address }} ansible_ssh_user=root ansible_ssh_private_key_file=/root/.ssh/{{ NODE_NAME }}'
   delegate_to: 127.0.0.1
 ...
