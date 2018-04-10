@@ -149,4 +149,10 @@
       args:
         chdir: /iTrust2-v2
       ignore_errors: yes
+
+    - name: Enable firewall
+      shell: sudo ufw enable
+
+    - name: Restart mysql server
+      shell: service mysql restart
 ...
