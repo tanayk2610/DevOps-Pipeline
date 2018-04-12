@@ -6,7 +6,7 @@
   - name: creating 5 instances
     with_items:
       - "itrust1"
-      - "itrust2"
+      # - "itrust2"
       # - "itrust3"
       # - "itrust4"
       # - "itrust5"
@@ -118,9 +118,9 @@
         path: ~/iTrust2-v2/iTrust2/src/main/java/edu/ncsu/csc/itrust2/utils/DBUtil.java
         regexp: '.setUrl( null == url ? "jdbc:mysql://localhost:3306/iTrust2?createDatabaseIfNotExist=true" : url );'
         replace: '.setUrl( null == url ? "jdbc:mysql://{{jenkins_ip}}:3306/iTrust2?createDatabaseIfNotExist=true" : url );'
-  
+
     - name:  Build iTrust2
-      shell: cd ~/iTrust2-v2/iTrust2/ && mvn process-test-classes
+      shell: cd ~/iTrust2-v2/iTrust2/ && mvn process-test-classes -f pom-data.xml
 
     - name: Run iTrust2
       shell: cd ~/iTrust2-v2/iTrust2/ && ((nohup mvn jetty:run) &)
