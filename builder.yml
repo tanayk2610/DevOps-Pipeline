@@ -72,5 +72,4 @@
         path: /etc/environment
         regexp: "CRUMB="
         line: "CRUMB={{crumb.stdout}}"
-
 ...

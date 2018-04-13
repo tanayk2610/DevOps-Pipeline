@@ -6,12 +6,12 @@
   - name: creating 5 instances
     with_items:
       - "itrust1"
-      # - "itrust2"
-      # - "itrust3"
-      # - "itrust4"
-      # - "itrust5"
+      - "itrust2"
+      - "itrust3"
+      - "itrust4"
+      - "itrust5"
     include_role:
-      name: droplet
+      name: droplet_itrust
     vars:
       NODE_GROUP: "itrust"
       NODE_NAME: "{{ item }}"
@@ -124,4 +124,34 @@
 
     - name: Run iTrust2
       shell: cd ~/iTrust2-v2/iTrust2/ && ((nohup mvn jetty:run) &)
+
+# - name: Monitoring on iTrust
+#   hosts: localhost
+#   connection: localhost
+#   tasks:
+#     - name: git clone ItrustMonitoring
+#       git:
+#         repo: "https://github.ncsu.edu/ppatel16/ItrustMonitoring.git"
+#         dest: "/"
+#         clone: yes
+
+#     - name: install http-server inside ItrustMonitoring
+#       shell: npm install http-server -g
+#       args:
+#         chdir: "/ItrustMonitoring/www"
+  
+#     - name: Install forever
+#       shell: "npm install forever -g"
+#       args:
+#         chdir: "/ItrustMonitoring/www"
+
+#     - name: Run http-server
+#       shell: "forever start http-server"
+#       args:
+#         chdir: "/ItrustMonitoring/www"
+
+#     - name: Run Monitoring
+#       shell: "forever start main.js"
+#       args:
+        # chdir: "/ItrustMonitoring"
 ...

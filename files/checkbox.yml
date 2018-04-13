@@ -3,7 +3,7 @@
   hosts: localhost
   connection: localhost
   roles:
-    - role: droplet
+    - role: droplet_checkbox
       DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
       NODE_NAME: checkbox
       NODE_GROUP: checkbox
