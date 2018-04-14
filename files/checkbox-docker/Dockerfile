@@ -12,7 +12,7 @@ ENV MONGO_PASSWORD devops123
 # Bundle app source
 COPY ./checkbox.io .
 
-WORKDIR /usr/sec/checkbox.io/server-side/site/
+WORKDIR /usr/src/checkbox.io/server-side/site/
 
 # Installing required packages
 RUN npm install
