@@ -1,0 +1,38 @@
+---
+- debug:
+    var: token
+
+- name: Turn off Swap
+  shell: swapoff --all
+
+- name: Initialize Kubernetes cluster
+  become: yes
+  shell: kubeadm init --token="{{ token }}" --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="{{ inventory_hostname }}" 
+
+- name: Create .kube directory
+  file: 
+    path: "{{ ansible_env.HOME }}/.kube"
+    state: directory
+
+- name: Copy config file
+  become: yes
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ ansible_env.HOME }}/.kube/config"
+    remote_src: yes
+    mode: 0777
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+
+- name: Add iptable config
+  shell: sysctl net.bridge.bridge-nf-call-iptables=1
+
+- name: Pause 30 seconds
+  pause:
+    seconds: 30
+
+- name: Applying Kubernetes Network Provider settings
+  shell: sudo kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=1.10"
+  args:
+    warn: false
+...
