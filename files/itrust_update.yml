@@ -4,32 +4,23 @@
   gather_facts: no
   serial: 1
 
-  pre_tasks:
-    - name: 'install python2'
-      raw: apt-get -y install python-simplejson
-
   vars:
     - mysql_pass: "{{ lookup('env','MYSQL_PASSWORD') }}"
     - gmail_pass: "{{ lookup('env','MAIL_PASSWORD') }}"
     - gmail_user: "{{ lookup('env','MAIL_USER') }}"
     - git_token: "{{ lookup('env', 'GIT_TOKEN') }}"
+    - jenkins_ip: "{{ lookup('env', 'JENKINS_IP') }}"
 
-  roles:
-    - role: mysql
-      mysql_pass: "{{ lookup('env','MYSQL_PASSWORD') }}"
-    - java8
 
   tasks:
     - name: Stop Service
       shell: sudo kill `sudo lsof -t -i:8080`
-
-    - name: Install Maven
-      apt: name=maven state=latest update_cache=yes
+      ignore_errors: yes
 
     - name: copy itrust from production to server
       copy:
         src: "/deploy/production-www/"
-        dest: "~/"
+        dest: "~/iTrust2-v2/"
         mode: 0777
         directory_mode: yes
 
@@ -45,11 +36,23 @@
         regexp: 'password'
         line: 'password {{mysql_pass}}'
 
+    - name: Set the IP-Address in db file
+      lineinfile:
+        path: ~/iTrust2-v2/iTrust2/src/main/java/db.properties
+        regexp: 'url'
+        line: 'url jdbc:mysql://{{jenkins_ip}}:3306/iTrust2?createDatabaseIfNotExist=true'
+
     - name: Copy hibernate file
       copy:
         src: ~/iTrust2-v2/iTrust2/src/main/resources/hibernate.properties.template
         dest: ~/iTrust2-v2/iTrust2/src/main/resources/hibernate.properties
         remote_src: True
+
+    - name: Set the IP-Address in hibernate file
+      lineinfile:
+        path: ~/iTrust2-v2/iTrust2/src/main/resources/hibernate.properties
+        regexp: 'url'
+        line: 'hibernate.connection.url = jdbc:mysql://{{jenkins_ip}}:3306/iTrust2?createDatabaseIfNotExist=true'
 
     - name: Set the password in hibernate file
       lineinfile:
@@ -87,9 +90,17 @@
         regexp: 'password'
         line: 'password {{gmail_pass}}'
 
-    - name:  Build iTrust2
-      shell: cd ~/iTrust2-v2/iTrust2/ && mvn process-test-classes
+    - name: Set the IP-Address in DBUtil.java file
+      lineinfile:
+        path: ~/iTrust2-v2/iTrust2/src/main/java/edu/ncsu/csc/itrust2/utils/DBUtil.java
+        regexp: '.setUrl\( null == url \? "jdbc:mysql://localhost:3306/iTrust2\?createDatabaseIfNotExist=true" : url \);'
+        line: '.setUrl( null == url ? "jdbc:mysql://{{jenkins_ip}}:3306/iTrust2?createDatabaseIfNotExist=true" : url );'
 
     - name: Run iTrust2
       shell: cd ~/iTrust2-v2/iTrust2/ && ((nohup mvn jetty:run) &)
+
+    - name: Wait droplet to come online
+      pause:
+        seconds: 50
+
 ...
