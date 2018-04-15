@@ -15,5 +15,5 @@
 * Created a monitoring dashboard for tracking active instances and rolling updates. (We created a Github repo [ItrustMonitoring](https://github.com/pushpendrasp/ItrustMonitoring) containing Node JS scripts for this purpose).
 
 #### Screencast
-* [iTrust](): Deployment, Rolling Update and Monitoring
+* [iTrust](https://youtu.be/q1dDyM4hrKY): Deployment, Rolling Update and Monitoring
 * [Checkbox](): Deployment, Infrastructure Upgrade and Canary Release
