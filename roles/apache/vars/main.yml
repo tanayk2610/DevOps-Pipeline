@@ -1,4 +1,0 @@
-apache_install_location: /usr/local
-apache_file_name: apache-tomcat-9.0.6
-apache_user: devops
-apache_pass: devops123

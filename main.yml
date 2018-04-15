@@ -67,8 +67,6 @@
     - lineinfile: dest=/etc/environment line="GIT_EMAIL={{ lookup('env','GIT_EMAIL') }}"
     - lineinfile: dest=/etc/environment line="GIT_NAME={{ lookup('env','GIT_NAME') }}"
 
-#   # Dependencies for Checkbox.io - nodejs, nginx, mongodb
-#   # Dependencies for iTrust2 - java8, chrome, mysql
 - name: Configure Jenkins Server
   hosts: jenkins
   roles:
@@ -90,7 +88,6 @@
 
     - name: Clone iTrust Repo
       git:
-        # repo: "https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/engr-csc326-staff/iTrust2-v2.git"
         repo: "https://{{ lookup('env', 'GIT_TOKEN') }}@github.ncsu.edu/ubhosle/iTrust2-v2.git"
         dest: "/iTrust2-v2"
         clone: yes

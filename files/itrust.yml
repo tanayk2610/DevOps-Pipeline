@@ -141,7 +141,7 @@
       shell: npm install http-server -g
       args:
         chdir: "/ItrustMonitoring/www/"
-  
+
     - name: Change the socket ip
       lineinfile:
         path: /ItrustMonitoring/www/statusModel.js
@@ -153,13 +153,21 @@
       args:
         chdir: "/ItrustMonitoring/"
 
-    # - name: Run http-server
-    #   shell: "forever start $(which http-server) /ItrustMonitoring/www/"
-    #   args:
-    #     chdir: "/ItrustMonitoring/www/"
+    - name: which http server
+      shell: which http-server
+      register: whichvar
 
-    # - name: Run Monitoring
-    #   shell: "forever start main.js"
-    #   args:
-    #     chdir: "/ItrustMonitoring"
+    - name: debug ssh key
+      debug:
+        msg: "{{ whichvar }}"
+
+    - name: Run http-server
+      shell: "forever start $(which http-server) /ItrustMonitoring/www/"
+      args:
+        chdir: "/ItrustMonitoring/www/"
+
+    - name: Run Monitoring
+      shell: "forever start main.js"
+      args:
+        chdir: "/ItrustMonitoring"
 ...

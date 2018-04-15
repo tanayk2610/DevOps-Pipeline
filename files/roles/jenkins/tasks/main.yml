@@ -39,24 +39,6 @@
     name: "/var/lib/jenkins/jenkins.install.UpgradeWizard.state"
     state: absent
 
-# - name: Assign new Jenkins wizard state
-#   become: yes
-#   copy:
-#     src: "jenkins.install.UpgradeWizard.state"
-#     dest: "/var/lib/jenkins/"
-#     owner: jenkins
-#     group: jenkins
-#     mode: 0644
-
-# - name: Assign new Jenkins wizard state - 2
-#   become: yes
-#   copy:
-#     src: "jenkins.install.InstallUtil.lastExecVersion"
-#     dest: "/var/lib/jenkins/"
-#     owner: jenkins
-#     group: jenkins
-#     mode: 0644
-
 - name: Create custom init scripts directory.
   file:
     path: "/var/lib/jenkins/init.groovy.d"
@@ -75,7 +57,7 @@
   vars:
       jenkins_username: "{{ lookup('env', 'JENKINS_USER') }}"
       jenkins_password: "{{ lookup('env', 'JENKINS_PASSWORD') }}"
-    
+
 - name: Restart Jenkins
   systemd:
     name: jenkins
