@@ -51,4 +51,5 @@
     name: "{{ lookup('env', 'MONGO_USER') }}"
     password: "{{ lookup('env', 'MONGO_PASSWORD') }}"
     state: present
+
 ...

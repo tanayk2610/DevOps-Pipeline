@@ -70,6 +70,7 @@
 - name: Configure Jenkins Server
   hosts: jenkins
   roles:
+    - mongodb
     - nodejs
     - java8
     - role: mysql
@@ -162,9 +163,9 @@
       args:
         chdir: /deploy/checkbox-prod.git/
 
-    - name: Copy post-receive hook to production git repo
+    # - name: Copy post-receive hook to production git repo
       template:
-        src: "templates/post-receive"
+        src: "templates/post-receive-checkbox"
         dest: "/deploy/checkbox-prod.git/hooks/post-receive"
         mode: 0777
 
