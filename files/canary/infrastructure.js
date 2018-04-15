@@ -20,7 +20,7 @@ var count = 0;
 http.createServer(function (req, res) {
 	count++;
     console.log("\n count", count++, "\n");
-    //var currentTarget = servers.shift();
+    var currentTarget = stable; //servers.shift();
     var url = `${currentTarget.host}:${currentTarget.port}`;
     console.log("DEBUG url",url);
     request.get(`http://${url}`, function (err, resp, body) {
@@ -37,7 +37,7 @@ http.createServer(function (req, res) {
         proxy.web(req, res, { target: currentTarget });
     });
 
-    servers.push(currentTarget);
+    //servers.push(currentTarget);
 }).listen(3000);
 
 console.log("Listening on port 3000!");
