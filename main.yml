@@ -122,6 +122,8 @@
     - name: Setting Git username and email
       shell: cd /iTrust2-v2 && git config --global user.name "{{git_name}}" && git config --global user.email "{{git_email}}"
 
+
+      # Production environment for itrust
     - name: production environment
       file: path=/deploy/production.git state=directory
 
@@ -150,4 +152,28 @@
 
     - name: Restart mysql server
       shell: service mysql restart
+
+      # Production environment for checkbox
+    - name: production environment
+      file: path=/deploy/checkbox-prod.git state=directory
+
+    - name: initialze a git repository in the production.git
+      shell: git init --bare
+      args:
+        chdir: /deploy/checkbox-prod.git/
+
+    - name: Copy post-receive hook to production git repo
+      template:
+        src: "templates/post-receive"
+        dest: "/deploy/checkbox-prod.git/hooks/post-receive"
+        mode: 0777
+
+    - name: production environment
+      file: path=/deploy/checkbox-prod-www state=directory
+
+    - name: add origin to production
+      shell: git remote add prod file:///deploy/checkbox-prod.git
+      args:
+        chdir: /checkbox.io
+      ignore_errors: yes
 ...
