@@ -125,33 +125,41 @@
     - name: Run iTrust2
       shell: cd ~/iTrust2-v2/iTrust2/ && ((nohup mvn jetty:run) &)
 
-# - name: Monitoring on iTrust
-#   hosts: localhost
-#   connection: localhost
-#   tasks:
-#     - name: git clone ItrustMonitoring
-#       git:
-#         repo: "https://github.com/pushpendrasp/ItrustMonitoring.git"
-#         dest: "/ItrustMonitoring/"
-#         clone: yes
-#
-#     - name: install http-server inside ItrustMonitoring
-#       shell: npm install http-server -g
-#       args:
-#         chdir: "/ItrustMonitoring/www/"
-#
-#     - name: Install forever
-#       shell: "npm install forever -g"
-#       args:
-#         chdir: "/ItrustMonitoring/"
-#
-#     - name: Run http-server
-#       shell: "nohup http-server &"
-#       args:
-#         chdir: "/ItrustMonitoring/www/"
-#
-#     - name: Run Monitoring
-#       shell: "forever start main.js"
-#       args:
-#         chdir: "/ItrustMonitoring"
+- name: Monitoring on iTrust
+  hosts: localhost
+  connection: localhost
+  vars:
+    - jenkins_ip: "{{ lookup('env','JENKINS_IP') }}"
+  tasks:
+    - name: git clone ItrustMonitoring
+      git:
+        repo: "https://github.com/pushpendrasp/ItrustMonitoring.git"
+        dest: "/ItrustMonitoring/"
+        clone: yes
+
+    - name: install http-server inside ItrustMonitoring
+      shell: npm install http-server -g
+      args:
+        chdir: "/ItrustMonitoring/www/"
+  
+    - name: Change the socket ip
+      lineinfile:
+        path: /ItrustMonitoring/www/statusModel.js
+        regexp: 'var socket = io.connect\("http://localhost:3000"\);'
+        line: 'var socket = io.connect("http://{{ jenkins_ip }}:3000");'
+
+    - name: Install forever
+      shell: "npm install forever -g"
+      args:
+        chdir: "/ItrustMonitoring/"
+
+    # - name: Run http-server
+    #   shell: "forever start $(which http-server) /ItrustMonitoring/www/"
+    #   args:
+    #     chdir: "/ItrustMonitoring/www/"
+
+    # - name: Run Monitoring
+    #   shell: "forever start main.js"
+    #   args:
+    #     chdir: "/ItrustMonitoring"
 ...
