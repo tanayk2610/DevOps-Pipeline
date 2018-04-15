@@ -2,11 +2,17 @@
 - name: Provision Checkbox Server on Digital Ocean
   hosts: localhost
   connection: localhost
-  roles:
-    - role: droplet_checkbox
+  tasks:
+  - name: creating 5 instances
+    with_items:
+      - "stable"
+      - "canary"
+    include_role:
+      name: droplet_checkbox
+    vars:
+      NODE_GROUP: "checkbox"
+      NODE_NAME: "{{ item }}"
       DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
-      NODE_NAME: checkbox
-      NODE_GROUP: checkbox
 
 - name: Setup environment variables on Checkbox server
   hosts: checkbox

@@ -1,5 +1,0 @@
-- job:
-    name: ansible-checkbox
-    description: "deploy server with checkbox on it"
-    builders:
-      - shell: "ansible-playbook /files/checkbox.yml"
