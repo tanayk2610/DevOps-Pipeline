@@ -106,12 +106,11 @@
     - name: chmod
       shell: chmod -R 777 /files
 
-    - name: Change Mongod.conf
-      lineinfile:
-        dest: /etc/mongod.conf
-        regexp: 'bindIp: 127.0.0.1'
-        line: "bindIp: 127.0.0.1,{{ lookup('env','JENKINS_IP').stdout }}"
-
+    # - name: Change Mongod.conf
+    #   lineinfile:
+    #     dest: /etc/mongod.conf
+    #     regexp: 'bindIp: 127.0.0.1'
+    #     line: "bindIp: 127.0.0.1,{{ lookup('env','JENKINS_IP') }}"
 
     - name:
       apt: name=dos2unix state=present update_cache=yes
