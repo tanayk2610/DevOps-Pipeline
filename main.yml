@@ -66,7 +66,7 @@
     - lineinfile: dest=/etc/environment line="GIT_TOKEN={{ lookup('env','GIT_TOKEN') }}"
     - lineinfile: dest=/etc/environment line="GIT_EMAIL={{ lookup('env','GIT_EMAIL') }}"
     - lineinfile: dest=/etc/environment line="GIT_NAME={{ lookup('env','GIT_NAME') }}"
-    
+
 - name: Configure Jenkins Server
   hosts: jenkins
   roles:
@@ -77,7 +77,8 @@
       mysql_pass: "{{ lookup('env', 'MYSQL_PASSWORD') }}"
     - jenkins
     - maven
-
+  vars:
+    jenkins_ip: "{{ lookup('env', 'jenkins') }}"
   tasks:
     - name: remove directories if already exist
       shell: rm -rf /checkbox.io && rm -rf /iTrust2-v2
@@ -102,6 +103,11 @@
         dest: "/"
         mode: 0777
         directory_mode: yes
+    - name: set IP address in /files/kubernetes/podsetup.yml
+      templates:
+        src: "./files/kubernetes/podsetup.yml"
+        dest: /files/kubernetes/
+        force: yes
 
     - name: chmod
       shell: chmod -R 777 /files
