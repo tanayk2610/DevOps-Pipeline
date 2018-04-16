@@ -96,6 +96,11 @@
 - name: Run infrastructure.js on jenkins
   hosts: localhost
   tasks:
+    - name: NPM Install
+      shell: npm Install
+      args:
+        chdir: "/files/canary"
+
     - name: Install forever
       shell: "npm install forever -g"
       args:

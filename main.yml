@@ -66,6 +66,7 @@
     - lineinfile: dest=/etc/environment line="GIT_TOKEN={{ lookup('env','GIT_TOKEN') }}"
     - lineinfile: dest=/etc/environment line="GIT_EMAIL={{ lookup('env','GIT_EMAIL') }}"
     - lineinfile: dest=/etc/environment line="GIT_NAME={{ lookup('env','GIT_NAME') }}"
+    - lineinfile: dest=/etc/mongod.conf regexp='bindIp: 127.0.0.1' line="bindIp: 127.0.0.1,{{ lookup('env','JENKINS_IP') }}"
 
 - name: Configure Jenkins Server
   hosts: jenkins
@@ -177,4 +178,5 @@
       args:
         chdir: /checkbox.io
       ignore_errors: yes
+
 ...
