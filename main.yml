@@ -66,10 +66,11 @@
     - lineinfile: dest=/etc/environment line="GIT_TOKEN={{ lookup('env','GIT_TOKEN') }}"
     - lineinfile: dest=/etc/environment line="GIT_EMAIL={{ lookup('env','GIT_EMAIL') }}"
     - lineinfile: dest=/etc/environment line="GIT_NAME={{ lookup('env','GIT_NAME') }}"
-
+    
 - name: Configure Jenkins Server
   hosts: jenkins
   roles:
+    - mongodb
     - nodejs
     - java8
     - role: mysql
@@ -105,6 +106,13 @@
     - name: chmod
       shell: chmod -R 777 /files
 
+    - name: Change Mongod.conf
+      lineinfile:
+        dest: /etc/mongod.conf
+        regexp: 'bindIp: 127.0.0.1'
+        line: "bindIp: 127.0.0.1,{{ lookup('env','JENKINS_IP').stdout }}"
+
+
     - name:
       apt: name=dos2unix state=present update_cache=yes
       become: yes
@@ -121,7 +129,6 @@
   tasks:
     - name: Setting Git username and email
       shell: cd /iTrust2-v2 && git config --global user.name "{{git_name}}" && git config --global user.email "{{git_email}}"
-
 
       # Production environment for itrust
     - name: production environment
@@ -164,7 +171,7 @@
 
     - name: Copy post-receive hook to production git repo
       template:
-        src: "templates/post-receive"
+        src: "templates/post-receive-checkbox"
         dest: "/deploy/checkbox-prod.git/hooks/post-receive"
         mode: 0777
 
@@ -176,4 +183,5 @@
       args:
         chdir: /checkbox.io
       ignore_errors: yes
+
 ...

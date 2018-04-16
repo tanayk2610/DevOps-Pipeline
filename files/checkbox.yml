@@ -2,20 +2,18 @@
 - name: Provision Checkbox Server on Digital Ocean
   hosts: localhost
   connection: localhost
-  tasks:
-  - name: creating 5 instances
-    with_items:
-      - "stable"
-      - "canary"
-    include_role:
-      name: droplet_checkbox
-    vars:
-      NODE_GROUP: "checkbox"
-      NODE_NAME: "{{ item }}"
+  roles:
+    - role: droplet_checkbox
       DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
+      NODE_NAME: stable
+      NODE_GROUP: stable
+    - role: droplet_checkbox
+      DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
+      NODE_NAME: canary
+      NODE_GROUP: canary
 
 - name: Setup environment variables on Checkbox server
-  hosts: checkbox
+  hosts: stable:canary
   gather_facts: False
   pre_tasks:
     - name: Install Python2
@@ -23,9 +21,9 @@
       become: yes
 
   tasks:
-    - lineinfile: dest=/etc/environment line='DOTOKEN={{ lookup('env','DOTOKEN') }}'
-    - lineinfile: dest=/etc/environment line='MONGO_PORT={{ lookup('env', 'MONGO_PORT') }}'
-    - lineinfile: dest=/etc/environment line="MONGO_IP={{ lookup('env','MONGO_IP') }}"
+    - lineinfile: dest=/etc/environment line="DOTOKEN={{ lookup('env','DOTOKEN') }}"
+    - lineinfile: dest=/etc/environment line="MONGO_PORT={{ lookup('env', 'MONGO_PORT') }}"
+    - lineinfile: dest=/etc/environment line="MONGO_IP={{ lookup('env','JENKINS_IP') }}"
     - lineinfile: dest=/etc/environment line="MONGO_USER={{ lookup('env','MONGO_USER') }}"
     - lineinfile: dest=/etc/environment line="MONGO_PASSWORD={{ lookup('env','MONGO_PASSWORD') }}"
     - lineinfile: dest=/etc/environment line="MAIL_USER={{ lookup('env','MAIL_USER') }}"
@@ -34,7 +32,7 @@
     - lineinfile: dest=/etc/environment line="GIT_TOKEN={{ lookup('env','GIT_TOKEN') }}"
 
 - name: Setup environment variables on Checkbox server
-  hosts: checkbox
+  hosts: stable:canary
   roles:
     - nodejs
     - nginx
@@ -51,6 +49,9 @@
         MAIL_PASSWORD: "{{ lookup('env', 'MAIL_PASSWORD') }}"
         MAIL_SMTP: "{{ lookup('env', 'MAIL_SMTP') }}"
 
+- name: Setup Checkbox Stable server
+  hosts: stable
+  tasks:
     - name: Clone git repo
       git:
         repo: "https://github.com/chrisparnin/checkbox.io.git"
@@ -58,8 +59,23 @@
         clone: yes
         update: yes
 
+- name: Setup Checkbox Canary server
+  hosts: canary
+  vars:
+    - git_token: "{{ lookup('env', 'GIT_TOKEN') }}"
+  tasks:
+    - name: Clone git repo
+      git:
+        repo: "https://{{git_token}}@github.ncsu.edu/ssgodbol/checkbox-canary.git"
+        dest: "~/checkbox.io"
+        clone: yes
+        update: yes
+
+- name: Setup Checkbox servers
+  hosts: stable:canary
+  tasks:
     - name: Changing Permission for Nginx
-      shell: "chmod 777 /root && chmod 777 /root/checkbox.io && chmod 777 /root/checkbox.io/public_html"
+      shell: "chmod 777 /root/checkbox.io && chmod 777 /root/checkbox.io/public_html"
 
     - name: Install node modules for checkbox.io
       shell: "npm install"
@@ -75,4 +91,20 @@
       shell: "forever start server.js"
       args:
         chdir: "~/checkbox.io/server-side/site/"
+
+- name: Run infrastructure.js on jenkins
+  hosts: localhost
+  tasks:
+    - name: NPM Install
+      shell: "npm install"
+      args:
+        chdir: "/files/canary/"
+
+    - name: Install forever
+      shell: "npm install forever -g"
+      args:
+        chdir: "/files/canary"
+        
+    - name: start infrastructure
+      shell: forever start /files/canary/infrastructure.js
 ...

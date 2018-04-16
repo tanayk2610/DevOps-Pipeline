@@ -3,4 +3,4 @@
     description: "automatically build checkbox"
     workspace: /var/lib/jenkins/jobs/checkbox/workspace
     builders:
-      - shell: 'ansible-playbook /files/checkbox.yml'
+      - shell: 'sudo ansible-playbook /files/checkbox.yml'
