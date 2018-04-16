@@ -55,6 +55,11 @@
         src: templates/checkbox-jjb.yaml
         dest: jobs/
 
+    - name: Create Checkbox job builder file
+      template:
+        src: templates/kubernetes-jjb.yaml
+        dest: jobs/
+
     - name: Run the jenkins-jobs
       shell: jenkins-jobs update jobs
       args:
