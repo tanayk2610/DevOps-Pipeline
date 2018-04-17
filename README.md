@@ -37,6 +37,7 @@ exports.createStudy = function(req, res) {
 
 
 ##### Canary Release:
+* The deployment of Checkbox creates to deployments Stable and Canary. Stable has the original repo while canary has github repo that we created with modified code for distinguishing canary and stable. [checkbox-canary](https://github.ncsu.edu/ssgodbol/checkbox-canary)
 * We created an infrastucure.js file which does the load balacing (similar to the workshop). It runs on Jenkins server itself.
 * The load balncer forwards every 3rd request to Canary deployment(33.33%) and rest to Stable server. If Canary deployment gives an error, then it forwards all requests to Stable.
 * A single instance of MongoDb was deployed on Jenkins server and both stable and canary deloyment use the same. 
