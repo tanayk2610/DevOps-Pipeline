@@ -14,7 +14,7 @@ It then creates a deployment from dockerized version of checkbox images deployed
 * We also created a redis server on kubernetes master and mirrored it to all thress slaves. 
 For Demo we inserted a feature flag in Checkbox code that checks the feature flag called "Key" from redis and turns on and off the feature of creating a study.
 Code Snippet:
-`
+```
 exports.createStudy = function(req, res) {
 	var flag = true;
 	client.get("key", function(err,value){
@@ -33,7 +33,7 @@ exports.createStudy = function(req, res) {
 	});
 };
 
-`
+```
 
 
 ##### Canary Release:
@@ -51,7 +51,7 @@ exports.createStudy = function(req, res) {
 * [Checkbox](): Deployment, Infrastructure Upgrade and Canary Release
 
 #### Contributions of Team Members:
-* Pushpendra Singh Patel (ppatel16) - Deployment of iTrust and Checkbox 
+* Pushpendra Singh Patel (ppatel16) - Deployment of iTrust and Checkbox and Rolling Update
 * Sayali Godbole (ssgodbol) - Canary Release and Kubernetes Deployment
 * Tanay Kothari (tkothar) - Kubernetes Deployment and Redis feature flag
-* Uddhav Bhosle (ubhosle) - Rolling Updates
+* Uddhav Bhosle (ubhosle) - Rolling Update and Deployment of iTrust and Checkbox
