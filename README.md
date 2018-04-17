@@ -49,7 +49,7 @@ exports.createStudy = function(req, res) {
 
 #### Screencast
 * [iTrust](https://youtu.be/q1dDyM4hrKY): Deployment, Rolling Update and Monitoring
-* [Checkbox](): Deployment, Infrastructure Upgrade and Canary Release
+* [Checkbox](https://drive.google.com/file/d/1Dtuwam4WuTMhvvZ_TqKVmwjSJDkQw_7m/view): Deployment, Infrastructure Upgrade and Canary Release
 
 #### Contributions of Team Members:
 * Pushpendra Singh Patel (ppatel16) - Deployment of iTrust and Checkbox and Rolling Update
