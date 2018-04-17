@@ -8,8 +8,4 @@
   args:
     warn: false
 
-- name: Copy Dockerfile for checkbox
-  copy:
-    src: Dockerfile
-    dest: "{{ ansible_env.HOME }}/Dockerfile"
 ...

@@ -36,6 +36,12 @@
   become: yes
   shell: "easy_install pymongo"
 
+- name: Change Mongod.conf
+  lineinfile:
+    dest: /etc/mongod.conf
+    regexp: 'bind_ip = 127.0.0.1'
+    line: "bind_ip = 127.0.0.1,{{ mongo_ip }}"
+
 # If things don't work, try restarting the MongoDB service.
 - name: Reload MongoDB Service
   become: yes

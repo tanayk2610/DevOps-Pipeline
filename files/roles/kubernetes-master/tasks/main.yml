@@ -2,15 +2,13 @@
 - debug:
     var: token
 
-- name: Turn off Swap
-  shell: swapoff --all
-
 - name: Initialize Kubernetes cluster
   become: yes
-  shell: kubeadm init --token="{{ token }}" --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address="{{ inventory_hostname }}" 
+  shell: kubeadm init --token="{{ token }}"
 
 - name: Create .kube directory
-  file: 
+  become: yes
+  file:
     path: "{{ ansible_env.HOME }}/.kube"
     state: directory
 
@@ -26,6 +24,12 @@
 
 - name: Add iptable config
   shell: sysctl net.bridge.bridge-nf-call-iptables=1
+
+- name: Kubever
+  shell: export kubever=$(kubectl version | base64 | tr -d '\n') && kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+
+- name: Apply version
+  shell: kubectl taint nodes --all node-role.kubernetes.io/master-
 
 - name: Pause 30 seconds
   pause:

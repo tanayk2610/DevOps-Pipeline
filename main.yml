@@ -66,6 +66,7 @@
     - lineinfile: dest=/etc/environment line="GIT_TOKEN={{ lookup('env','GIT_TOKEN') }}"
     - lineinfile: dest=/etc/environment line="GIT_EMAIL={{ lookup('env','GIT_EMAIL') }}"
     - lineinfile: dest=/etc/environment line="GIT_NAME={{ lookup('env','GIT_NAME') }}"
+    - lineinfile: dest=/etc/environment line="kubetoken={{ lookup('env','kubetoken') }}"
 
 - name: Configure Jenkins Server
   hosts: jenkins
@@ -103,20 +104,15 @@
         dest: "/"
         mode: 0777
         directory_mode: yes
-    - name: set IP address in /files/kubernetes/podsetup.yml
-      templates:
-        src: "./files/kubernetes/podsetup.yml"
-        dest: /files/kubernetes/
-        force: yes
 
     - name: chmod
       shell: chmod -R 777 /files
 
-    # - name: Change Mongod.conf
-    #   lineinfile:
-    #     dest: /etc/mongod.conf
-    #     regexp: 'bindIp: 127.0.0.1'
-    #     line: "bindIp: 127.0.0.1,{{ lookup('env','JENKINS_IP') }}"
+    - name: Change Mongod.conf
+      lineinfile:
+        dest: /etc/mongod.conf
+        regexp: 'bind_ip = 127.0.0.1'
+        line: "bind_ip = 127.0.0.1,{{ lookup('env','JENKINS_IP') }}"
 
     - name:
       apt: name=dos2unix state=present update_cache=yes

@@ -21,4 +21,6 @@ spec:
         image: ssgodbol/checkboxio_node
         env:
         - name: MONGO_IP
-          value: {{ jenkins_ip }}
+          value: {{ mongo_ip }}
+        - name: REDIS_IP
+          value: {{ redis_ip }}

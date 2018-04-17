@@ -1,0 +1,23 @@
+---
+- name: Adding Redis Repository
+  become: yes
+  apt_repository:
+    repo: ppa:chris-lea/redis-server
+
+- name: Update cache
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: Install redis-server
+  apt:
+    name: redis-server
+    state: present
+
+- name: Binding IP
+  become: yes
+  lineinfile:
+    path: /etc/redis/redis.conf
+    regexp: "bind 127.0.0.1"
+    line: "bind 127.0.0.1 {{ redis_ip }}"
+...
