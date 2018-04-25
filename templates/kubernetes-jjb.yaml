@@ -1,6 +1,0 @@
-- job:
-    name: kubernetes
-    workspace: /var/lib/jenkins/jobs/kubernetes/workspace
-    description: "create kubernetes cluster"
-    builders:
-      - shell: "sudo ansible-playbook /files/kubernetes.yml"

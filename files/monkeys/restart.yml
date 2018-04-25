@@ -1,0 +1,11 @@
+---
+- name: restart services of random servers
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Restart mysql server
+      shell: service nginx restart
+    - name: restart mongodb server
+      shell: service mongod restart
+
+...

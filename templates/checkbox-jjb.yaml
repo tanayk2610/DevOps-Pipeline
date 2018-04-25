@@ -1,6 +1,0 @@
-- job:
-    name: checkbox
-    description: "automatically build checkbox"
-    workspace: /var/lib/jenkins/jobs/checkbox/workspace
-    builders:
-      - shell: 'sudo ansible-playbook /files/checkbox.yml'

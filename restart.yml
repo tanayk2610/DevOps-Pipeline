@@ -1,0 +1,12 @@
+---
+- name: restart services
+  hosts: 139.59.75.182
+  become: yes
+#  hosts: "{{ groups['checkbox'] | random }}"
+  gather_facts: False
+  tasks:
+    # - name: Restart nginx server
+    #   shell: service nginx restart
+    - name: restart mongodb server
+      shell: for run in {1..50}; do   service mongod restart && sleep 0.5; done
+...

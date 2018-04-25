@@ -1,4 +1,0 @@
-[stable]
-104.131.87.221 ansible_ssh_user=root ansible_ssh_private_key_file=~/.ssh/stable
-[canary]
-104.131.87.221 ansible_ssh_user=root ansible_ssh_private_key_file=~/.ssh/canary

@@ -1,6 +1,0 @@
-- job:
-    name: itrust2
-    workspace: /var/lib/jenkins/jobs/itrust2/workspace
-    description: "automatically build itrust"
-    builders:
-      - shell: "sudo /files/itrustbash.sh"

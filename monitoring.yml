@@ -1,0 +1,14 @@
+---
+- name: Setup environment variables on Checkbox server
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: run ddos attack Server
+      shell: forever start server.js
+      args:
+        chdir: /home/vagrant/ddos-stress
+
+    - name: start the ddos attack application
+      shell: forever start node.js
+      args:
+        chdir: /home/vagrant/ddos-stress
