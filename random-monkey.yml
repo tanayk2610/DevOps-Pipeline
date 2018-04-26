@@ -1,0 +1,10 @@
+---
+- name: random monkey deployment
+#  hosts: 138.68.248.226
+  become: yes
+  hosts: "{{ groups['checkbox'] | random }}"
+  gather_facts: False
+  tasks:
+    - name: select and run a random monkey on the host
+      shell: node random-monkey.js
+...

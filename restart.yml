@@ -1,12 +1,12 @@
 ---
-- name: restart services
-  hosts: 139.59.75.182
+- name: stop services
+#  hosts: 138.68.248.226
   become: yes
-#  hosts: "{{ groups['checkbox'] | random }}"
+  hosts: "{{ groups['checkbox'] | random }}"
   gather_facts: False
   tasks:
     # - name: Restart nginx server
     #   shell: service nginx restart
     - name: restart mongodb server
-      shell: for run in {1..50}; do   service mongod restart && sleep 0.5; done
+      shell: service mongod stop
 ...

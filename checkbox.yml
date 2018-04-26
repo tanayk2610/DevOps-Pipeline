@@ -37,7 +37,7 @@
     - lineinfile: dest=/etc/environment line="MYSQL_PASSWORD={{ lookup('env','MYSQL_PASSWORD') }}"
     - lineinfile: dest=/etc/environment line="GIT_TOKEN={{ lookup('env','GIT_TOKEN') }}"
     - lineinfile: dest=/etc/environment line="NEW_RELIC_TOKEN={{ lookup('env','NEW_RELIC_TOKEN') }}"
-#
+
 - name: Setup environment variables on Checkbox server
   hosts: checkbox
   roles:
@@ -63,8 +63,8 @@
         clone: yes
         update: yes
 
-    # - name: Changing Permission for Nginx
-    #   shell: "chmod 777 /root/checkbox.io && chmod 777 /root/checkbox.io/public_html"
+    - name: Changing Permission for Nginx
+      shell: "chmod 777 /root/checkbox.io && chmod 777 /root/checkbox.io/public_html"
 
     - name: Install node modules for checkbox.io
       shell: "npm install"
@@ -72,6 +72,11 @@
         chdir: "/checkbox.io/server-side/site/"
     - name: install new relic
       shell: npm install newrelic
+      args:
+        chdir: "/checkbox.io/server-side/site/"
+
+    - name: Install forever
+      shell: "npm install forever -g"
       args:
         chdir: "/checkbox.io/server-side/site/"
 
@@ -91,11 +96,6 @@
         path: /checkbox.io/server-side/site/server.js
         insertbefore: BOF
         line: require('newrelic');
-
-    - name: Install forever
-      shell: "npm install forever -g"
-      args:
-        chdir: "/checkbox.io/server-side/site/"
 
     - name: Run Checkbox.io
       shell: "forever start server.js"
