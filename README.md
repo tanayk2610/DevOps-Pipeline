@@ -8,3 +8,6 @@ Project Milestone-2:
 
 Project Milestone-3:   
 [Deployment](https://github.ncsu.edu/ppatel16/DevOpsKnights/tree/m3_deployment)
+
+Special Milestone:
+[Chaos Engineering and Monitoring](https://github.ncsu.edu/ppatel16/DevOpsKnights/tree/chaos)
