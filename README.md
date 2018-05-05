@@ -2,7 +2,7 @@
    
 ### New Relic Integration   
 For monitoring purposes we used the [New Relic](https://newrelic.com/) application, which we integrated into the code for checkbox.io. This gave the New Relic software access of the data, traffic etc in the deployed checkbox application. Using this, the various statistics of the application were calculated on a 5 minutes interval. Also many servers on which checkbox was deployed can be monitored simultaneously. The data can be monitored on the new relic website by the authorized user. A screenshot of the monitoring:  
-![newrelic](new=relic.png)
+![newrelic](new-relic.png)
 
    
 ### A Chaos Experiment  
