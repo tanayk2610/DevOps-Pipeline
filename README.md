@@ -22,4 +22,10 @@ The MongoDB's functionality may be dependent on how much data is present in the 
 This monkey generates random data using `faker` to be inserted into the database. The number of such data entries is also decided as some random but large number (in millions). The changes in the functioning are tracked on the New Relic application.   
    
 There can be many problems in the functioning of the application which may arise due to various reasons. To have an idea as to what random chaos does, we created a [Random monkey](https://github.ncsu.edu/ppatel16/DevOpsKnights/blob/chaos/random-monkey.js).
-This monkey takes all the monkeys that we learnt in the [Chaos Engineering](https://github.com/CSC-DevOps/Chaos) workshop, randomly selects one of them and runs them on the application. Again, the changes in the functioning are tracked on the New Relic.  
+This monkey takes all the monkeys that we learnt in the [Chaos Engineering](https://github.com/CSC-DevOps/Chaos) workshop, randomly selects one of them and runs them on the application. Again, the changes in the functioning are tracked on the New Relic.
+
+#### Contributions of Team Members:
+* Pushpendra Singh Patel (ppatel16) - Screencast and Random Monkey
+* Sayali Godbole (ssgodbol) - Random Monkey and Presentation
+* Tanay Kothari (tkothar) - DDoS Monkey and Sreencast
+* Uddhav Bhosle (ubhosle) - Mongo monkey and Presentation
