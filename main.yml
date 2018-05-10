@@ -1,11 +1,11 @@
 ---
-- name: Provision Jenkins Server on Digital Ocean
-  hosts: localhost
-  connection: localhost
-  roles:
-    - role: droplet
-      DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
-      NODE_NAME: jenkins
+# - name: Provision Jenkins Server on Digital Ocean
+#   hosts: localhost
+#   connection: localhost
+#   roles:
+#     - role: droplet
+#       DOTOKEN: "{{ lookup('env','DOTOKEN') }}"
+#       NODE_NAME: jenkins
 
 - name: Setting up environment variables on Jenkins Server
   hosts: jenkins
@@ -175,7 +175,7 @@
       shell: node_modules/.bin/forever start coverage.js
       args:
         chdir: /checkbox.io/server-side/site/
-        
+
     - name: run main.js with forever
       shell: node_modules/.bin/forever start main.js
       args:
@@ -185,7 +185,7 @@
       shell: node testgenerator.js
       args:
         chdir: /checkbox.io/server-side/site/
-      
+
 
     - name: Waiting for tests to be generated
       pause:

@@ -1,6 +1,7 @@
 - job:
     name: itrust2
     description: "automatically build itrust"
+    workspace: /var/lib/jenkins/jobs/itrust2/workspace
     builders:
       - shell: '
           git clone https://github.ncsu.edu/ubhosle/iTrust2-v2.git &&

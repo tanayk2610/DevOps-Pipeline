@@ -14,6 +14,12 @@
     dest: "/fuzz/"
     mode: 0777
 
+- name: Copying copy.js to jenkins server
+  template:
+    src: copy.js
+    dest: "/fuzz/"
+    mode: 0777
+
 - name: Copy package.json to jenkins server
   template:
     src: package.json
